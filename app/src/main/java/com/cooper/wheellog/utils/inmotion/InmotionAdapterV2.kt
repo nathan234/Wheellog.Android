@@ -292,7 +292,7 @@ class InmotionAdapterV2(
                     Timber.i("New instance")
                     INSTANCE = InmotionAdapterV2(
                         InmotionUnpackerV2(),
-                        TimerUpdateUseCase(WheelData.getInstance())
+                        TimerUpdateUseCase(WheelData.getInstance()),
                     )
                 }
                 Timber.i("Get instance")
@@ -308,7 +308,7 @@ class InmotionAdapterV2(
             Timber.i("New instance")
             INSTANCE = InmotionAdapterV2(
                 InmotionUnpackerV2(),
-                TimerUpdateUseCase(WheelData.getInstance())
+                TimerUpdateUseCase(WheelData.getInstance()),
             )
         }
 
