@@ -18,21 +18,21 @@ class TimerUpdateUseCase(private val wd: WheelData) {
         if (updateStep == 0) {
             when {
                 stateCon == 0 -> {
-                    if (wd.bluetoothCmd(InmotionAdapterV2.Message.carType.writeBuffer())) {
+                    if (wd.bluetoothCmd(Message.carType.writeBuffer())) {
                         Timber.i("Sent car type message")
                     } else {
                         updateStep = 35
                     }
                 }
                 stateCon == 1 -> {
-                    if (wd.bluetoothCmd(InmotionAdapterV2.Message.serialNumber.writeBuffer())) {
+                    if (wd.bluetoothCmd(Message.serialNumber.writeBuffer())) {
                         Timber.i("Sent s/n message")
                     } else {
                         updateStep = 35
                     }
                 }
                 stateCon == 2 -> {
-                    if (wd.bluetoothCmd(InmotionAdapterV2.Message.versions.writeBuffer())) {
+                    if (wd.bluetoothCmd(Message.versions.writeBuffer())) {
                         stateCon += 1
                         Timber.i("Sent versions message")
                     } else {
@@ -49,7 +49,7 @@ class TimerUpdateUseCase(private val wd: WheelData) {
                     }
                 }
                 (stateCon == 3) or requestSettings -> {
-                    if (wd.bluetoothCmd(InmotionAdapterV2.Message.currentSettings.writeBuffer())) {
+                    if (wd.bluetoothCmd(Message.currentSettings.writeBuffer())) {
                         stateCon += 1
                         Timber.i("Sent unknown data message")
                     } else {
@@ -57,7 +57,7 @@ class TimerUpdateUseCase(private val wd: WheelData) {
                     }
                 }
                 stateCon == 4 -> {
-                    if (wd.bluetoothCmd(InmotionAdapterV2.Message.uselessData.writeBuffer())) {
+                    if (wd.bluetoothCmd(Message.uselessData.writeBuffer())) {
                         Timber.i("Sent useless data message")
                         stateCon += 1
                     } else {
@@ -65,7 +65,7 @@ class TimerUpdateUseCase(private val wd: WheelData) {
                     }
                 }
                 stateCon == 5 -> {
-                    if (wd.bluetoothCmd(InmotionAdapterV2.Message.statistics.writeBuffer())) {
+                    if (wd.bluetoothCmd(Message.statistics.writeBuffer())) {
                         Timber.i("Sent statistics data message")
                         stateCon += 1
                     } else {
@@ -73,7 +73,7 @@ class TimerUpdateUseCase(private val wd: WheelData) {
                     }
                 }
                 else -> {
-                    if (wd.bluetoothCmd(InmotionAdapterV2.Message.realTimeData.writeBuffer())) {
+                    if (wd.bluetoothCmd(Message.realTimeData.writeBuffer())) {
                         Timber.i("Sent realtime data message")
                         stateCon = 5
                     } else {
