@@ -703,7 +703,7 @@ private fun kingsong() {
 
 @Composable
 private fun begode() {
-    val adapter by remember { mutableStateOf(GotwayAdapter.getInstance()) }
+    val adapter: GotwayAdapter by remember { mutableStateOf(GotwayAdapter.instance!!) }
     var speedMultipier = 1.0f
     var speedUnit = R.string.kmh
     if (AppConfig.useMph) {
