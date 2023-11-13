@@ -226,9 +226,9 @@ class BluetoothService: Service() {
             WHEEL_TYPE.KINGSONG -> if (characteristic.uuid == Constants.KINGSONG_READ_CHARACTER_UUID) {
                 wd.decodeResponse(value, applicationContext)
                 if (WheelData.getInstance().name.isEmpty()) {
-                    KingsongAdapter.getInstance().requestNameData()
+                    KingsongAdapter.instance!!.requestNameData()
                 } else if (WheelData.getInstance().serial.isEmpty()) {
-                    KingsongAdapter.getInstance().requestSerialData()
+                    KingsongAdapter.instance!!.requestSerialData()
                 }
             }
             WHEEL_TYPE.GOTWAY, WHEEL_TYPE.GOTWAY_VIRTUAL, WHEEL_TYPE.VETERAN ->

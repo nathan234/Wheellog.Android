@@ -356,7 +356,7 @@ class MainActivity : AppCompatActivity() {
                                 toggleLoggingService()
                             }
                             if (WheelData.getInstance().wheelType == WHEEL_TYPE.KINGSONG) {
-                                KingsongAdapter.getInstance().requestNameData()
+                                KingsongAdapter.instance!!.requestNameData()
                             }
                             if (WheelLog.AppConfig.autoWatch && wearOs == null) {
                                 toggleWatch()
