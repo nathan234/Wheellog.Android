@@ -73,27 +73,27 @@ class InMotionAdapterV2(
                                 Message.Command.RealTimeInfo.value -> {
                                     return when {
                                         inMotionModel == InMotionModel.V12 -> {
-                                            val result = result.parseRealTimeInfoV12(context, lightSwitchCounter)
-                                            lightSwitchCounter = result.first
-                                            result.second
+                                            val info = result.parseRealTimeInfoV12(context, lightSwitchCounter)
+                                            lightSwitchCounter = info.first
+                                            info.second
                                         }
 
                                         inMotionModel == InMotionModel.V13 -> {
-                                            val result = result.parseRealTimeInfoV13(lightSwitchCounter)
-                                            lightSwitchCounter = result.first
-                                            result.second
+                                            val info = result.parseRealTimeInfoV13(lightSwitchCounter)
+                                            lightSwitchCounter = info.first
+                                            info.second
                                         }
 
                                         protoVer < 2 -> {
-                                            val result = result.parseRealTimeInfoV11(context, lightSwitchCounter)
-                                            lightSwitchCounter = result.first
-                                            result.second
+                                            val info = result.parseRealTimeInfoV11(context, lightSwitchCounter)
+                                            lightSwitchCounter = info.first
+                                            info.second
                                         }
 
                                         else -> {
-                                            val result = result.parseRealTimeInfoV11_1_4(context, lightSwitchCounter)
-                                            lightSwitchCounter = result.first
-                                            result.second
+                                            val info = result.parseRealTimeInfoV11_1_4(context, lightSwitchCounter)
+                                            lightSwitchCounter = info.first
+                                            info.second
                                         }
                                     }
                                 }
@@ -155,18 +155,18 @@ class InMotionAdapterV2(
         setLightState(light)
     }
 
-    override fun setLightState(lightEnable: Boolean) {
-        settingCommand = Message.setLight(lightEnable).writeBuffer()
+    override fun setLightState(on: Boolean) {
+        settingCommand = Message.setLight(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setHandleButtonState(handleButtonEnable: Boolean) {
-        settingCommand = Message.setHandleButton(handleButtonEnable).writeBuffer()
+    override fun setHandleButtonState(on: Boolean) {
+        settingCommand = Message.setHandleButton(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setRideMode(rideMode: Boolean) {
-        settingCommand = Message.setClassicMode(rideMode).writeBuffer()
+    override fun setRideMode(on: Boolean) {
+        settingCommand = Message.setClassicMode(on).writeBuffer()
         settingCommandReady = true
     }
 
@@ -190,53 +190,53 @@ class InMotionAdapterV2(
         settingCommandReady = true
     }
 
-    override fun setLockMode(lockMode: Boolean) {
-        settingCommand = Message.setLock(lockMode).writeBuffer()
+    override fun setLockMode(on: Boolean) {
+        settingCommand = Message.setLock(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setTransportMode(transportMode: Boolean) {
-        settingCommand = Message.setTransportMode(transportMode).writeBuffer()
+    override fun setTransportMode(on: Boolean) {
+        settingCommand = Message.setTransportMode(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setDrl(drl: Boolean) {
-        settingCommand = Message.setDrl(drl).writeBuffer()
+    override fun setDrl(on: Boolean) {
+        settingCommand = Message.setDrl(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setGoHomeMode(goHomeMode: Boolean) {
-        settingCommand = Message.setGoHome(goHomeMode).writeBuffer()
+    override fun setGoHomeMode(on: Boolean) {
+        settingCommand = Message.setGoHome(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setFancierMode(fancierMode: Boolean) {
-        settingCommand = Message.setFancierMode(fancierMode).writeBuffer()
+    override fun setFancierMode(on: Boolean) {
+        settingCommand = Message.setFancierMode(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setMute(mute: Boolean) {
-        settingCommand = Message.setMute(mute).writeBuffer()
+    override fun setMute(on: Boolean) {
+        settingCommand = Message.setMute(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setFanQuiet(fanQuiet: Boolean) {
-        settingCommand = Message.setQuietMode(fanQuiet).writeBuffer()
+    override fun setFanQuiet(on: Boolean) {
+        settingCommand = Message.setQuietMode(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setFan(fan: Boolean) {
-        settingCommand = Message.setFan(fan).writeBuffer()
+    override fun setFan(on: Boolean) {
+        settingCommand = Message.setFan(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setLightBrightness(lightBrightness: Int) {
-        settingCommand = Message.setLightBrightness(lightBrightness).writeBuffer()
+    override fun setLightBrightness(value: Int) {
+        settingCommand = Message.setLightBrightness(value).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun updateMaxSpeed(maxSpeed: Int) {
-        settingCommand = Message.setMaxSpeed(maxSpeed).writeBuffer()
+    override fun updateMaxSpeed(wheelMaxSpeed: Int) {
+        settingCommand = Message.setMaxSpeed(wheelMaxSpeed).writeBuffer()
         settingCommandReady = true
     }
 
@@ -277,9 +277,6 @@ class InMotionAdapterV2(
 
         @JvmField
         var protoVer: Int = 0
-        fun setProto(value: Int) { // for tests
-            protoVer = value
-        }
 
         @JvmStatic
         val proto: Int
