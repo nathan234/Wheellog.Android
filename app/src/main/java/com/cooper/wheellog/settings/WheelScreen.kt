@@ -880,7 +880,7 @@ private fun begode() {
 
 @Composable
 private fun veteran() {
-    val adapter by remember { mutableStateOf(VeteranAdapter.getInstance()) }
+    val adapter by remember { mutableStateOf(VeteranAdapter.instance!!) }
     switchPref(
         name = stringResource(R.string.on_headlight_title),
         desc = stringResource(R.string.on_headlight_description),
