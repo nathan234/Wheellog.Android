@@ -16,13 +16,17 @@ import java.util.Locale
 import java.util.Timer
 import java.util.TimerTask
 
-class InmotionAdapterV2 : BaseAdapter() {
+class InmotionAdapterV2(
+    private val wd: WheelData,
+) : BaseAdapter() {
     private var keepAliveTimer: Timer? = null
     private var settingCommandReady = false
     private var requestSettings = false
     private var turningOff = false
     private lateinit var settingCommand: ByteArray
     var unpacker = InmotionUnpackerV2()
+
+    fun getModel() = model
     override fun decode(data: ByteArray?): Boolean {
         for (c in data!!) {
             if (unpacker.addChar(c.toInt())) {
@@ -59,7 +63,7 @@ class InmotionAdapterV2 : BaseAdapter() {
                                 result.parseRealTimeInfoV12(context)
                             } else if (model == Model.V13) {
                                 result.parseRealTimeInfoV13(context)
-                            } else if (proto < 2) {
+                            } else if (protoVer < 2) {
                                 result.parseRealTimeInfoV11(context)
                             } else {
                                 result.parseRealTimeInfoV11_1_4(context)
@@ -92,7 +96,7 @@ class InmotionAdapterV2 : BaseAdapter() {
     }
 
     override val isReady: Boolean
-        get() = model != Model.UNKNOWN && proto != 0
+        get() = model != Model.UNKNOWN && protoVer != 0
     val maxSpeed: Int
         get() {
             return when (model) {
@@ -287,6 +291,14 @@ class InmotionAdapterV2 : BaseAdapter() {
         settingCommandReady = true
     }
 
+    fun setModel(m: Model) {
+        model = m
+    }
+
+    fun setProto(proto: Int) {
+        protoVer = proto
+    }
+
     class Message {
         internal enum class Flag(val value: Int) {
             NoOp(0), Initial(0x11), Default(0x14)
@@ -342,7 +354,7 @@ class InmotionAdapterV2 : BaseAdapter() {
                 wd.serial = serialNumber
             } else if (data[0] == 0x06.toByte() && len >= 24) {
                 Timber.i("Parse versions")
-                proto = 0
+                protoVer = 0
                 val DriverBoard3 = MathsUtil.shortFromBytesLE(data, 2)
                 val DriverBoard2 = data[4].toInt()
                 val DriverBoard1 = data[5].toInt()
@@ -374,9 +386,9 @@ class InmotionAdapterV2 : BaseAdapter() {
                 wd.version = vers
                 if (model == Model.V11) {
                     if (MainBoard1 < 2 && MainBoard2 < 4) { // main board ver before 1.4
-                        proto = 1
+                        protoVer = 1
                     } else {
-                        proto = 2 // main board 1.4+
+                        protoVer = 2 // main board 1.4+
                     }
                 }
             }
@@ -1369,15 +1381,28 @@ class InmotionAdapterV2 : BaseAdapter() {
         private var updateStep = 0
         private var stateCon = 0
         private var lightSwitchCounter = 0
+
+        @JvmField
         var model = Model.UNKNOWN
-        var proto = 0
+
+        @JvmField
+        var protoVer: Int = 0
+        fun setProto(value: Int) { // for tests
+            protoVer = value
+        }
+
+        @JvmStatic
+        val proto: Int
+            get() {
+                return protoVer
+            }
 
         @JvmStatic
         val instance: InmotionAdapterV2?
             get() {
                 if (INSTANCE == null) {
                     Timber.i("New instance")
-                    INSTANCE = InmotionAdapterV2()
+                    INSTANCE = InmotionAdapterV2(WheelData.getInstance())
                 }
                 Timber.i("Get instance")
                 return INSTANCE
@@ -1390,7 +1415,7 @@ class InmotionAdapterV2 : BaseAdapter() {
                 INSTANCE!!.keepAliveTimer = null
             }
             Timber.i("New instance")
-            INSTANCE = InmotionAdapterV2()
+            INSTANCE = InmotionAdapterV2(WheelData.getInstance())
         }
 
         @JvmStatic

@@ -6,15 +6,19 @@ import com.cooper.wheellog.WheelData
 import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.utils.Utils.Companion.hexToByteArray
 import com.google.common.truth.Truth.assertThat
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockkClass
+import io.mockk.mockkObject
+import io.mockk.mockkStatic
+import io.mockk.spyk
+import io.mockk.unmockkAll
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 class InmotionAdapterV2Test {
 
-    private var adapter: InmotionAdapterV2 =
-        InmotionAdapterV2()
+    private lateinit var adapter: InmotionAdapterV2
     private lateinit var data: WheelData
 
     @Before
@@ -25,6 +29,7 @@ class InmotionAdapterV2Test {
         WheelLog.AppConfig = mockkClass(AppConfig::class, relaxed = true)
         mockkStatic(WheelData::class)
         every { WheelData.getInstance() } returns data
+        adapter = InmotionAdapterV2(data)
     }
 
     @After
@@ -37,7 +42,7 @@ class InmotionAdapterV2Test {
         // Arrange.
         val byteArray1 = "AAAA110882010206010201009C".hexToByteArray() // wheel type
         val byteArray2 = "AAAA11178202313438304341313232323037303032420000000000FD".hexToByteArray() // s/n
-        val byteArray3 = "AAAA111D820622080004030F000602214000010110000602230D00010107000001F3".hexToByteArray() //versions
+        val byteArray3 = "AAAA111D820622080004030F000602214000010110000602230D00010107000001F3".hexToByteArray() // versions
         val byteArray4 = "AAAA141AA0207C15C800106464140000000058020000006400001500100010".hexToByteArray() // wtf
         val byteArray5 = "AAAA142B900001142614000000803E498AE00FB209D109CEB000C7DF010000BE720000AB1300008F040000AB0600004C".hexToByteArray() // probably statistics
         val byteArray6 = "AAAA141991E86C000066191C002DB2040064E60000974D050000C7DF01A4".hexToByteArray() // totals
@@ -66,7 +71,6 @@ class InmotionAdapterV2Test {
         assertThat(data.model).isEqualTo("Inmotion V11")
         assertThat(data.version).isEqualTo("Main:1.1.64 Drv:3.4.8 BLE:1.1.13")
 
-
         assertThat(data.speedDouble).isEqualTo(24.01)
         assertThat(data.temperature).isEqualTo(27)
         assertThat(data.temperature2).isEqualTo(30)
@@ -85,7 +89,6 @@ class InmotionAdapterV2Test {
         assertThat(data.angle).isEqualTo(3.3)
         assertThat(data.roll).isEqualTo(-0.44)
     }
-
 
     @Test
     fun `decode with v11 escape data`() {
@@ -220,7 +223,6 @@ class InmotionAdapterV2Test {
         // Assert.
         assertThat(result1).isFalse()
         assertThat(data.version).isEqualTo("Main:1.5.4 Drv:4.2.121 BLE:2.1.55")
-
     }
 
     @Test
@@ -228,7 +230,7 @@ class InmotionAdapterV2Test {
         // Arrange.
         val byteArray1 = "aaaa110882010207010103009c".hexToByteArray() // wheel type
         val byteArray2 = "aaaa11178202413033313135353133303030393733300000000000fb".hexToByteArray() // s/n
-        val byteArray3 = "aaaa111d820622700002042000060221180004017d000602232400010203000402bc".hexToByteArray() //versions
+        val byteArray3 = "aaaa111d820622700002042000060221180004017d000602232400010203000402bc".hexToByteArray() // versions
         val byteArray5 = "aaaa142b900001082608000000c1b55622330000000000cdceb0ce0000000000000000000000000000000008000000ce".hexToByteArray() // probably statistics
         val byteArray6 = "aaaa1419916350000074471800d1140400c68e00007d350200b0ce000039".hexToByteArray() // totals
         val byteArray7 = "aaaa144384cd26090000000e00040000000000000000000000eafb000062009d2450463b1b581b000000000000cdce00ced1d0b03d2828000000004900000000000000000000008c".hexToByteArray()
@@ -250,7 +252,6 @@ class InmotionAdapterV2Test {
         assertThat(data.serial).isEqualTo("A031155130009730")
         assertThat(data.model).isEqualTo("Inmotion V12")
         assertThat(data.version).isEqualTo("Main:1.4.24 Drv:4.2.112 BLE:2.1.36")
-
 
         assertThat(data.speedDouble).isEqualTo(0.0)
         assertThat(data.temperature).isEqualTo(29)
@@ -276,7 +277,7 @@ class InmotionAdapterV2Test {
         // Arrange.
         val byteArray1 = "aaaa110882010207010103009c".hexToByteArray() // wheel type
         val byteArray2 = "aaaa11178202413033313135353133303030393733300000000000fb".hexToByteArray() // s/n
-        val byteArray3 = "aaaa111d820622700002042000060221180004017d000602232400010203000402bc".hexToByteArray() //versions
+        val byteArray3 = "aaaa111d820622700002042000060221180004017d000602232400010203000402bc".hexToByteArray() // versions
         val byteArray5 = "aaaa142b900001082608000000c1b55622330000000000cdceb0ce0000000000000000000000000000000008000000ce".hexToByteArray() // probably statistics
         val byteArray6 = "aaaa1419916350000074471800d1140400c68e00007d350200b0ce000039".hexToByteArray() // totals
         val byteArray7 = "aaaa144384ae24600479135909c61536085a0b00003f000000eb003700a5aa21b61f50463b1b581b000000000000ddd900dfe5e4b0f9646400000000490800000000000000000000dd".hexToByteArray()
@@ -298,7 +299,6 @@ class InmotionAdapterV2Test {
         assertThat(data.serial).isEqualTo("A031155130009730")
         assertThat(data.model).isEqualTo("Inmotion V12")
         assertThat(data.version).isEqualTo("Main:1.4.24 Drv:4.2.112 BLE:2.1.36")
-
 
         assertThat(data.speedDouble).isEqualTo(49.85)
         assertThat(data.temperature).isEqualTo(45)
@@ -346,7 +346,6 @@ class InmotionAdapterV2Test {
         assertThat(data.roll).isEqualTo(-2.59)
     }
 
-
     @Test
     fun `decode with v12 data 4`() {
         // Arrange.
@@ -374,14 +373,12 @@ class InmotionAdapterV2Test {
         assertThat(data.roll).isEqualTo(-5.89)
     }
 
-
-
     @Test
     fun `decode with v13 full data 1`() {
         // Arrange.
         val byteArray1 = "aaaa1108820102080101010091".hexToByteArray() // wheel type
         val byteArray2 = "aaaa111782024130333131364231383030303130343600000000008a".hexToByteArray() // s/n
-        val byteArray3 = "aaaa112f8206223a000005030008022115000002cf000802230a0002020000050224070001010200010125070001010200010172".hexToByteArray() //versions
+        val byteArray3 = "aaaa112f8206223a000005030008022115000002cf000802230a0002020000050224070001010200010125070001010200010172".hexToByteArray() // versions
         val byteArray5 = "aaaa142b9000010126010000004390a7d5010251000701cdcec9d000000000080000000000000004000000070000006c".hexToByteArray() // probably statistics
         val byteArray6 = "aaaa1419915e010000b7660000500900008c0600002d8b0000c9d000007e".hexToByteArray() // totals
         val byteArray7 = "aaaa145984092f3807000036003735000025130f27b108111d4203b00664fee703050000000000f225e225204e28233421401f401f204e401f709400000000cdccc9d1b0d10000b0286400000000004910000000000000001800000000b3".hexToByteArray()
@@ -404,7 +401,6 @@ class InmotionAdapterV2Test {
         assertThat(data.serial).isEqualTo("A03116B180001046")
         assertThat(data.model).isEqualTo("Inmotion V13")
         assertThat(data.version).isEqualTo("Main:2.0.21 Drv:5.0.58 BLE:2.2.10")
-
 
         assertThat(data.speedDouble).isEqualTo(136.23)
         assertThat(data.temperature).isEqualTo(29)
