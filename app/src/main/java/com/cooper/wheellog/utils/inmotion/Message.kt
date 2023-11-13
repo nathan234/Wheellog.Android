@@ -546,7 +546,7 @@ class Message(
         val fwUpdateState = data[55].toInt() shr 5 and 0x01
         var wmode = ""
         if (mMotState == 1) {
-            wmode = wmode + "Active"
+            wmode += "Active"
         }
         if (chrgState == 1) {
             wmode = "$wmode Charging"
