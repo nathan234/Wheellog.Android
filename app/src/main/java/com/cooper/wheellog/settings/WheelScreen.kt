@@ -23,7 +23,7 @@ import com.cooper.wheellog.utils.MathsUtil
 import com.cooper.wheellog.utils.ThemeIconEnum
 import com.cooper.wheellog.utils.gotway.GotwayAdapter
 import com.cooper.wheellog.utils.inmotion.InMotionAdapter
-import com.cooper.wheellog.utils.inmotion.InmotionAdapterV2
+import com.cooper.wheellog.utils.inmotion.InMotionAdapterV2
 import com.cooper.wheellog.utils.kingsong.KingsongAdapter
 import com.cooper.wheellog.utils.ninebot.NinebotZAdapter
 import com.cooper.wheellog.utils.veteran.VeteranAdapter
@@ -418,7 +418,7 @@ private fun inmotion() {
 
 @Composable
 private fun inmotionV2() {
-    val adapter by remember { mutableStateOf(InmotionAdapterV2.instance!!) }
+    val adapter by remember { mutableStateOf(InMotionAdapterV2.instance!!) }
     var speedMultipier = 1.0f
     var speedUnit = R.string.kmh
     if (AppConfig.useMph) {
@@ -500,7 +500,7 @@ private fun inmotionV2() {
         desc = stringResource(R.string.tilt_back_description),
         position = AppConfig.wheelMaxSpeed.toFloat(),
         min = 3f,
-        max = InmotionAdapterV2.instance!!.maxSpeed.toFloat(),
+        max = InMotionAdapterV2.instance!!.maxSpeed.toFloat(),
         unit = speedUnit,
         visualMultiple = speedMultipier,
     ) {

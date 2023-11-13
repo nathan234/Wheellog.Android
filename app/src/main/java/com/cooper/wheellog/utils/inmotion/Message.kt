@@ -63,8 +63,8 @@ class Message(
                 val batch = data[4].toInt() // 02
                 val feature = data[5].toInt() // 01
                 val reverse = data[6].toInt() // 00
-                InmotionAdapterV2.inMotionModel = InMotionModel.findById(series)
-                wd.model = InmotionAdapterV2.inMotionModel.wheelName
+                InMotionAdapterV2.inMotionModel = InMotionModel.findById(series)
+                wd.model = InMotionAdapterV2.inMotionModel.wheelName
                 wd.version = String.format(Locale.ENGLISH, "-") // need to find how to parse
             }
             data[0] == 0x02.toByte() && len >= 17 -> {
@@ -75,7 +75,7 @@ class Message(
             }
             data[0] == 0x06.toByte() && len >= 24 -> {
                 Timber.i("Parse versions")
-                InmotionAdapterV2.protoVer = 0
+                InMotionAdapterV2.protoVer = 0
                 val DriverBoard3 = MathsUtil.shortFromBytesLE(data, 2)
                 val DriverBoard2 = data[4].toInt()
                 val DriverBoard1 = data[5].toInt()
@@ -105,11 +105,11 @@ class Message(
                 val vers =
                     String.format(Locale.US, "Main:%s Drv:%s BLE:%s", MainBoard, DriverBoard, Ble)
                 wd.version = vers
-                if (InmotionAdapterV2.inMotionModel == InMotionModel.V11) {
+                if (InMotionAdapterV2.inMotionModel == InMotionModel.V11) {
                     if (MainBoard1 < 2 && MainBoard2 < 4) { // main board ver before 1.4
-                        InmotionAdapterV2.protoVer = 1
+                        InMotionAdapterV2.protoVer = 1
                     } else {
-                        InmotionAdapterV2.protoVer = 2 // main board 1.4+
+                        InMotionAdapterV2.protoVer = 2 // main board 1.4+
                     }
                 }
             }

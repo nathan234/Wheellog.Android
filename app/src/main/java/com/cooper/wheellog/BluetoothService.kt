@@ -10,7 +10,7 @@ import com.cooper.wheellog.utils.Constants.WHEEL_TYPE
 import com.cooper.wheellog.utils.SomeUtil.playSound
 import com.cooper.wheellog.utils.StringUtil.toHexStringRaw
 import com.cooper.wheellog.utils.inmotion.InMotionAdapter
-import com.cooper.wheellog.utils.inmotion.InmotionAdapterV2
+import com.cooper.wheellog.utils.inmotion.InMotionAdapterV2
 import com.cooper.wheellog.utils.kingsong.KingsongAdapter
 import com.cooper.wheellog.utils.ninebot.NinebotAdapter
 import com.cooper.wheellog.utils.ninebot.NinebotZAdapter
@@ -113,12 +113,12 @@ class BluetoothService: Service() {
                     when (WheelData.getInstance().wheelType) {
                         WHEEL_TYPE.INMOTION -> {
                             InMotionAdapter.stopTimer()
-                            InmotionAdapterV2.stopTimer()
+                            InMotionAdapterV2.stopTimer()
                             NinebotZAdapter.getInstance().resetConnection()
                             NinebotAdapter.getInstance().resetConnection()
                         }
                         WHEEL_TYPE.INMOTION_V2 -> {
-                            InmotionAdapterV2.stopTimer()
+                            InMotionAdapterV2.stopTimer()
                             NinebotZAdapter.getInstance().resetConnection()
                             NinebotAdapter.getInstance().resetConnection()
                         }

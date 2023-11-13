@@ -11,7 +11,7 @@ import com.cooper.wheellog.utils.*;
 import com.cooper.wheellog.utils.Constants.WHEEL_TYPE;
 import com.cooper.wheellog.utils.gotway.GotwayAdapter;
 import com.cooper.wheellog.utils.inmotion.InMotionAdapter;
-import com.cooper.wheellog.utils.inmotion.InmotionAdapterV2;
+import com.cooper.wheellog.utils.inmotion.InMotionAdapterV2;
 import com.cooper.wheellog.utils.ninebot.NinebotAdapter;
 import com.cooper.wheellog.utils.ninebot.NinebotZAdapter;
 import com.cooper.wheellog.utils.veteran.VeteranAdapter;
@@ -127,7 +127,7 @@ public class WheelData {
             case INMOTION:
                 return InMotionAdapter.getInstance();
             case INMOTION_V2:
-                return InmotionAdapterV2.getInstance();
+                return InMotionAdapterV2.getInstance();
             default:
                 return null;
         }
@@ -212,7 +212,7 @@ public class WheelData {
             case Unknown:
                 return true;
             case INMOTION_V2:
-                return InmotionAdapterV2.getInstance().getProto() >= 2;
+                return InMotionAdapterV2.getInstance().getProto() >= 2;
             case VETERAN:
                 return VeteranAdapter.getInstance().getVer() >= 2; // 2+
             default:
@@ -1120,7 +1120,7 @@ public class WheelData {
 
     void full_reset() {
         if (mWheelType == WHEEL_TYPE.INMOTION) InMotionAdapter.stopTimer();
-        if (mWheelType == WHEEL_TYPE.INMOTION_V2) InmotionAdapterV2.stopTimer();
+        if (mWheelType == WHEEL_TYPE.INMOTION_V2) InMotionAdapterV2.stopTimer();
         if (mWheelType == WHEEL_TYPE.NINEBOT_Z) NinebotZAdapter.stopTimer();
         if (mWheelType == WHEEL_TYPE.NINEBOT) NinebotAdapter.stopTimer();
         mWheelType = WHEEL_TYPE.Unknown;
@@ -1313,7 +1313,7 @@ public class WheelData {
                     mBluetoothService.writeWheelDescriptor(descriptor, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
                     Timber.i("write notify");
                 }
-                InmotionAdapterV2.getInstance().startKeepAliveTimer();
+                InMotionAdapterV2.getInstance().startKeepAliveTimer();
                 Timber.i("starting Inmotion V2 adapter");
                 return true;
 
