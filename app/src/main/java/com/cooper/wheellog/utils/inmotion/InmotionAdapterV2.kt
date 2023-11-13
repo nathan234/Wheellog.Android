@@ -286,63 +286,67 @@ class InmotionAdapterV2(
         fun parseMainData(): Boolean {
             Timber.i("Parse main data")
             wd.resetRideTime()
-            if (data[0] == 0x01.toByte() && len >= 6) {
-                stateCon += 1
-                Timber.i("Parse car type")
-                // 020601010100 -v11
-                // 020701010100 -v12
-                // 020801010100 -v13
-                val mainSeries = data[1].toInt() // 02
-                val series = data[2].toInt() // 06
-                val type = data[3].toInt() // 01
-                val batch = data[4].toInt() // 02
-                val feature = data[5].toInt() // 01
-                val reverse = data[6].toInt() // 00
-                inMotionModel = InMotionModel.findById(series)
-                wd.model = inMotionModel.wheelName
-                wd.version = String.format(Locale.ENGLISH, "-") // need to find how to parse
-            } else if (data[0] == 0x02.toByte() && len >= 17) {
-                stateCon += 1
-                Timber.i("Parse serial num")
-                val serialNumber = String(data, 1, 16)
-                wd.serial = serialNumber
-            } else if (data[0] == 0x06.toByte() && len >= 24) {
-                Timber.i("Parse versions")
-                protoVer = 0
-                val DriverBoard3 = MathsUtil.shortFromBytesLE(data, 2)
-                val DriverBoard2 = data[4].toInt()
-                val DriverBoard1 = data[5].toInt()
-                val DriverBoard =
-                    String.format(Locale.US, "%d.%d.%d", DriverBoard1, DriverBoard2, DriverBoard3)
-                val smth13 = MathsUtil.shortFromBytesLE(data, 6)
-                val smth12 = data[8].toInt()
-                val smth11 = data[9].toInt()
-                val smth1 = String.format(Locale.US, "%d.%d.%d", smth11, smth12, smth13)
-                val MainBoard3 = MathsUtil.shortFromBytesLE(data, 11)
-                val MainBoard2 = data[13].toInt()
-                val MainBoard1 = data[14].toInt()
-                val MainBoard =
-                    String.format(Locale.US, "%d.%d.%d", MainBoard1, MainBoard2, MainBoard3)
-                val smth23 = MathsUtil.shortFromBytesLE(data, 16)
-                val smth22 = data[18].toInt()
-                val smth21 = data[19].toInt()
-                val smth2 = String.format(Locale.US, "%d.%d.%d", smth21, smth22, smth23)
-                val Ble3 = MathsUtil.shortFromBytesLE(data, 20)
-                val Ble2 = data[22].toInt()
-                val Ble1 = data[23].toInt()
-                val Ble = String.format(Locale.US, "%d.%d.%d", Ble1, Ble2, Ble3)
-                val smth33 = MathsUtil.shortFromBytesLE(data, 16)
-                val smth32 = data[18].toInt()
-                val smth31 = data[19].toInt()
-                val smth3 = String.format(Locale.US, "%d.%d.%d", smth31, smth32, smth33)
-                val vers =
-                    String.format(Locale.US, "Main:%s Drv:%s BLE:%s", MainBoard, DriverBoard, Ble)
-                wd.version = vers
-                if (inMotionModel == InMotionModel.V11) {
-                    if (MainBoard1 < 2 && MainBoard2 < 4) { // main board ver before 1.4
-                        protoVer = 1
-                    } else {
-                        protoVer = 2 // main board 1.4+
+            when {
+                data[0] == 0x01.toByte() && len >= 6 -> {
+                    stateCon += 1
+                    Timber.i("Parse car type")
+                    // 020601010100 -v11
+                    // 020701010100 -v12
+                    // 020801010100 -v13
+                    val mainSeries = data[1].toInt() // 02
+                    val series = data[2].toInt() // 06
+                    val type = data[3].toInt() // 01
+                    val batch = data[4].toInt() // 02
+                    val feature = data[5].toInt() // 01
+                    val reverse = data[6].toInt() // 00
+                    inMotionModel = InMotionModel.findById(series)
+                    wd.model = inMotionModel.wheelName
+                    wd.version = String.format(Locale.ENGLISH, "-") // need to find how to parse
+                }
+                data[0] == 0x02.toByte() && len >= 17 -> {
+                    stateCon += 1
+                    Timber.i("Parse serial num")
+                    val serialNumber = String(data, 1, 16)
+                    wd.serial = serialNumber
+                }
+                data[0] == 0x06.toByte() && len >= 24 -> {
+                    Timber.i("Parse versions")
+                    protoVer = 0
+                    val DriverBoard3 = MathsUtil.shortFromBytesLE(data, 2)
+                    val DriverBoard2 = data[4].toInt()
+                    val DriverBoard1 = data[5].toInt()
+                    val DriverBoard =
+                        String.format(Locale.US, "%d.%d.%d", DriverBoard1, DriverBoard2, DriverBoard3)
+                    val smth13 = MathsUtil.shortFromBytesLE(data, 6)
+                    val smth12 = data[8].toInt()
+                    val smth11 = data[9].toInt()
+                    val smth1 = String.format(Locale.US, "%d.%d.%d", smth11, smth12, smth13)
+                    val MainBoard3 = MathsUtil.shortFromBytesLE(data, 11)
+                    val MainBoard2 = data[13].toInt()
+                    val MainBoard1 = data[14].toInt()
+                    val MainBoard =
+                        String.format(Locale.US, "%d.%d.%d", MainBoard1, MainBoard2, MainBoard3)
+                    val smth23 = MathsUtil.shortFromBytesLE(data, 16)
+                    val smth22 = data[18].toInt()
+                    val smth21 = data[19].toInt()
+                    val smth2 = String.format(Locale.US, "%d.%d.%d", smth21, smth22, smth23)
+                    val Ble3 = MathsUtil.shortFromBytesLE(data, 20)
+                    val Ble2 = data[22].toInt()
+                    val Ble1 = data[23].toInt()
+                    val Ble = String.format(Locale.US, "%d.%d.%d", Ble1, Ble2, Ble3)
+                    val smth33 = MathsUtil.shortFromBytesLE(data, 16)
+                    val smth32 = data[18].toInt()
+                    val smth31 = data[19].toInt()
+                    val smth3 = String.format(Locale.US, "%d.%d.%d", smth31, smth32, smth33)
+                    val vers =
+                        String.format(Locale.US, "Main:%s Drv:%s BLE:%s", MainBoard, DriverBoard, Ble)
+                    wd.version = vers
+                    if (inMotionModel == InMotionModel.V11) {
+                        if (MainBoard1 < 2 && MainBoard2 < 4) { // main board ver before 1.4
+                            protoVer = 1
+                        } else {
+                            protoVer = 2 // main board 1.4+
+                        }
                     }
                 }
             }
