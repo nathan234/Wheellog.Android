@@ -43,33 +43,49 @@ class InmotionAdapterV2(
                             return false
                         }
                     } else if (result.flags == Message.Flag.Default.value) {
-                        if (result.command == Message.Command.Settings.value) {
-                            requestSettings = false
-                            return if (model == Model.V12) {
-                                false
-                            } else if (model == Model.V13) {
-                                false
-                            } else {
-                                result.parseSettings()
+                        when (result.command) {
+                            Message.Command.Settings.value -> {
+                                requestSettings = false
+                                return when (model) {
+                                    Model.V12 -> {
+                                        false
+                                    }
+                                    Model.V13 -> {
+                                        false
+                                    }
+                                    else -> {
+                                        result.parseSettings()
+                                    }
+                                }
                             }
-                        } else if (result.command == Message.Command.Diagnistic.value) {
-                            return result.parseDiagnostic()
-                        } else if (result.command == Message.Command.BatteryRealTimeInfo.value) {
-                            return result.parseBatteryRealTimeInfo()
-                        } else if (result.command == Message.Command.TotalStats.value) {
-                            return result.parseTotalStats()
-                        } else if (result.command == Message.Command.RealTimeInfo.value) {
-                            return if (model == Model.V12) {
-                                result.parseRealTimeInfoV12(context)
-                            } else if (model == Model.V13) {
-                                result.parseRealTimeInfoV13(context)
-                            } else if (protoVer < 2) {
-                                result.parseRealTimeInfoV11(context)
-                            } else {
-                                result.parseRealTimeInfoV11_1_4(context)
+                            Message.Command.Diagnistic.value -> {
+                                return result.parseDiagnostic()
                             }
-                        } else {
-                            Timber.i("Get unknown command: %02X", result.command)
+                            Message.Command.BatteryRealTimeInfo.value -> {
+                                return result.parseBatteryRealTimeInfo()
+                            }
+                            Message.Command.TotalStats.value -> {
+                                return result.parseTotalStats()
+                            }
+                            Message.Command.RealTimeInfo.value -> {
+                                return when {
+                                    model == Model.V12 -> {
+                                        result.parseRealTimeInfoV12(context)
+                                    }
+                                    model == Model.V13 -> {
+                                        result.parseRealTimeInfoV13(context)
+                                    }
+                                    protoVer < 2 -> {
+                                        result.parseRealTimeInfoV11(context)
+                                    }
+                                    else -> {
+                                        result.parseRealTimeInfoV11_1_4(context)
+                                    }
+                                }
+                            }
+                            else -> {
+                                Timber.i("Get unknown command: %02X", result.command)
+                            }
                         }
                     }
                 }
@@ -113,70 +129,79 @@ class InmotionAdapterV2(
         val timerTask: TimerTask = object : TimerTask() {
             override fun run() {
                 if (updateStep == 0) {
-                    if (stateCon == 0) {
-                        if (WheelData.getInstance().bluetoothCmd(Message.carType.writeBuffer())) {
-                            Timber.i("Sent car type message")
-                        } else {
-                            updateStep = 35
+                    when {
+                        stateCon == 0 -> {
+                            if (WheelData.getInstance().bluetoothCmd(Message.carType.writeBuffer())) {
+                                Timber.i("Sent car type message")
+                            } else {
+                                updateStep = 35
+                            }
                         }
-                    } else if (stateCon == 1) {
-                        if (WheelData.getInstance()
-                                .bluetoothCmd(Message.serialNumber.writeBuffer())
-                        ) {
-                            Timber.i("Sent s/n message")
-                        } else {
-                            updateStep = 35
+                        stateCon == 1 -> {
+                            if (WheelData.getInstance()
+                                    .bluetoothCmd(Message.serialNumber.writeBuffer())
+                            ) {
+                                Timber.i("Sent s/n message")
+                            } else {
+                                updateStep = 35
+                            }
                         }
-                    } else if (stateCon == 2) {
-                        if (WheelData.getInstance().bluetoothCmd(Message.versions.writeBuffer())) {
-                            stateCon += 1
-                            Timber.i("Sent versions message")
-                        } else {
-                            updateStep = 35
+                        stateCon == 2 -> {
+                            if (WheelData.getInstance().bluetoothCmd(Message.versions.writeBuffer())) {
+                                stateCon += 1
+                                Timber.i("Sent versions message")
+                            } else {
+                                updateStep = 35
+                            }
                         }
-                    } else if (settingCommandReady) {
-                        if (WheelData.getInstance().bluetoothCmd(settingCommand)) {
-                            settingCommandReady = false
-                            requestSettings = true
-                            Timber.i("Sent command message")
-                        } else {
-                            updateStep = 35 // after +1 and %10 = 0
+                        settingCommandReady -> {
+                            if (WheelData.getInstance().bluetoothCmd(settingCommand)) {
+                                settingCommandReady = false
+                                requestSettings = true
+                                Timber.i("Sent command message")
+                            } else {
+                                updateStep = 35 // after +1 and %10 = 0
+                            }
                         }
-                    } else if ((stateCon == 3) or requestSettings) {
-                        if (WheelData.getInstance()
-                                .bluetoothCmd(Message.currentSettings.writeBuffer())
-                        ) {
-                            stateCon += 1
-                            Timber.i("Sent unknown data message")
-                        } else {
-                            updateStep = 35
+                        (stateCon == 3) or requestSettings -> {
+                            if (WheelData.getInstance()
+                                    .bluetoothCmd(Message.currentSettings.writeBuffer())
+                            ) {
+                                stateCon += 1
+                                Timber.i("Sent unknown data message")
+                            } else {
+                                updateStep = 35
+                            }
                         }
-                    } else if (stateCon == 4) {
-                        if (WheelData.getInstance()
-                                .bluetoothCmd(Message.uselessData.writeBuffer())
-                        ) {
-                            Timber.i("Sent useless data message")
-                            stateCon += 1
-                        } else {
-                            updateStep = 35
+                        stateCon == 4 -> {
+                            if (WheelData.getInstance()
+                                    .bluetoothCmd(Message.uselessData.writeBuffer())
+                            ) {
+                                Timber.i("Sent useless data message")
+                                stateCon += 1
+                            } else {
+                                updateStep = 35
+                            }
                         }
-                    } else if (stateCon == 5) {
-                        if (WheelData.getInstance()
-                                .bluetoothCmd(Message.statistics.writeBuffer())
-                        ) {
-                            Timber.i("Sent statistics data message")
-                            stateCon += 1
-                        } else {
-                            updateStep = 35
+                        stateCon == 5 -> {
+                            if (WheelData.getInstance()
+                                    .bluetoothCmd(Message.statistics.writeBuffer())
+                            ) {
+                                Timber.i("Sent statistics data message")
+                                stateCon += 1
+                            } else {
+                                updateStep = 35
+                            }
                         }
-                    } else {
-                        if (WheelData.getInstance()
-                                .bluetoothCmd(Message.realTimeData.writeBuffer())
-                        ) {
-                            Timber.i("Sent realtime data message")
-                            stateCon = 5
-                        } else {
-                            updateStep = 35
+                        else -> {
+                            if (WheelData.getInstance()
+                                    .bluetoothCmd(Message.realTimeData.writeBuffer())
+                            ) {
+                                Timber.i("Sent realtime data message")
+                                stateCon = 5
+                            } else {
+                                updateStep = 35
+                            }
                         }
                     }
                 }
@@ -980,7 +1005,7 @@ class InmotionAdapterV2(
         }
 
         private val bytes: ByteArray
-            private get() {
+            get() {
                 val buff = ByteArrayOutputStream()
                 buff.write(flags)
                 buff.write(data.size + 1)
