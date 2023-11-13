@@ -19,6 +19,7 @@ import java.util.TimerTask
 class InmotionAdapterV2(
     private val wd: WheelData,
     private val unpacker: InmotionUnpackerV2,
+    private val timerUpdateUseCase: TimerUpdateUseCase
 ) : BaseAdapter() {
     private var keepAliveTimer: Timer? = null
     private var settingCommandReady = false
@@ -124,76 +125,17 @@ class InmotionAdapterV2(
         stateCon = 0
         val timerTask: TimerTask = object : TimerTask() {
             override fun run() {
-                if (updateStep == 0) {
-                    when {
-                        stateCon == 0 -> {
-                            if (wd.bluetoothCmd(Message.carType.writeBuffer())) {
-                                Timber.i("Sent car type message")
-                            } else {
-                                updateStep = 35
-                            }
-                        }
-                        stateCon == 1 -> {
-                            if (wd.bluetoothCmd(Message.serialNumber.writeBuffer())) {
-                                Timber.i("Sent s/n message")
-                            } else {
-                                updateStep = 35
-                            }
-                        }
-                        stateCon == 2 -> {
-                            if (wd.bluetoothCmd(Message.versions.writeBuffer())) {
-                                stateCon += 1
-                                Timber.i("Sent versions message")
-                            } else {
-                                updateStep = 35
-                            }
-                        }
-                        settingCommandReady -> {
-                            if (wd.bluetoothCmd(settingCommand)) {
-                                settingCommandReady = false
-                                requestSettings = true
-                                Timber.i("Sent command message")
-                            } else {
-                                updateStep = 35 // after +1 and %10 = 0
-                            }
-                        }
-                        (stateCon == 3) or requestSettings -> {
-                            if (wd.bluetoothCmd(Message.currentSettings.writeBuffer())) {
-                                stateCon += 1
-                                Timber.i("Sent unknown data message")
-                            } else {
-                                updateStep = 35
-                            }
-                        }
-                        stateCon == 4 -> {
-                            if (wd.bluetoothCmd(Message.uselessData.writeBuffer())) {
-                                Timber.i("Sent useless data message")
-                                stateCon += 1
-                            } else {
-                                updateStep = 35
-                            }
-                        }
-                        stateCon == 5 -> {
-                            if (wd.bluetoothCmd(Message.statistics.writeBuffer())) {
-                                Timber.i("Sent statistics data message")
-                                stateCon += 1
-                            } else {
-                                updateStep = 35
-                            }
-                        }
-                        else -> {
-                            if (wd.bluetoothCmd(Message.realTimeData.writeBuffer())) {
-                                Timber.i("Sent realtime data message")
-                                stateCon = 5
-                            } else {
-                                updateStep = 35
-                            }
-                        }
-                    }
-                }
-                updateStep += 1
-                updateStep %= 10
-                Timber.i("Step: %d", updateStep)
+                val result = timerUpdateUseCase.extracted(
+                    updateStep = updateStep,
+                    stateCon = stateCon,
+                    settingCommandReady = settingCommandReady,
+                    settingCommand = settingCommand,
+                    requestSettings = requestSettings,
+                )
+                updateStep = result.updateStep
+                stateCon = result.stateCon
+                settingCommandReady = result.settingCommandReady
+                requestSettings = result.requestSettings
             }
         }
         keepAliveTimer = Timer()
@@ -1343,7 +1285,7 @@ class InmotionAdapterV2(
             get() {
                 if (INSTANCE == null) {
                     Timber.i("New instance")
-                    INSTANCE = InmotionAdapterV2(WheelData.getInstance(), InmotionUnpackerV2())
+                    INSTANCE = InmotionAdapterV2(WheelData.getInstance(), InmotionUnpackerV2(), TimerUpdateUseCase(WheelData.getInstance()))
                 }
                 Timber.i("Get instance")
                 return INSTANCE
@@ -1356,7 +1298,7 @@ class InmotionAdapterV2(
                 INSTANCE!!.keepAliveTimer = null
             }
             Timber.i("New instance")
-            INSTANCE = InmotionAdapterV2(WheelData.getInstance(), InmotionUnpackerV2())
+            INSTANCE = InmotionAdapterV2(WheelData.getInstance(), InmotionUnpackerV2(), TimerUpdateUseCase(WheelData.getInstance()))
         }
 
         @JvmStatic
