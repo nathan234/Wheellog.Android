@@ -120,7 +120,7 @@ class Message(
 
     class ParseMainDataResult(
         val stateCon: Int,
-        val decodeResult: Boolean
+        val decodeResult: Boolean,
     )
 
     fun parseBatteryRealTimeInfo(): Boolean {
