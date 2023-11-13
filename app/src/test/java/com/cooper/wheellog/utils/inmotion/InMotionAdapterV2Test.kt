@@ -16,9 +16,9 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-class InmotionAdapterV2Test {
+class InMotionAdapterV2Test {
 
-    private lateinit var adapter: InmotionAdapterV2
+    private lateinit var adapter: InMotionAdapterV2
     private lateinit var data: WheelData
 
     @Before
@@ -29,7 +29,7 @@ class InmotionAdapterV2Test {
         WheelLog.AppConfig = mockkClass(AppConfig::class, relaxed = true)
         mockkStatic(WheelData::class)
         every { WheelData.getInstance() } returns data
-        adapter = InmotionAdapterV2(InmotionUnpackerV2(), TimerUpdateUseCase(data), WheelLog.AppConfig)
+        adapter = InMotionAdapterV2(InMotionUnpackerV2(), TimerUpdateUseCase(data), WheelLog.AppConfig)
     }
 
     @After

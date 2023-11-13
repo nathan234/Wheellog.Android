@@ -8,8 +8,8 @@ import timber.log.Timber
 import java.util.Timer
 import java.util.TimerTask
 
-class InmotionAdapterV2(
-    private val unpacker: InmotionUnpackerV2,
+class InMotionAdapterV2(
+    private val unpacker: InMotionUnpackerV2,
     private val timerUpdateUseCase: TimerUpdateUseCase,
     private val appConfig: AppConfig,
 ) : BaseAdapter() {
@@ -267,7 +267,7 @@ class InmotionAdapterV2(
         }
 
     companion object {
-        private var INSTANCE: InmotionAdapterV2? = null
+        private var INSTANCE: InMotionAdapterV2? = null
         private var updateStep = 0
         private var stateCon = 0
         private var lightSwitchCounter = 0
@@ -288,12 +288,12 @@ class InmotionAdapterV2(
             }
 
         @JvmStatic
-        val instance: InmotionAdapterV2?
+        val instance: InMotionAdapterV2?
             get() {
                 if (INSTANCE == null) {
                     Timber.i("New instance")
-                    INSTANCE = InmotionAdapterV2(
-                        InmotionUnpackerV2(),
+                    INSTANCE = InMotionAdapterV2(
+                        InMotionUnpackerV2(),
                         TimerUpdateUseCase(WheelData.getInstance()),
                         WheelLog.AppConfig,
                     )
@@ -309,8 +309,8 @@ class InmotionAdapterV2(
                 INSTANCE!!.keepAliveTimer = null
             }
             Timber.i("New instance")
-            INSTANCE = InmotionAdapterV2(
-                InmotionUnpackerV2(),
+            INSTANCE = InMotionAdapterV2(
+                InMotionUnpackerV2(),
                 TimerUpdateUseCase(WheelData.getInstance()),
                 WheelLog.AppConfig,
             )

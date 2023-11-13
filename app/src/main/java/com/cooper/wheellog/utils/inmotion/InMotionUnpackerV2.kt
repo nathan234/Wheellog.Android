@@ -3,7 +3,7 @@ package com.cooper.wheellog.utils.inmotion
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 
-class InmotionUnpackerV2 {
+class InMotionUnpackerV2 {
     enum class UnpackerState {
         UNKNOWN, FLAG_SEARCH, LENS_SEARCH, COLLECTING, DONE
     }
