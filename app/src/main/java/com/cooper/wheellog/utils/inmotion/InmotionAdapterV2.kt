@@ -1,5 +1,6 @@
 package com.cooper.wheellog.utils.inmotion
 
+import com.cooper.wheellog.AppConfig
 import com.cooper.wheellog.WheelData
 import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.utils.BaseAdapter
@@ -10,6 +11,7 @@ import java.util.TimerTask
 class InmotionAdapterV2(
     private val unpacker: InmotionUnpackerV2,
     private val timerUpdateUseCase: TimerUpdateUseCase,
+    private val appConfig: AppConfig,
 ) : BaseAdapter() {
     private var keepAliveTimer: Timer? = null
     private var settingCommandReady = false
@@ -148,8 +150,8 @@ class InmotionAdapterV2(
     }
 
     override fun switchFlashlight() {
-        val light = !WheelLog.AppConfig.lightEnabled
-        WheelLog.AppConfig.lightEnabled = light
+        val light = !appConfig.lightEnabled
+        appConfig.lightEnabled = light
         setLightState(light)
     }
 
@@ -293,6 +295,7 @@ class InmotionAdapterV2(
                     INSTANCE = InmotionAdapterV2(
                         InmotionUnpackerV2(),
                         TimerUpdateUseCase(WheelData.getInstance()),
+                        WheelLog.AppConfig,
                     )
                 }
                 Timber.i("Get instance")
@@ -309,6 +312,7 @@ class InmotionAdapterV2(
             INSTANCE = InmotionAdapterV2(
                 InmotionUnpackerV2(),
                 TimerUpdateUseCase(WheelData.getInstance()),
+                WheelLog.AppConfig,
             )
         }
 

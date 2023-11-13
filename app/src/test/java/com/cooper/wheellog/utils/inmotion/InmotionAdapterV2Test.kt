@@ -29,7 +29,7 @@ class InmotionAdapterV2Test {
         WheelLog.AppConfig = mockkClass(AppConfig::class, relaxed = true)
         mockkStatic(WheelData::class)
         every { WheelData.getInstance() } returns data
-        adapter = InmotionAdapterV2(InmotionUnpackerV2(), TimerUpdateUseCase(data))
+        adapter = InmotionAdapterV2(InmotionUnpackerV2(), TimerUpdateUseCase(data), WheelLog.AppConfig)
     }
 
     @After

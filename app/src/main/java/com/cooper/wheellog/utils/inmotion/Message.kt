@@ -2,6 +2,7 @@ package com.cooper.wheellog.utils.inmotion
 
 import android.content.Context
 import android.content.Intent
+import com.cooper.wheellog.AppConfig
 import com.cooper.wheellog.WheelData
 import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.utils.Constants
@@ -15,6 +16,7 @@ import java.util.Locale
 
 class Message(
     private val wd: WheelData,
+    private val appConfig: AppConfig,
 ) {
     internal enum class Flag(val value: Int) {
         NoOp(0), Initial(0x11), Default(0x14)
@@ -42,7 +44,7 @@ class Message(
         }
     }
 
-    private constructor() : this(WheelData.getInstance())
+    private constructor() : this(WheelData.getInstance(), WheelLog.AppConfig)
 
     fun parseMainData(stateCon: Int): ParseMainDataResult {
         Timber.i("Parse main data")
@@ -186,20 +188,20 @@ class Message(
         val mSome2 = data[i + 23].toInt() shr 2 and 3 // to test
         val mSome3 = data[i + 23].toInt() shr 4 and 3 // to test
         val mSome4 = data[i + 23].toInt() shr 6 and 3 // to test
-        WheelLog.AppConfig.pedalsAdjustment = mPitchAngleZero / 10
-        WheelLog.AppConfig.wheelMaxSpeed = mSpeedLim / 100
-        WheelLog.AppConfig.fancierMode = mRideMode != 0
-        WheelLog.AppConfig.rideMode = mDriveMode != 0
-        WheelLog.AppConfig.pedalSensivity = mComfSens
-        WheelLog.AppConfig.speakerVolume = mVolume
-        WheelLog.AppConfig.lightBrightness = mLightBr
-        WheelLog.AppConfig.speakerMute = mAudioState == 0
-        WheelLog.AppConfig.drlEnabled = mDecorState != 0
-        WheelLog.AppConfig.handleButtonDisabled = mLiftedState == 0
-        WheelLog.AppConfig.lockMode = mLockState != 0
-        WheelLog.AppConfig.transportMode = mTranspMode != 0
-        WheelLog.AppConfig.fanQuietEnabled = mFanQuiet != 0
-        WheelLog.AppConfig.goHomeMode = mLowBat != 0
+        appConfig.pedalsAdjustment = mPitchAngleZero / 10
+        appConfig.wheelMaxSpeed = mSpeedLim / 100
+        appConfig.fancierMode = mRideMode != 0
+        appConfig.rideMode = mDriveMode != 0
+        appConfig.pedalSensivity = mComfSens
+        appConfig.speakerVolume = mVolume
+        appConfig.lightBrightness = mLightBr
+        appConfig.speakerMute = mAudioState == 0
+        appConfig.drlEnabled = mDecorState != 0
+        appConfig.handleButtonDisabled = mLiftedState == 0
+        appConfig.lockMode = mLockState != 0
+        appConfig.transportMode = mTranspMode != 0
+        appConfig.fanQuietEnabled = mFanQuiet != 0
+        appConfig.goHomeMode = mLowBat != 0
         return false
     }
 
@@ -347,7 +349,7 @@ class Message(
         }
         wd.modeStr = wmode
         // WheelLog.AppConfig.setFanEnabled(fanState != 0); // bad behaviour
-        if (WheelLog.AppConfig.lightEnabled != (lightState == 1)) {
+        if (appConfig.lightEnabled != (lightState == 1)) {
             if (lightSwitchCounter > 3) {
                 // WheelLog.AppConfig.setLightEnabled(lightState == 1); // bad behaviour
                 lightSwitchCounter = 0
@@ -455,7 +457,7 @@ class Message(
         }
         // if (!(wmode.equals("Active") || wmode.equals(""))) System.out.println(String.format(Locale.US,"State: %s", wmode));
         wd.modeStr = wmode
-        if (WheelLog.AppConfig.lightEnabled != (lowLightState == 1)) {
+        if (appConfig.lightEnabled != (lowLightState == 1)) {
             if (lightSwitchCounter > 3) {
                 // WheelLog.AppConfig.setLightEnabled(lightState == 1); // bad behaviour
                 lightSwitchCounter = 0
@@ -554,7 +556,7 @@ class Message(
         }
         // if (!(wmode.equals("Active") || wmode.equals(""))) System.out.println(String.format(Locale.US,"State: %s", wmode));
         wd.modeStr = wmode
-        if (WheelLog.AppConfig.lightEnabled != (lowLightState == 1)) {
+        if (appConfig.lightEnabled != (lowLightState == 1)) {
             if (lightSwitchCounter > 3) {
                 // WheelLog.AppConfig.setLightEnabled(lightState == 1); // bad behaviour
                 lightSwitchCounter = 0
@@ -666,7 +668,7 @@ class Message(
         }
         // if (!(wmode.equals("Active") || wmode.equals(""))) System.out.println(String.format(Locale.US,"State: %s", wmode));
         wd.modeStr = wmode
-        if (WheelLog.AppConfig.lightEnabled != (lowLightState == 1)) {
+        if (appConfig.lightEnabled != (lowLightState == 1)) {
             if (lightSwitchCounter > 3) {
                 // WheelLog.AppConfig.setLightEnabled(lightState == 1); // bad behaviour
                 lightSwitchCounter = 0
