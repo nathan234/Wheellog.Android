@@ -8,7 +8,6 @@ import java.util.Timer
 import java.util.TimerTask
 
 class InmotionAdapterV2(
-    private val wd: WheelData,
     private val unpacker: InmotionUnpackerV2,
     private val timerUpdateUseCase: TimerUpdateUseCase,
 ) : BaseAdapter() {
@@ -291,7 +290,10 @@ class InmotionAdapterV2(
             get() {
                 if (INSTANCE == null) {
                     Timber.i("New instance")
-                    INSTANCE = InmotionAdapterV2(WheelData.getInstance(), InmotionUnpackerV2(), TimerUpdateUseCase(WheelData.getInstance()))
+                    INSTANCE = InmotionAdapterV2(
+                        InmotionUnpackerV2(),
+                        TimerUpdateUseCase(WheelData.getInstance())
+                    )
                 }
                 Timber.i("Get instance")
                 return INSTANCE
@@ -304,7 +306,10 @@ class InmotionAdapterV2(
                 INSTANCE!!.keepAliveTimer = null
             }
             Timber.i("New instance")
-            INSTANCE = InmotionAdapterV2(WheelData.getInstance(), InmotionUnpackerV2(), TimerUpdateUseCase(WheelData.getInstance()))
+            INSTANCE = InmotionAdapterV2(
+                InmotionUnpackerV2(),
+                TimerUpdateUseCase(WheelData.getInstance())
+            )
         }
 
         @JvmStatic
