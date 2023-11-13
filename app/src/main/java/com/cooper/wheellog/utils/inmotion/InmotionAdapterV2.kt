@@ -131,23 +131,21 @@ class InmotionAdapterV2(
                 if (updateStep == 0) {
                     when {
                         stateCon == 0 -> {
-                            if (WheelData.getInstance().bluetoothCmd(Message.carType.writeBuffer())) {
+                            if (wd.bluetoothCmd(Message.carType.writeBuffer())) {
                                 Timber.i("Sent car type message")
                             } else {
                                 updateStep = 35
                             }
                         }
                         stateCon == 1 -> {
-                            if (WheelData.getInstance()
-                                    .bluetoothCmd(Message.serialNumber.writeBuffer())
-                            ) {
+                            if (wd.bluetoothCmd(Message.serialNumber.writeBuffer())) {
                                 Timber.i("Sent s/n message")
                             } else {
                                 updateStep = 35
                             }
                         }
                         stateCon == 2 -> {
-                            if (WheelData.getInstance().bluetoothCmd(Message.versions.writeBuffer())) {
+                            if (wd.bluetoothCmd(Message.versions.writeBuffer())) {
                                 stateCon += 1
                                 Timber.i("Sent versions message")
                             } else {
@@ -155,7 +153,7 @@ class InmotionAdapterV2(
                             }
                         }
                         settingCommandReady -> {
-                            if (WheelData.getInstance().bluetoothCmd(settingCommand)) {
+                            if (wd.bluetoothCmd(settingCommand)) {
                                 settingCommandReady = false
                                 requestSettings = true
                                 Timber.i("Sent command message")
@@ -164,9 +162,7 @@ class InmotionAdapterV2(
                             }
                         }
                         (stateCon == 3) or requestSettings -> {
-                            if (WheelData.getInstance()
-                                    .bluetoothCmd(Message.currentSettings.writeBuffer())
-                            ) {
+                            if (wd.bluetoothCmd(Message.currentSettings.writeBuffer())) {
                                 stateCon += 1
                                 Timber.i("Sent unknown data message")
                             } else {
@@ -174,9 +170,7 @@ class InmotionAdapterV2(
                             }
                         }
                         stateCon == 4 -> {
-                            if (WheelData.getInstance()
-                                    .bluetoothCmd(Message.uselessData.writeBuffer())
-                            ) {
+                            if (wd.bluetoothCmd(Message.uselessData.writeBuffer())) {
                                 Timber.i("Sent useless data message")
                                 stateCon += 1
                             } else {
@@ -184,9 +178,7 @@ class InmotionAdapterV2(
                             }
                         }
                         stateCon == 5 -> {
-                            if (WheelData.getInstance()
-                                    .bluetoothCmd(Message.statistics.writeBuffer())
-                            ) {
+                            if (wd.bluetoothCmd(Message.statistics.writeBuffer())) {
                                 Timber.i("Sent statistics data message")
                                 stateCon += 1
                             } else {
@@ -194,9 +186,7 @@ class InmotionAdapterV2(
                             }
                         }
                         else -> {
-                            if (WheelData.getInstance()
-                                    .bluetoothCmd(Message.realTimeData.writeBuffer())
-                            ) {
+                            if (wd.bluetoothCmd(Message.realTimeData.writeBuffer())) {
                                 Timber.i("Sent realtime data message")
                                 stateCon = 5
                             } else {
@@ -324,7 +314,9 @@ class InmotionAdapterV2(
         protoVer = proto
     }
 
-    class Message {
+    class Message(
+        private val wd: WheelData,
+    ) {
         internal enum class Flag(val value: Int) {
             NoOp(0), Initial(0x11), Default(0x14)
         }
@@ -341,7 +333,7 @@ class InmotionAdapterV2(
         var command = 0
         lateinit var data: ByteArray
 
-        internal constructor(bArr: ByteArray) {
+        internal constructor(bArr: ByteArray) : this() {
             if (bArr.size < 5) return
             flags = bArr[2].toInt()
             len = bArr[3].toInt()
@@ -351,11 +343,10 @@ class InmotionAdapterV2(
             }
         }
 
-        private constructor()
+        private constructor() : this(WheelData.getInstance())
 
         fun parseMainData(): Boolean {
             Timber.i("Parse main data")
-            val wd = WheelData.getInstance()
             wd.resetRideTime()
             if (data[0] == 0x01.toByte() && len >= 6) {
                 stateCon += 1
@@ -505,7 +496,6 @@ class InmotionAdapterV2(
                 return false
             }
             Timber.i("Parse total stats data")
-            val wd = WheelData.getInstance()
             val mTotal = MathsUtil.intFromBytesLE(data, 0).toLong()
             val mTotal2 = MathsUtil.getInt4(data, 0)
             val mDissipation = MathsUtil.intFromBytesLE(data, 4).toLong()
@@ -576,7 +566,6 @@ class InmotionAdapterV2(
 
         fun parseRealTimeInfoV11(sContext: Context?): Boolean {
             Timber.i("Parse V11 realtime stats data")
-            val wd = WheelData.getInstance()
             val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
             val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
             val mSpeed = MathsUtil.signedShortFromBytesLE(data, 4)
@@ -677,7 +666,6 @@ class InmotionAdapterV2(
 
         fun parseRealTimeInfoV11_1_4(sContext: Context?): Boolean {
             Timber.i("Parse V11 1.4+ realtime stats data")
-            val wd = WheelData.getInstance()
             val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
             val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
             val mSpeed = MathsUtil.signedShortFromBytesLE(data, 4)
@@ -779,7 +767,6 @@ class InmotionAdapterV2(
 
         fun parseRealTimeInfoV12(sContext: Context?): Boolean {
             Timber.i("Parse V12 realtime stats data")
-            val wd = WheelData.getInstance()
             val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
             val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
             val mSpeed = MathsUtil.signedShortFromBytesLE(data, 4)
@@ -878,7 +865,6 @@ class InmotionAdapterV2(
 
         fun parseRealTimeInfoV13(sContext: Context?): Boolean {
             Timber.i("Parse V13 realtime stats data")
-            val wd = WheelData.getInstance()
             val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
             val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
             // int mSpeed = MathsUtil.signedShortFromBytesLE(data, 4);
