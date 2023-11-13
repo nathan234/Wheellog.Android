@@ -9,7 +9,7 @@ class InMotionUnpackerV2 {
     }
 
     var buffer = ByteArrayOutputStream()
-    var oldc = 0
+    private var oldc = 0
     var len = 0
     var flags = 0
     var state = UnpackerState.UNKNOWN

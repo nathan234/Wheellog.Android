@@ -9,7 +9,7 @@ import java.util.Timer
 import java.util.TimerTask
 
 class InMotionAdapterV2(
-    private val unpacker: InMotionUnpackerV2,
+    private val unPacker: InMotionUnpackerV2,
     private val timerUpdateUseCase: TimerUpdateUseCase,
     private val appConfig: AppConfig,
 ) : BaseAdapter() {
@@ -21,9 +21,9 @@ class InMotionAdapterV2(
 
     override fun decode(data: ByteArray?): Boolean {
         for (c in data!!) {
-            if (unpacker.addChar(c.toInt())) {
+            if (unPacker.addChar(c.toInt())) {
                 updateStep = 0
-                val result = Message.verify(unpacker.getBuffer())
+                val result = Message.verify(unPacker.getBuffer())
                 if (result != null) {
                     Timber.i("Get new data, command: %02X", result.command)
                     when (result.flags) {
@@ -91,7 +91,7 @@ class InMotionAdapterV2(
                                         }
 
                                         else -> {
-                                            val info = result.parseRealTimeInfoV11_1_4(context, lightSwitchCounter)
+                                            val info = result.parseRealTimeInfoV11version1dot4(context, lightSwitchCounter)
                                             lightSwitchCounter = info.first
                                             info.second
                                         }

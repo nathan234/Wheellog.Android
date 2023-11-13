@@ -49,10 +49,10 @@ class Message(
     fun parseMainData(stateCon: Int): ParseMainDataResult {
         Timber.i("Parse main data")
         wd.resetRideTime()
-        var stateCon = stateCon
+        var state = stateCon
         when {
             data[0] == 0x01.toByte() && len >= 6 -> {
-                stateCon += 1
+                state += 1
                 Timber.i("Parse car type")
                 // 020601010100 -v11
                 // 020701010100 -v12
@@ -68,7 +68,7 @@ class Message(
                 wd.version = String.format(Locale.ENGLISH, "-") // need to find how to parse
             }
             data[0] == 0x02.toByte() && len >= 17 -> {
-                stateCon += 1
+                state += 1
                 Timber.i("Parse serial num")
                 val serialNumber = String(data, 1, 16)
                 wd.serial = serialNumber
@@ -115,7 +115,7 @@ class Message(
             }
         }
         return ParseMainDataResult(
-            stateCon = stateCon,
+            stateCon = state,
             decodeResult = false,
         )
     }
@@ -279,7 +279,7 @@ class Message(
     }
 
     fun parseRealTimeInfoV11(sContext: Context?, lightSwitchCounter: Int): Pair<Int, Boolean> {
-        var lightSwitchCounter = lightSwitchCounter
+        var counter = lightSwitchCounter
         Timber.i("Parse V11 realtime stats data")
         val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
         val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
@@ -339,7 +339,7 @@ class Message(
         val fanState = data[i + 1].toInt() shr 5 and 0x01
         var wmode = ""
         if (mMotState == 1) {
-            wmode = wmode + "Active"
+            wmode += "Active"
         }
         if (chrgState == 1) {
             wmode = "$wmode Charging"
@@ -350,14 +350,14 @@ class Message(
         wd.modeStr = wmode
         // WheelLog.AppConfig.setFanEnabled(fanState != 0); // bad behaviour
         if (appConfig.lightEnabled != (lightState == 1)) {
-            if (lightSwitchCounter > 3) {
+            if (counter > 3) {
                 // WheelLog.AppConfig.setLightEnabled(lightState == 1); // bad behaviour
-                lightSwitchCounter = 0
+                counter = 0
             } else {
-                lightSwitchCounter += 1
+                counter += 1
             }
         } else {
-            lightSwitchCounter = 0
+            counter = 0
         }
 
         // WheelLog.AppConfig.setDrlEnabled(decorLiState != 0); // too fast, bad behaviour
@@ -376,11 +376,11 @@ class Message(
 
 //            if (!(wmode.equals("Active") || wmode.equals(""))) System.out.println(String.format(Locale.US,"State: %s", wmode));
 //            if (!inmoError.equals("")) System.out.println(String.format(Locale.US,"Err: %s", inmoError));
-        return Pair(lightSwitchCounter, true)
+        return Pair(counter, true)
     }
 
-    fun parseRealTimeInfoV11_1_4(sContext: Context?, lightSwitchCounter: Int): Pair<Int, Boolean> {
-        var lightSwitchCounter = lightSwitchCounter
+    fun parseRealTimeInfoV11version1dot4(sContext: Context?, lightSwitchCounter: Int): Pair<Int, Boolean> {
+        var counter = lightSwitchCounter
         Timber.i("Parse V11 1.4+ realtime stats data")
         val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
         val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
@@ -447,7 +447,7 @@ class Message(
         val fwUpdateState = data[57].toInt() shr 5 and 0x01
         var wmode = ""
         if (mMotState == 1) {
-            wmode = wmode + "Active"
+            wmode += "Active"
         }
         if (chrgState == 1) {
             wmode = "$wmode Charging"
@@ -458,14 +458,14 @@ class Message(
         // if (!(wmode.equals("Active") || wmode.equals(""))) System.out.println(String.format(Locale.US,"State: %s", wmode));
         wd.modeStr = wmode
         if (appConfig.lightEnabled != (lowLightState == 1)) {
-            if (lightSwitchCounter > 3) {
+            if (counter > 3) {
                 // WheelLog.AppConfig.setLightEnabled(lightState == 1); // bad behaviour
-                lightSwitchCounter = 0
+                counter = 0
             } else {
-                lightSwitchCounter += 1
+                counter += 1
             }
         } else {
-            lightSwitchCounter = 0
+            counter = 0
         }
 
         // // errors data
@@ -478,11 +478,11 @@ class Message(
             intent.putExtra(Constants.INTENT_EXTRA_NEWS, inmoError)
             sContext.sendBroadcast(intent)
         }
-        return Pair(lightSwitchCounter, true)
+        return Pair(counter, true)
     }
 
     fun parseRealTimeInfoV12(sContext: Context?, lightSwitchCounter: Int): Pair<Int, Boolean> {
-        var lightSwitchCounter = lightSwitchCounter
+        var counter = lightSwitchCounter
         Timber.i("Parse V12 realtime stats data")
         val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
         val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
@@ -557,14 +557,14 @@ class Message(
         // if (!(wmode.equals("Active") || wmode.equals(""))) System.out.println(String.format(Locale.US,"State: %s", wmode));
         wd.modeStr = wmode
         if (appConfig.lightEnabled != (lowLightState == 1)) {
-            if (lightSwitchCounter > 3) {
+            if (counter > 3) {
                 // WheelLog.AppConfig.setLightEnabled(lightState == 1); // bad behaviour
-                lightSwitchCounter = 0
+                counter = 0
             } else {
-                lightSwitchCounter += 1
+                counter += 1
             }
         } else {
-            lightSwitchCounter = 0
+            counter = 0
         }
 
         // // errors data
@@ -577,11 +577,11 @@ class Message(
             intent.putExtra(Constants.INTENT_EXTRA_NEWS, inmoError)
             sContext.sendBroadcast(intent)
         }
-        return Pair(lightSwitchCounter, true)
+        return Pair(counter, true)
     }
 
     fun parseRealTimeInfoV13(lightSwitchCounter: Int): Pair<Int, Boolean> {
-        var lightSwitchCounter = lightSwitchCounter
+        var counter = lightSwitchCounter
         Timber.i("Parse V13 realtime stats data")
         val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
         val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
@@ -658,7 +658,7 @@ class Message(
         val fwUpdateState = data[75].toInt() shr 5 and 0x01
         var wmode = ""
         if (mMotState == 1) {
-            wmode = wmode + "Active"
+            wmode += "Active"
         }
         if (chrgState == 1) {
             wmode = "$wmode Charging"
@@ -669,14 +669,14 @@ class Message(
         // if (!(wmode.equals("Active") || wmode.equals(""))) System.out.println(String.format(Locale.US,"State: %s", wmode));
         wd.modeStr = wmode
         if (appConfig.lightEnabled != (lowLightState == 1)) {
-            if (lightSwitchCounter > 3) {
+            if (counter > 3) {
                 // WheelLog.AppConfig.setLightEnabled(lightState == 1); // bad behaviour
-                lightSwitchCounter = 0
+                counter = 0
             } else {
-                lightSwitchCounter += 1
+                counter += 1
             }
         } else {
-            lightSwitchCounter = 0
+            counter = 0
         }
 
         // // errors data
@@ -690,7 +690,7 @@ class Message(
             intent.putExtra(Constants.INTENT_EXTRA_NEWS, inmoError);
             sContext.sendBroadcast(intent);
         }
-        */return Pair(lightSwitchCounter, true)
+        */return Pair(counter, true)
     }
 
     fun writeBuffer(): ByteArray {
