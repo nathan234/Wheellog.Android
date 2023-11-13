@@ -96,9 +96,9 @@ class VeteranAdapter(
 
     override fun updatePedalsMode(pedalsMode: Int) {
         when (pedalsMode) {
-            0 -> WheelData.getInstance().bluetoothCmd("SETh".toByteArray())
-            1 -> WheelData.getInstance().bluetoothCmd("SETm".toByteArray())
-            2 -> WheelData.getInstance().bluetoothCmd("SETs".toByteArray())
+            0 -> wd.bluetoothCmd("SETh".toByteArray())
+            1 -> wd.bluetoothCmd("SETm".toByteArray())
+            2 -> wd.bluetoothCmd("SETs".toByteArray())
         }
     }
 
@@ -123,7 +123,7 @@ class VeteranAdapter(
         } else {
             "SetLightOFF"
         }
-        WheelData.getInstance().bluetoothCmd(command.toByteArray())
+        wd.bluetoothCmd(command.toByteArray())
     }
 
     override val cellsForWheel: Int
@@ -134,7 +134,7 @@ class VeteranAdapter(
         }
 
     override fun wheelBeep() {
-        WheelData.getInstance().bluetoothCmd("b".toByteArray())
+        wd.bluetoothCmd("b".toByteArray())
     }
 
     companion object {
