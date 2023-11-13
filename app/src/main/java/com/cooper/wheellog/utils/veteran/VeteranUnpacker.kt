@@ -9,7 +9,10 @@ class VeteranUnpacker(
     var buffer: ByteArrayOutputStream,
 ) {
     enum class UnpackerState {
-        UNKNOWN, COLLECTING, LENS_SEARCH, DONE
+        UNKNOWN,
+        COLLECTING,
+        LENS_SEARCH,
+        DONE,
     }
 
     var old1 = 0
@@ -19,6 +22,7 @@ class VeteranUnpacker(
     var len = 0
 
     var state = UnpackerState.UNKNOWN
+
     fun getBuffer(): ByteArray {
         return buffer.toByteArray()
     }
@@ -27,7 +31,11 @@ class VeteranUnpacker(
         when (state) {
             UnpackerState.COLLECTING -> {
                 val bsize = buffer.size()
-                if ((bsize == 22 || bsize == 30) && c != 0x00 || bsize == 23 && c and 0xFE != 0x00 || bsize == 31 && c and 0xFC != 0x00) {
+                if (
+                    (bsize == 22 || bsize == 30) && c != 0x00 ||
+                    bsize == 23 && c and 0xFE != 0x00 ||
+                    bsize == 31 && c and 0xFC != 0x00
+                ) {
                     state = UnpackerState.DONE
                     Timber.i("Data verification failed")
                     reset()
@@ -55,7 +63,6 @@ class VeteranUnpacker(
                     return true // old format without crc32
                 }
             }
-
             UnpackerState.LENS_SEARCH -> {
                 buffer.write(c)
                 len = c and 0xff
@@ -63,11 +70,13 @@ class VeteranUnpacker(
                 old2 = old1
                 old1 = c
             }
-
-            UnpackerState.UNKNOWN, UnpackerState.DONE -> {
+            UnpackerState.UNKNOWN,
+            UnpackerState.DONE,
+            -> {
                 when {
-                    c == 0x5C.toByte().toInt() && old1 == 0x5A.toByte()
-                        .toInt() && old2 == 0xDC.toByte().toInt() -> {
+                    c == 0x5C.toByte().toInt() &&
+                        old1 == 0x5A.toByte().toInt() &&
+                        old2 == 0xDC.toByte().toInt() -> {
                         buffer = ByteArrayOutputStream()
                         buffer.write(0xDC)
                         buffer.write(0x5A)
