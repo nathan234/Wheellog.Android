@@ -18,73 +18,86 @@ import java.util.TimerTask
 
 class InmotionAdapterV2(
     private val wd: WheelData,
+    private val unpacker: InmotionUnpackerV2,
 ) : BaseAdapter() {
     private var keepAliveTimer: Timer? = null
     private var settingCommandReady = false
     private var requestSettings = false
     private var turningOff = false
     private lateinit var settingCommand: ByteArray
-    var unpacker = InmotionUnpackerV2()
 
-    fun getModel() = model
     override fun decode(data: ByteArray?): Boolean {
         for (c in data!!) {
             if (unpacker.addChar(c.toInt())) {
+                updateStep = 0
                 val result = Message.verify(unpacker.getBuffer())
                 if (result != null) {
                     Timber.i("Get new data, command: %02X", result.command)
-                    if (result.flags == Message.Flag.Initial.value) {
-                        if (result.command == Message.Command.MainInfo.value) {
-                            return result.parseMainData()
-                        } else if (result.command == Message.Command.Diagnistic.value && turningOff) {
-                            settingCommand = Message.wheelOffSecondStage().writeBuffer()
-                            turningOff = false
-                            settingCommandReady = true
-                            return false
+                    when (result.flags) {
+                        Message.Flag.Initial.value -> {
+                            if (result.command == Message.Command.MainInfo.value) {
+                                return result.parseMainData()
+                            } else if (result.command == Message.Command.Diagnistic.value && turningOff) {
+                                settingCommand = Message.wheelOffSecondStage().writeBuffer()
+                                turningOff = false
+                                settingCommandReady = true
+                                return false
+                            }
                         }
-                    } else if (result.flags == Message.Flag.Default.value) {
-                        when (result.command) {
-                            Message.Command.Settings.value -> {
-                                requestSettings = false
-                                return when (model) {
-                                    Model.V12 -> {
-                                        false
-                                    }
-                                    Model.V13 -> {
-                                        false
-                                    }
-                                    else -> {
-                                        result.parseSettings()
-                                    }
-                                }
-                            }
-                            Message.Command.Diagnistic.value -> {
-                                return result.parseDiagnostic()
-                            }
-                            Message.Command.BatteryRealTimeInfo.value -> {
-                                return result.parseBatteryRealTimeInfo()
-                            }
-                            Message.Command.TotalStats.value -> {
-                                return result.parseTotalStats()
-                            }
-                            Message.Command.RealTimeInfo.value -> {
-                                return when {
-                                    model == Model.V12 -> {
-                                        result.parseRealTimeInfoV12(context)
-                                    }
-                                    model == Model.V13 -> {
-                                        result.parseRealTimeInfoV13(context)
-                                    }
-                                    protoVer < 2 -> {
-                                        result.parseRealTimeInfoV11(context)
-                                    }
-                                    else -> {
-                                        result.parseRealTimeInfoV11_1_4(context)
+                        Message.Flag.Default.value -> {
+                            when (result.command) {
+                                Message.Command.Settings.value -> {
+                                    requestSettings = false
+                                    return when (inMotionModel) {
+                                        InMotionModel.V12 -> {
+                                            false
+                                        }
+
+                                        InMotionModel.V13 -> {
+                                            false
+                                        }
+
+                                        else -> {
+                                            result.parseSettings()
+                                        }
                                     }
                                 }
-                            }
-                            else -> {
-                                Timber.i("Get unknown command: %02X", result.command)
+
+                                Message.Command.Diagnistic.value -> {
+                                    return result.parseDiagnostic()
+                                }
+
+                                Message.Command.BatteryRealTimeInfo.value -> {
+                                    return result.parseBatteryRealTimeInfo()
+                                }
+
+                                Message.Command.TotalStats.value -> {
+                                    return result.parseTotalStats()
+                                }
+
+                                Message.Command.RealTimeInfo.value -> {
+                                    return when {
+                                        inMotionModel == InMotionModel.V12 -> {
+                                            result.parseRealTimeInfoV12(context)
+                                        }
+
+                                        inMotionModel == InMotionModel.V13 -> {
+                                            result.parseRealTimeInfoV13()
+                                        }
+
+                                        protoVer < 2 -> {
+                                            result.parseRealTimeInfoV11(context)
+                                        }
+
+                                        else -> {
+                                            result.parseRealTimeInfoV11_1_4(context)
+                                        }
+                                    }
+                                }
+
+                                else -> {
+                                    Timber.i("Get unknown command: %02X", result.command)
+                                }
                             }
                         }
                     }
@@ -94,32 +107,15 @@ class InmotionAdapterV2(
         return false
     }
 
-    enum class Model(val value: Int, val wheelName: String) {
-        V11(6, "Inmotion V11"), V12(7, "Inmotion V12"), V13(8, "Inmotion V13"), UNKNOWN(
-            0,
-            "Inmotion Unknown",
-        );
-
-        companion object {
-            fun findById(id: Int): Model {
-                Timber.i("Model %d", id)
-                for (m in values()) {
-                    if (m.value == id) return m
-                }
-                return UNKNOWN
-            }
-        }
-    }
-
     override val isReady: Boolean
-        get() = model != Model.UNKNOWN && protoVer != 0
+        get() = inMotionModel != InMotionModel.UNKNOWN && protoVer != 0
     val maxSpeed: Int
         get() {
-            return when (model) {
-                Model.V11 -> 60
-                Model.V12 -> 70
-                Model.V13 -> 100
-                Model.UNKNOWN -> 100
+            return when (inMotionModel) {
+                InMotionModel.V11 -> 60
+                InMotionModel.V12 -> 70
+                InMotionModel.V13 -> 100
+                InMotionModel.UNKNOWN -> 100
             }
         }
 
@@ -306,8 +302,8 @@ class InmotionAdapterV2(
         settingCommandReady = true
     }
 
-    fun setModel(m: Model) {
-        model = m
+    fun setModel(m: InMotionModel) {
+        inMotionModel = m
     }
 
     fun setProto(proto: Int) {
@@ -360,8 +356,8 @@ class InmotionAdapterV2(
                 val batch = data[4].toInt() // 02
                 val feature = data[5].toInt() // 01
                 val reverse = data[6].toInt() // 00
-                model = Model.findById(series)
-                wd.model = model.wheelName
+                inMotionModel = InMotionModel.findById(series)
+                wd.model = inMotionModel.wheelName
                 wd.version = String.format(Locale.ENGLISH, "-") // need to find how to parse
             } else if (data[0] == 0x02.toByte() && len >= 17) {
                 stateCon += 1
@@ -400,7 +396,7 @@ class InmotionAdapterV2(
                 val vers =
                     String.format(Locale.US, "Main:%s Drv:%s BLE:%s", MainBoard, DriverBoard, Ble)
                 wd.version = vers
-                if (model == Model.V11) {
+                if (inMotionModel == InMotionModel.V11) {
                     if (MainBoard1 < 2 && MainBoard2 < 4) { // main board ver before 1.4
                         protoVer = 1
                     } else {
@@ -514,7 +510,7 @@ class InmotionAdapterV2(
             return false
         }
 
-        fun getError(i: Int): String {
+        private fun getError(i: Int): String {
             var inmoError = ""
             if (data[i].toInt() and 0x01 == 1) inmoError += "err_iPhaseSensorState "
             if (data[i].toInt() shr 1 and 0x01 == 1) inmoError += "err_iBusSensorState "
@@ -863,7 +859,7 @@ class InmotionAdapterV2(
             return true
         }
 
-        fun parseRealTimeInfoV13(sContext: Context?): Boolean {
+        fun parseRealTimeInfoV13(): Boolean {
             Timber.i("Parse V13 realtime stats data")
             val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
             val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
@@ -1309,78 +1305,12 @@ class InmotionAdapterV2(
         }
     }
 
-    class InmotionUnpackerV2 {
-        enum class UnpackerState {
-            UNKNOWN, FLAG_SEARCH, LENS_SEARCH, COLLECTING, DONE
-        }
-
-        var buffer = ByteArrayOutputStream()
-        var oldc = 0
-        var len = 0
-        var flags = 0
-        var state = UnpackerState.UNKNOWN
-        fun getBuffer(): ByteArray {
-            return buffer.toByteArray()
-        }
-
-        fun addChar(c: Int): Boolean {
-            if (c != 0xA5.toByte().toInt() || oldc == 0xA5.toByte().toInt()) {
-                when (state) {
-                    UnpackerState.COLLECTING -> {
-                        buffer.write(c)
-                        if (buffer.size() == len + 5) {
-                            state = UnpackerState.DONE
-                            updateStep = 0
-                            oldc = 0
-                            Timber.i("Len %d", len)
-                            Timber.i("Step reset")
-                            return true
-                        }
-                    }
-
-                    UnpackerState.LENS_SEARCH -> {
-                        buffer.write(c)
-                        len = c and 0xff
-                        state = UnpackerState.COLLECTING
-                        oldc = c
-                    }
-
-                    UnpackerState.FLAG_SEARCH -> {
-                        buffer.write(c)
-                        flags = c and 0xff
-                        state = UnpackerState.LENS_SEARCH
-                        oldc = c
-                    }
-
-                    else -> {
-                        if (c == 0xAA.toByte().toInt() && oldc == 0xAA.toByte().toInt()) {
-                            buffer = ByteArrayOutputStream()
-                            buffer.write(0xAA)
-                            buffer.write(0xAA)
-                            state = UnpackerState.FLAG_SEARCH
-                        }
-                        oldc = c
-                    }
-                }
-            } else {
-                oldc = c
-            }
-            return false
-        }
-
-        fun reset() {
-            buffer = ByteArrayOutputStream()
-            oldc = 0
-            state = UnpackerState.UNKNOWN
-        }
-    }
-
     override val cellsForWheel: Int
         get() {
-            if (model == Model.V12) {
+            if (inMotionModel == InMotionModel.V12) {
                 return 24
             }
-            return if (model == Model.V13) {
+            return if (inMotionModel == InMotionModel.V13) {
                 30
             } else {
                 20
@@ -1394,7 +1324,7 @@ class InmotionAdapterV2(
         private var lightSwitchCounter = 0
 
         @JvmField
-        var model = Model.UNKNOWN
+        var inMotionModel = InMotionModel.UNKNOWN
 
         @JvmField
         var protoVer: Int = 0
@@ -1413,7 +1343,7 @@ class InmotionAdapterV2(
             get() {
                 if (INSTANCE == null) {
                     Timber.i("New instance")
-                    INSTANCE = InmotionAdapterV2(WheelData.getInstance())
+                    INSTANCE = InmotionAdapterV2(WheelData.getInstance(), InmotionUnpackerV2())
                 }
                 Timber.i("Get instance")
                 return INSTANCE
@@ -1426,7 +1356,7 @@ class InmotionAdapterV2(
                 INSTANCE!!.keepAliveTimer = null
             }
             Timber.i("New instance")
-            INSTANCE = InmotionAdapterV2(WheelData.getInstance())
+            INSTANCE = InmotionAdapterV2(WheelData.getInstance(), InmotionUnpackerV2())
         }
 
         @JvmStatic
