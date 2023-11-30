@@ -118,12 +118,12 @@ class InMotionAdapter : BaseAdapter() {
         get() = model != Model.UNKNOWN && WheelData.getInstance().serial != ""
 
     enum class Mode(val value: Int) {
-        rookie(0),
-        general(1),
-        smoothly(2),
-        unBoot(3),
-        bldc(4),
-        foc(5),
+        ROOKIE(0),
+        GENERAL(1),
+        SMOOTHLY(2),
+        UN_BOOT(3),
+        OLD_C(4),
+        FOC(5),
     }
 
     val maxSpeed: Int
@@ -276,19 +276,19 @@ class InMotionAdapter : BaseAdapter() {
     }
 
     enum class WorkMode(val value: Int) {
-        idle(0),
-        drive(1),
-        zero(2),
-        largeAngle(3),
-        checkc(4),
-        lock(5),
-        error(6),
-        carry(7),
-        remoteControl(8),
-        shutdown(9),
-        pomStop(10),
-        unknown(11),
-        unlock(12),
+        IDLE(0),
+        DRIVE(1),
+        ZERO(2),
+        LARGE_ANGLE(3),
+        CHECK_C(4),
+        LOCK(5),
+        ERROR(6),
+        CARRY(7),
+        REMOTE_CONTROL(8),
+        SHUTDOWN(9),
+        POM_STOP(10),
+        UNKNOWN(11),
+        UNLOCK(12),
     }
 
     var unpacker = InMotionUnpacker()
@@ -1110,9 +1110,9 @@ class InMotionAdapter : BaseAdapter() {
 
     class InMotionUnpacker {
         enum class UnpackerState {
-            unknown,
-            collecting,
-            done,
+            UNKNOWN,
+            COLLECTING,
+            DONE,
         }
 
         var buffer = ByteArrayOutputStream()
@@ -1123,7 +1123,7 @@ class InMotionAdapter : BaseAdapter() {
         // of usual packet
         var len_p = 0 // basic packet len
         var len_ex = 0 // extended packet len
-        var state = UnpackerState.unknown
+        var state = UnpackerState.UNKNOWN
 
         fun getBuffer(): ByteArray {
             return buffer.toByteArray()
@@ -1131,7 +1131,7 @@ class InMotionAdapter : BaseAdapter() {
 
         fun addChar(c: Int): Boolean {
             if (c != 0xA5.toByte().toInt() || oldc == 0xA5.toByte().toInt()) {
-                if (state == UnpackerState.collecting) {
+                if (state == UnpackerState.COLLECTING) {
                     buffer.write(c)
                     val sz = buffer.size()
                     if (sz == 7) len_ex = c and 0xFF else if (sz == 15) len_p = c and 0xFF
@@ -1144,7 +1144,7 @@ class InMotionAdapter : BaseAdapter() {
                         oldc == 0x55.toByte().toInt() &&
                         (sz == len_ex + 21 || len_p != 0xFE)
                     ) { // 18 header + 1 crc + 2 footer
-                        state = UnpackerState.done
+                        state = UnpackerState.DONE
                         updateStep = 0
                         oldc = 0
                         Timber.i("Step reset")
@@ -1155,7 +1155,7 @@ class InMotionAdapter : BaseAdapter() {
                         buffer = ByteArrayOutputStream()
                         buffer.write(0xAA)
                         buffer.write(0xAA)
-                        state = UnpackerState.collecting
+                        state = UnpackerState.COLLECTING
                     }
                 }
             }
@@ -1168,7 +1168,7 @@ class InMotionAdapter : BaseAdapter() {
             oldc = 0
             len_p = 0
             len_ex = 0
-            state = UnpackerState.unknown
+            state = UnpackerState.UNKNOWN
         }
     }
 
@@ -1182,47 +1182,47 @@ class InMotionAdapter : BaseAdapter() {
 
         fun intToMode(mode: Int): Mode {
             return if (mode and 16 != 0) {
-                Mode.rookie
+                Mode.ROOKIE
             } else if (mode and 32 != 0) {
-                Mode.general
+                Mode.GENERAL
             } else if (mode and 64 == 0 || mode and 128 == 0) {
-                Mode.unBoot
+                Mode.UN_BOOT
             } else {
-                Mode.smoothly
+                Mode.SMOOTHLY
             }
         }
 
         fun intToModeWithL6(mode: Int): Mode {
             return if (mode and 15 != 0) {
-                Mode.bldc
+                Mode.OLD_C
             } else {
-                Mode.foc
+                Mode.FOC
             }
         }
 
         fun intToWorkModeWithL6(mode: Int): WorkMode {
             return if (mode and 240 != 0) {
-                WorkMode.lock
+                WorkMode.LOCK
             } else {
-                WorkMode.unlock
+                WorkMode.UNLOCK
             }
         }
 
         fun intToWorkMode(mode: Int): WorkMode {
             val v = mode and 0xF
             return when (v) {
-                0 -> WorkMode.idle
-                1 -> WorkMode.drive
-                2 -> WorkMode.zero
-                3 -> WorkMode.largeAngle
-                4 -> WorkMode.checkc
-                5 -> WorkMode.lock
-                6 -> WorkMode.error
-                7 -> WorkMode.carry
-                8 -> WorkMode.remoteControl
-                9 -> WorkMode.shutdown
-                16 -> WorkMode.pomStop
-                else -> WorkMode.unknown
+                0 -> WorkMode.IDLE
+                1 -> WorkMode.DRIVE
+                2 -> WorkMode.ZERO
+                3 -> WorkMode.LARGE_ANGLE
+                4 -> WorkMode.CHECK_C
+                5 -> WorkMode.LOCK
+                6 -> WorkMode.ERROR
+                7 -> WorkMode.CARRY
+                8 -> WorkMode.REMOTE_CONTROL
+                9 -> WorkMode.SHUTDOWN
+                16 -> WorkMode.POM_STOP
+                else -> WorkMode.UNKNOWN
             }
         }
 
