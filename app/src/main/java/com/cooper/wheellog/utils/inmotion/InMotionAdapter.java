@@ -60,39 +60,27 @@ public class InMotionAdapter extends BaseAdapter {
             }
 
             if (getContext() != null) {
-                String news = null;
-                switch (idValue) {
-                    case Calibration:
-                        news = result.data[0] == 1
-                                ? getContext().getString(R.string.calibration_success)
-                                : getContext().getString(R.string.calibration_fail);
-                        break;
-                    case RideMode:
-                        news = result.data[0] == 1
-                                ? getContext().getString(R.string.ridemode_success)
-                                : getContext().getString(R.string.ridemode_fail);
-                        break;
-                    case RemoteControl:
-                        news = result.data[0] == 1
-                                ? getContext().getString(R.string.remotecontrol_success)
-                                : getContext().getString(R.string.remotecontrol_fail);
-                        break;
-                    case Light:
-                        news = result.data[0] == 1
-                                ? getContext().getString(R.string.light_success)
-                                : getContext().getString(R.string.light_fail);
-                        break;
-                    case HandleButton:
-                        news = result.data[0] == 1
-                                ? getContext().getString(R.string.handlebutton_success)
-                                : getContext().getString(R.string.handlebutton_fail);
-                        break;
-                    case SpeakerVolume:
-                        news = result.data[0] == 1
-                                ? getContext().getString(R.string.speakervolume_success)
-                                : getContext().getString(R.string.speakervolume_fail);
-                        break;
-                }
+                String news = switch (idValue) {
+                    case Calibration -> result.data[0] == 1
+                            ? getContext().getString(R.string.calibration_success)
+                            : getContext().getString(R.string.calibration_fail);
+                    case RideMode -> result.data[0] == 1
+                            ? getContext().getString(R.string.ridemode_success)
+                            : getContext().getString(R.string.ridemode_fail);
+                    case RemoteControl -> result.data[0] == 1
+                            ? getContext().getString(R.string.remotecontrol_success)
+                            : getContext().getString(R.string.remotecontrol_fail);
+                    case Light -> result.data[0] == 1
+                            ? getContext().getString(R.string.light_success)
+                            : getContext().getString(R.string.light_fail);
+                    case HandleButton -> result.data[0] == 1
+                            ? getContext().getString(R.string.handlebutton_success)
+                            : getContext().getString(R.string.handlebutton_fail);
+                    case SpeakerVolume -> result.data[0] == 1
+                            ? getContext().getString(R.string.speakervolume_success)
+                            : getContext().getString(R.string.speakervolume_fail);
+                    default -> null;
+                };
 
                 if (news != null) {
                     Timber.i("News to send: %s, sending Intent", news);
@@ -153,35 +141,17 @@ public class InMotionAdapter extends BaseAdapter {
     }
 
     public boolean getLedThere() {
-        switch (model) {
-            case Glide3:
-            case V8:
-            case V8F:
-            case V8S:
-            case V10S:
-            case V10SF:
-            case V10T:
-            case V10:
-            case V10F:
-            case V10FT:
-                return true;
-        }
-        return false;
+        return switch (model) {
+            case Glide3, V8, V8F, V8S, V10S, V10SF, V10T, V10, V10F, V10FT -> true;
+            default -> false;
+        };
     }
 
     public boolean getWheelModesWheel() {
-        switch (model) {
-            case V8F:
-            case V8S:
-            case V10S:
-            case V10SF:
-            case V10T:
-            case V10:
-            case V10F:
-            case V10FT:
-                return true;
-        }
-        return false;
+        return switch (model) {
+            case V8F, V8S, V10S, V10SF, V10T, V10, V10F, V10FT -> true;
+            default -> false;
+        };
     }
 
     public enum Model {
@@ -456,32 +426,20 @@ public class InMotionAdapter extends BaseAdapter {
 
         int v = mode & 0xF;
 
-        switch (v) {
-            case 0:
-                return WorkMode.idle;
-            case 1:
-                return WorkMode.drive;
-            case 2:
-                return WorkMode.zero;
-            case 3:
-                return WorkMode.largeAngle;
-            case 4:
-                return WorkMode.checkc;
-            case 5:
-                return WorkMode.lock;
-            case 6:
-                return WorkMode.error;
-            case 7:
-                return WorkMode.carry;
-            case 8:
-                return WorkMode.remoteControl;
-            case 9:
-                return WorkMode.shutdown;
-            case 16:
-                return WorkMode.pomStop;
-            default:
-                return WorkMode.unknown;
-        }
+        return switch (v) {
+            case 0 -> WorkMode.idle;
+            case 1 -> WorkMode.drive;
+            case 2 -> WorkMode.zero;
+            case 3 -> WorkMode.largeAngle;
+            case 4 -> WorkMode.checkc;
+            case 5 -> WorkMode.lock;
+            case 6 -> WorkMode.error;
+            case 7 -> WorkMode.carry;
+            case 8 -> WorkMode.remoteControl;
+            case 9 -> WorkMode.shutdown;
+            case 16 -> WorkMode.pomStop;
+            default -> WorkMode.unknown;
+        };
     }
 
     static int batteryFromVoltage(int volts_i, Model model) {
@@ -497,7 +455,7 @@ public class InMotionAdapter extends BaseAdapter {
                 batt = 0.0;
             }
         } else {
-            Boolean useBetterPercents = WheelLog.AppConfig.getUseBetterPercents();
+            boolean useBetterPercents = WheelLog.AppConfig.getUseBetterPercents();
             if (model.belongToInputType("5") || model == Model.V8 || model == Model.Glide3 || model == Model.V8F || model == Model.V8S) {
                 if (useBetterPercents) {
                     if (volts > 84.00) {
@@ -592,21 +550,12 @@ public class InMotionAdapter extends BaseAdapter {
 
     private static String getWorkModeString(int value) {
         int hValue = value >> 4;
-        String result;
-        switch (hValue) {
-            case 1:
-                result = "Shutdown";
-                break;
-            case 2:
-                result = "Drive";
-                break;
-            case 3:
-                result = "Charging";
-                break;
-            default:
-                result = "Unknown code " + hValue;
-                break;
-        }
+        String result = switch (hValue) {
+            case 1 -> "Shutdown";
+            case 2 -> "Drive";
+            case 3 -> "Charging";
+            default -> "Unknown code " + hValue;
+        };
         if ((value & 0xF) == 1) {
             result += " - Engine off";
         }
@@ -614,78 +563,43 @@ public class InMotionAdapter extends BaseAdapter {
     }
 
     public static String getModelString(Model model) {
-        switch (model.getValue()) {
-            case "0":
-                return "Inmotion R1N";
-            case "1":
-                return "Inmotion R1S";
-            case "2":
-                return "Inmotion R1CF";
-            case "3":
-                return "Inmotion R1AP";
-            case "4":
-                return "Inmotion R1EX";
-            case "5":
-                return "Inmotion R1Sample";
-            case "6":
-                return "Inmotion R1T";
-            case "7":
-                return "Inmotion R10";
-            case "10":
-                return "Inmotion V3";
-            case "11":
-                return "Inmotion V3C";
-            case "12":
-                return "Inmotion V3PRO";
-            case "13":
-                return "Inmotion V3S";
-            case "21":
-                return "Inmotion R2N";
-            case "22":
-                return "Inmotion R2S";
-            case "23":
-                return "Inmotion R2Sample";
-            case "20":
-                return "Inmotion R2";
-            case "24":
-                return "Inmotion R2EX";
-            case "30":
-                return "Inmotion R0";
-            case "60":
-                return "Inmotion L6";
-            case "61":
-                return "Inmotion Lively";
-            case "50":
-                return "Inmotion V5";
-            case "51":
-                return "Inmotion V5PLUS";
-            case "52":
-                return "Inmotion V5F";
-            case "53":
-                return "Inmotion V5D";
-            case "80":
-                return "Inmotion V8";
-            case "85":
-                return "Solowheel Glide 3";
-            case "86":
-                return "Inmotion V8F";
-            case "87":
-                return "Inmotion V8S";
-            case "100":
-                return "Inmotion V10S";
-            case "101":
-                return "Inmotion V10SF";
-            case "140":
-                return "Inmotion V10";
-            case "141":
-                return "Inmotion V10F";
-            case "142":
-                return "Inmotion V10T";
-            case "143":
-                return "Inmotion V10FT";
-            default:
-                return "Unknown";
-        }
+        return switch (model.getValue()) {
+            case "0" -> "Inmotion R1N";
+            case "1" -> "Inmotion R1S";
+            case "2" -> "Inmotion R1CF";
+            case "3" -> "Inmotion R1AP";
+            case "4" -> "Inmotion R1EX";
+            case "5" -> "Inmotion R1Sample";
+            case "6" -> "Inmotion R1T";
+            case "7" -> "Inmotion R10";
+            case "10" -> "Inmotion V3";
+            case "11" -> "Inmotion V3C";
+            case "12" -> "Inmotion V3PRO";
+            case "13" -> "Inmotion V3S";
+            case "21" -> "Inmotion R2N";
+            case "22" -> "Inmotion R2S";
+            case "23" -> "Inmotion R2Sample";
+            case "20" -> "Inmotion R2";
+            case "24" -> "Inmotion R2EX";
+            case "30" -> "Inmotion R0";
+            case "60" -> "Inmotion L6";
+            case "61" -> "Inmotion Lively";
+            case "50" -> "Inmotion V5";
+            case "51" -> "Inmotion V5PLUS";
+            case "52" -> "Inmotion V5F";
+            case "53" -> "Inmotion V5D";
+            case "80" -> "Inmotion V8";
+            case "85" -> "Solowheel Glide 3";
+            case "86" -> "Inmotion V8F";
+            case "87" -> "Inmotion V8S";
+            case "100" -> "Inmotion V10S";
+            case "101" -> "Inmotion V10SF";
+            case "140" -> "Inmotion V10";
+            case "141" -> "Inmotion V10F";
+            case "142" -> "Inmotion V10T";
+            case "143" -> "Inmotion V10FT";
+            default -> "Unknown";
+        };
     }
 
 
