@@ -1,6 +1,7 @@
 package com.cooper.wheellog.utils.inmotion
 
 import android.content.Intent
+import com.cooper.wheellog.AppConfig
 import com.cooper.wheellog.R
 import com.cooper.wheellog.WheelData
 import com.cooper.wheellog.WheelLog
@@ -18,7 +19,9 @@ import java.util.Timer
 import java.util.TimerTask
 import kotlin.math.abs
 
-class InMotionAdapter : BaseAdapter() {
+class InMotionAdapter(
+    private val appConfig: AppConfig,
+) : BaseAdapter() {
     private var keepAliveTimer: Timer? = null
     private var passwordSent = 0
     private var needSlowData = true
@@ -351,8 +354,8 @@ class InMotionAdapter : BaseAdapter() {
     }
 
     override fun switchFlashlight() {
-        val light = !WheelLog.AppConfig.lightEnabled
-        WheelLog.AppConfig.lightEnabled = light
+        val light = !appConfig.lightEnabled
+        appConfig.lightEnabled = light
         setLightState(light)
     }
 
@@ -423,7 +426,7 @@ class InMotionAdapter : BaseAdapter() {
         settingCommandReady = true
     }
 
-    class CANMessage {
+    class CANMessage() {
         internal enum class CanFormat(val value: Int) {
             StandardFormat(0),
             ExtendedFormat(1),
@@ -457,7 +460,7 @@ class InMotionAdapter : BaseAdapter() {
         var type = CanFrame.DataFrame.value
         var ex_data: ByteArray? = null
 
-        internal constructor(bArr: ByteArray) {
+        internal constructor(bArr: ByteArray) : this() {
             if (bArr.size < 16) return
             id = ((bArr[3] * 256 + bArr[2]) * 256 + bArr[1]) * 256 + bArr[0]
             data = Arrays.copyOfRange(bArr, 4, 12)
@@ -481,8 +484,6 @@ class InMotionAdapter : BaseAdapter() {
 
         val isValid: Boolean
             get() = ex_data != null
-
-        private constructor()
 
         fun writeBuffer(): ByteArray {
             val canBuffer = bytes
@@ -746,14 +747,15 @@ class InMotionAdapter : BaseAdapter() {
             wd.serial = serialNumber.toString()
             wd.setModel(getModelString(lmodel))
             wd.version = version
-            WheelLog.AppConfig.lightEnabled = light
-            WheelLog.AppConfig.ledEnabled = led
-            WheelLog.AppConfig.handleButtonDisabled = handlebutton
-            WheelLog.AppConfig.wheelMaxSpeed = maxspeed
-            WheelLog.AppConfig.speakerVolume = speakervolume
-            WheelLog.AppConfig.pedalsAdjustment = pedals
-            WheelLog.AppConfig.rideMode = rideMode
-            WheelLog.AppConfig.pedalSensivity = pedalHardness
+            val appConfig = WheelLog.AppConfig
+            appConfig.lightEnabled = light
+            appConfig.ledEnabled = led
+            appConfig.handleButtonDisabled = handlebutton
+            appConfig.wheelMaxSpeed = maxspeed
+            appConfig.speakerVolume = speakervolume
+            appConfig.pedalsAdjustment = pedals
+            appConfig.rideMode = rideMode
+            appConfig.pedalSensivity = pedalHardness
             instance!!.setModel(lmodel)
             return false
         }
@@ -1393,7 +1395,9 @@ class InMotionAdapter : BaseAdapter() {
             get() {
                 if (INSTANCE == null) {
                     Timber.i("New instance")
-                    INSTANCE = InMotionAdapter()
+                    INSTANCE = InMotionAdapter(
+                        WheelLog.AppConfig,
+                    )
                 } else {
                     Timber.i("Get instance")
                 }
@@ -1407,7 +1411,9 @@ class InMotionAdapter : BaseAdapter() {
                 INSTANCE!!.keepAliveTimer = null
             }
             Timber.i("New instance")
-            INSTANCE = InMotionAdapter()
+            INSTANCE = InMotionAdapter(
+                WheelLog.AppConfig,
+            )
         }
 
         @JvmStatic
