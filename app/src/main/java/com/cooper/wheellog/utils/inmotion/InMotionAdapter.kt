@@ -44,9 +44,9 @@ class InMotionAdapter(
                     if (result.isValid) {
                         needSlowData = false
                     }
-                    val result = result.parseSlowInfoMessage(model)
-                    setModel(result.second)
-                    return result.first
+                    val slowInfoResult = result.parseSlowInfoMessage(model)
+                    setModel(slowInfoResult.second)
+                    return slowInfoResult.first
                 }
                 IDValue.PinCode -> passwordSent = Int.MAX_VALUE
                 IDValue.NoOp,
@@ -291,7 +291,7 @@ class InMotionAdapter(
         UNLOCK(12),
     }
 
-    var unpacker = InMotionUnpacker()
+    private var unpacker = InMotionUnpacker()
 
     private fun setModel(value: Model) {
         model = value
@@ -361,23 +361,23 @@ class InMotionAdapter(
         setLightState(light)
     }
 
-    override fun setLightState(lightEnable: Boolean) {
-        settingCommand = CANMessage.setLight(lightEnable).writeBuffer()
+    override fun setLightState(on: Boolean) {
+        settingCommand = CANMessage.setLight(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setLedState(ledEnable: Boolean) {
-        settingCommand = CANMessage.setLed(ledEnable).writeBuffer()
+    override fun setLedState(on: Boolean) {
+        settingCommand = CANMessage.setLed(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun setHandleButtonState(handleButtonEnable: Boolean) {
-        settingCommand = CANMessage.setHandleButton(handleButtonEnable).writeBuffer()
+    override fun setHandleButtonState(on: Boolean) {
+        settingCommand = CANMessage.setHandleButton(on).writeBuffer()
         settingCommandReady = true
     }
 
-    override fun updateMaxSpeed(maxSpeed: Int) {
-        settingCommand = CANMessage.setMaxSpeed(maxSpeed).writeBuffer()
+    override fun updateMaxSpeed(wheelMaxSpeed: Int) {
+        settingCommand = CANMessage.setMaxSpeed(wheelMaxSpeed).writeBuffer()
         settingCommandReady = true
     }
 
@@ -396,8 +396,8 @@ class InMotionAdapter(
         settingCommandReady = true
     }
 
-    override fun setRideMode(rideMode: Boolean) {
-        settingCommand = CANMessage.setRideMode(rideMode).writeBuffer()
+    override fun setRideMode(on: Boolean) {
+        settingCommand = CANMessage.setRideMode(on).writeBuffer()
         settingCommandReady = true
     }
 
@@ -482,91 +482,89 @@ class InMotionAdapter(
             }
         }
 
-        fun batteryFromVoltage(volts_i: Int, model: Model): Int {
-            val volts = volts_i.toDouble() / 100.0
-            val batt: Double
-            batt =
-                if (model.belongToInputType("1") || model == Model.R0) {
-                    if (volts >= 82.50) {
-                        1.0
-                    } else if (volts > 68.0) {
-                        (volts - 68.0) / 14.50
-                    } else {
-                        0.0
-                    }
+        fun batteryFromVoltage(voltsI: Int, model: Model): Int {
+            val volts = voltsI.toDouble() / 100.0
+            val batt: Double = if (model.belongToInputType("1") || model == Model.R0) {
+                if (volts >= 82.50) {
+                    1.0
+                } else if (volts > 68.0) {
+                    (volts - 68.0) / 14.50
                 } else {
-                    val useBetterPercents = WheelLog.AppConfig.useBetterPercents
-                    if (
-                        model.belongToInputType("5") ||
-                        model == Model.V8 ||
-                        model == Model.Glide3 ||
-                        model == Model.V8F ||
-                        model == Model.V8S
-                    ) {
-                        if (useBetterPercents) {
-                            if (volts > 84.00) {
-                                1.0
-                            } else if (volts > 68.5) {
-                                (volts - 68.5) / 15.5
-                            } else {
-                                0.0
-                            }
-                        } else {
-                            if (volts > 82.50) {
-                                1.0
-                            } else if (volts > 68.0) {
-                                (volts - 68.0) / 14.5
-                            } else {
-                                0.0
-                            }
-                        }
-                    } else if (
-                        model == Model.V10 ||
-                        model == Model.V10F ||
-                        model == Model.V10S ||
-                        model == Model.V10SF ||
-                        model == Model.V10T ||
-                        model == Model.V10FT
-                    ) {
-                        if (useBetterPercents) {
-                            if (volts > 83.50) {
-                                1.00
-                            } else if (volts > 68.00) {
-                                (volts - 66.50) / 17
-                            } else if (volts > 64.00) {
-                                (volts - 64.00) / 45
-                            } else {
-                                0.0
-                            }
-                        } else {
-                            if (volts > 82.50) {
-                                1.0
-                            } else if (volts > 68.0) {
-                                (volts - 68.0) / 14.5
-                            } else {
-                                0.0
-                            }
-                        }
-                    } else if (model.belongToInputType("6")) {
-                        0.0
-                    } else {
-                        if (volts >= 82.00) {
+                    0.0
+                }
+            } else {
+                val useBetterPercents = WheelLog.AppConfig.useBetterPercents
+                if (
+                    model.belongToInputType("5") ||
+                    model == Model.V8 ||
+                    model == Model.Glide3 ||
+                    model == Model.V8F ||
+                    model == Model.V8S
+                ) {
+                    if (useBetterPercents) {
+                        if (volts > 84.00) {
                             1.0
-                        } else if (volts > 77.8) {
-                            (volts - 77.8) / 4.2 * 0.2 + 0.8
-                        } else if (volts > 74.8) {
-                            (volts - 74.8) / 3.0 * 0.2 + 0.6
-                        } else if (volts > 71.8) {
-                            (volts - 71.8) / 3.0 * 0.2 + 0.4
-                        } else if (volts > 70.3) {
-                            (volts - 70.3) / 1.5 * 0.2 + 0.2
+                        } else if (volts > 68.5) {
+                            (volts - 68.5) / 15.5
+                        } else {
+                            0.0
+                        }
+                    } else {
+                        if (volts > 82.50) {
+                            1.0
                         } else if (volts > 68.0) {
-                            (volts - 68.0) / 2.3 * 0.2
+                            (volts - 68.0) / 14.5
                         } else {
                             0.0
                         }
                     }
+                } else if (
+                    model == Model.V10 ||
+                    model == Model.V10F ||
+                    model == Model.V10S ||
+                    model == Model.V10SF ||
+                    model == Model.V10T ||
+                    model == Model.V10FT
+                ) {
+                    if (useBetterPercents) {
+                        if (volts > 83.50) {
+                            1.00
+                        } else if (volts > 68.00) {
+                            (volts - 66.50) / 17
+                        } else if (volts > 64.00) {
+                            (volts - 64.00) / 45
+                        } else {
+                            0.0
+                        }
+                    } else {
+                        if (volts > 82.50) {
+                            1.0
+                        } else if (volts > 68.0) {
+                            (volts - 68.0) / 14.5
+                        } else {
+                            0.0
+                        }
+                    }
+                } else if (model.belongToInputType("6")) {
+                    0.0
+                } else {
+                    if (volts >= 82.00) {
+                        1.0
+                    } else if (volts > 77.8) {
+                        (volts - 77.8) / 4.2 * 0.2 + 0.8
+                    } else if (volts > 74.8) {
+                        (volts - 74.8) / 3.0 * 0.2 + 0.6
+                    } else if (volts > 71.8) {
+                        (volts - 71.8) / 3.0 * 0.2 + 0.4
+                    } else if (volts > 70.3) {
+                        (volts - 70.3) / 1.5 * 0.2 + 0.2
+                    } else if (volts > 68.0) {
+                        (volts - 68.0) / 2.3 * 0.2
+                    } else {
+                        0.0
+                    }
                 }
+            }
             return (batt * 100.0).toInt()
         }
 
