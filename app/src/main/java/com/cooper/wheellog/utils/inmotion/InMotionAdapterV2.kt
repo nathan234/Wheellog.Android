@@ -127,7 +127,7 @@ class InMotionAdapterV2(
         stateCon = 0
         val timerTask: TimerTask = object : TimerTask() {
             override fun run() {
-                val result = timerUpdateUseCase.extracted(
+                val result = timerUpdateUseCase.invoke(
                     updateStep = updateStep,
                     stateCon = stateCon,
                     settingCommandReady = settingCommandReady,

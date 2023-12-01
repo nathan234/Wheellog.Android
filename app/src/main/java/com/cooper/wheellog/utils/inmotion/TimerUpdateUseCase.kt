@@ -4,7 +4,7 @@ import com.cooper.wheellog.WheelData
 import timber.log.Timber
 
 class TimerUpdateUseCase(private val wd: WheelData) {
-    fun extracted(
+    fun invoke(
         updateStep: Int,
         stateCon: Int,
         settingCommandReady: Boolean,
