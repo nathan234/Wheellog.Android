@@ -13,6 +13,7 @@ import java.util.TimerTask
 
 class InMotionAdapter(
     private val appConfig: AppConfig,
+    private val wheelData: WheelData,
 ) : BaseAdapter() {
     private var keepAliveTimer: Timer? = null
     private var passwordSent = 0
@@ -114,7 +115,7 @@ class InMotionAdapter(
     }
 
     override val isReady: Boolean
-        get() = model != Model.UNKNOWN && WheelData.getInstance().serial != ""
+        get() = model != Model.UNKNOWN && wheelData.serial != ""
 
     enum class Mode(val value: Int) {
         ROOKIE(0),
@@ -301,42 +302,47 @@ class InMotionAdapter(
             object : TimerTask() {
                 override fun run() {
                     if (updateStep == 0) {
-                        if (passwordSent < 6) {
-                            if (
-                                WheelData.getInstance()
-                                    .bluetoothCmd(CANMessage.getPassword(password).writeBuffer())
-                            ) {
-                                Timber.i("Sent password message")
-                                passwordSent++
-                            } else {
-                                updateStep = 5
+                        when {
+                            passwordSent < 6 -> {
+                                if (
+                                    wheelData
+                                        .bluetoothCmd(CANMessage.getPassword(password).writeBuffer())
+                                ) {
+                                    Timber.i("Sent password message")
+                                    passwordSent++
+                                } else {
+                                    updateStep = 5
+                                }
                             }
-                        } else if ((model == Model.UNKNOWN) or needSlowData) {
-                            if (
-                                WheelData.getInstance()
-                                    .bluetoothCmd(CANMessage.slowData.writeBuffer())
-                            ) {
-                                Timber.i("Sent infos message")
-                            } else {
-                                updateStep = 5
+                            (model == Model.UNKNOWN) or needSlowData -> {
+                                if (
+                                    wheelData
+                                        .bluetoothCmd(CANMessage.slowData.writeBuffer())
+                                ) {
+                                    Timber.i("Sent infos message")
+                                } else {
+                                    updateStep = 5
+                                }
                             }
-                        } else if (settingCommandReady) {
-                            if (WheelData.getInstance().bluetoothCmd(settingCommand)) {
-                                needSlowData = true
-                                settingCommandReady = false
-                                Timber.i("Sent command message")
-                            } else {
-                                updateStep = 5 // after +1 and %10 = 0
+                            settingCommandReady -> {
+                                if (wheelData.bluetoothCmd(settingCommand)) {
+                                    needSlowData = true
+                                    settingCommandReady = false
+                                    Timber.i("Sent command message")
+                                } else {
+                                    updateStep = 5 // after +1 and %10 = 0
+                                }
                             }
-                        } else {
-                            if (
-                                !WheelData.getInstance()
-                                    .bluetoothCmd(CANMessage.standardMessage().writeBuffer())
-                            ) {
-                                Timber.i("Unable to send keep-alive message")
-                                updateStep = 5
-                            } else {
-                                Timber.i("Sent keep-alive message")
+                            else -> {
+                                if (
+                                    !wheelData
+                                        .bluetoothCmd(CANMessage.standardMessage().writeBuffer())
+                                ) {
+                                    Timber.i("Unable to send keep-alive message")
+                                    updateStep = 5
+                                } else {
+                                    Timber.i("Sent keep-alive message")
+                                }
                             }
                         }
                     }
@@ -612,6 +618,7 @@ class InMotionAdapter(
                     Timber.i("New instance")
                     INSTANCE = InMotionAdapter(
                         WheelLog.AppConfig,
+                        WheelData.getInstance(),
                     )
                 } else {
                     Timber.i("Get instance")
@@ -628,6 +635,7 @@ class InMotionAdapter(
             Timber.i("New instance")
             INSTANCE = InMotionAdapter(
                 WheelLog.AppConfig,
+                WheelData.getInstance(),
             )
         }
 
