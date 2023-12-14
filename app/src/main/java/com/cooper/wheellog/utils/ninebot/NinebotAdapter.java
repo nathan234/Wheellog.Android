@@ -25,14 +25,15 @@ public class NinebotAdapter extends BaseAdapter {
     private static int stateCon = 0;
     private static byte protoVersion = 0;
     private final WheelData wd;
+    private final NinebotUnpacker unpacker;
 
     public NinebotAdapter(
-            final WheelData wd
+            final WheelData wd,
+            final NinebotUnpacker unpacker
     ) {
         this.wd = wd;
+        this.unpacker = unpacker;
     }
-
-    NinebotUnpacker unpacker = new NinebotUnpacker();
 
     public void startKeepAliveTimer(final String protoVer) {
         Timber.i("Ninebot timer starting");
@@ -641,7 +642,8 @@ public class NinebotAdapter extends BaseAdapter {
         if (INSTANCE == null) {
             Timber.i("New instance");
             INSTANCE = new NinebotAdapter(
-                    WheelData.getInstance()
+                    WheelData.getInstance(),
+                    new NinebotUnpacker()
             );
         }
         return INSTANCE;
@@ -654,7 +656,10 @@ public class NinebotAdapter extends BaseAdapter {
 
         }
         Timber.i("New instance");
-        INSTANCE = new NinebotAdapter(WheelData.getInstance());
+        INSTANCE = new NinebotAdapter(
+                WheelData.getInstance(),
+                new NinebotUnpacker()
+        );
     }
 
     public static synchronized void stopTimer() {
