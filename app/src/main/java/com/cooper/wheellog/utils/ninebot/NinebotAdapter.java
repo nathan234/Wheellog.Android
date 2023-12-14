@@ -8,6 +8,7 @@ import com.cooper.wheellog.utils.StringUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
+
 import timber.log.Timber;
 
 /**
@@ -22,6 +23,13 @@ public class NinebotAdapter extends BaseAdapter {
     private static byte[] gamma = new byte[16];
     private static int stateCon = 0;
     private static byte protoVersion = 0;
+    private final WheelData wd;
+
+    public NinebotAdapter(
+            final WheelData wd
+    ) {
+        this.wd = wd;
+    }
 
     NinebotUnpacker unpacker = new NinebotUnpacker();
 
@@ -36,22 +44,22 @@ public class NinebotAdapter extends BaseAdapter {
             public void run() {
                 if (updateStep == 0) {
                     if (stateCon == 0) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotAdapter.CANMessage.getSerialNumber().writeBuffer())) {
+                        if (wd.bluetoothCmd(NinebotAdapter.CANMessage.getSerialNumber().writeBuffer())) {
                             Timber.i("Sent serial number message");
                         } else updateStep = 39;
 
                     } else if (stateCon == 1) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotAdapter.CANMessage.getVersion().writeBuffer())) {
+                        if (wd.bluetoothCmd(NinebotAdapter.CANMessage.getVersion().writeBuffer())) {
                             Timber.i("Sent serial version message");
                         } else updateStep = 39;
 
                     } else if (settingCommandReady) {
-                        if (WheelData.getInstance().bluetoothCmd(settingCommand)) {
+                        if (wd.bluetoothCmd(settingCommand)) {
                             settingCommandReady = false;
                             Timber.i("Sent command message");
                         } else updateStep = 39;
                     } else {
-                        if (!WheelData.getInstance().bluetoothCmd(NinebotAdapter.CANMessage.getLiveData().writeBuffer())) {
+                        if (!wd.bluetoothCmd(NinebotAdapter.CANMessage.getLiveData().writeBuffer())) {
                             Timber.i("Unable to send keep-alive message");
                             updateStep = 39;
                         } else {
@@ -85,10 +93,9 @@ public class NinebotAdapter extends BaseAdapter {
     public boolean decode(byte[] data) {
         Timber.i("Ninebot_decoding");
         ArrayList<NinebotAdapter.Status> statuses = charUpdated(data);
-        if (statuses.size() < 1) {
+        if (statuses.isEmpty()) {
             return false;
         }
-        WheelData wd = WheelData.getInstance();
         wd.resetRideTime();
         for (NinebotAdapter.Status status : statuses) {
             Timber.i(status.toString());
@@ -115,9 +122,9 @@ public class NinebotAdapter extends BaseAdapter {
 
     @Override
     public boolean isReady() {
-        return !Objects.equals(WheelData.getInstance().getSerial(), "")
-            && !Objects.equals(WheelData.getInstance().getVersion(), "")
-            && WheelData.getInstance().getVoltage() != 0;
+        return !Objects.equals(wd.getSerial(), "")
+                && !Objects.equals(wd.getVersion(), "")
+                && wd.getVoltage() != 0;
     }
 
     public static class Status {
@@ -259,7 +266,7 @@ public class NinebotAdapter extends BaseAdapter {
     public static class CANMessage {
         enum Addr {
             Controller(0x01, 0x01, 0x01),
-            KeyGenerator(0x16,0x16, 0x16),
+            KeyGenerator(0x16, 0x16, 0x16),
             App(0x09, 0x11, 0x0A);
 
             private final int value_def;
@@ -282,7 +289,6 @@ public class NinebotAdapter extends BaseAdapter {
                 }
             }
         }
-
 
 
         enum Comm {
@@ -442,7 +448,7 @@ public class NinebotAdapter extends BaseAdapter {
             msg.destination = Addr.Controller.getValue();
             msg.parameter = Param.Firmware.getValue();
             msg.data = new byte[]{0x02};
-            msg.len = msg.data.length+2;
+            msg.len = msg.data.length + 2;
             msg.crc = 0;
             return msg;
         }
@@ -454,7 +460,7 @@ public class NinebotAdapter extends BaseAdapter {
 //            msg.command = Comm.Read.getValue();
             msg.parameter = Param.ActivationDate.getValue();
             msg.data = new byte[]{0x02};
-            msg.len = msg.data.length+2;
+            msg.len = msg.data.length + 2;
             msg.crc = 0;
             return msg;
         }
@@ -472,7 +478,7 @@ public class NinebotAdapter extends BaseAdapter {
 
         @Deprecated
         private byte[] parseKey() {
-            byte [] gammaTemp = Arrays.copyOfRange(data, 0, data.length);
+            byte[] gammaTemp = Arrays.copyOfRange(data, 0, data.length);
             StringBuilder gamma_text = new StringBuilder();
             for (byte datum : data) {
                 gamma_text.append(String.format("%02X", datum));
@@ -494,7 +500,7 @@ public class NinebotAdapter extends BaseAdapter {
         }
 
         versionStatus parseVersionNumber() {
-            String versionNumber ="";
+            String versionNumber = "";
             if (protoVersion == 1) {
                 versionNumber = String.format(Locale.US, "%d.%d.%d", data[1] >> 4, data[0] >> 4, data[0] & 0xf);
             } else if (protoVersion == 2) {
@@ -506,10 +512,10 @@ public class NinebotAdapter extends BaseAdapter {
 
         activationStatus parseActivationDate() {
             int activationDate = MathsUtil.shortFromBytesLE(data, 0);
-            int year = activationDate>>9;
-            int mounth = (activationDate>>5) & 0x0f;
+            int year = activationDate >> 9;
+            int mounth = (activationDate >> 5) & 0x0f;
             int day = activationDate & 0x1f;
-            String activationDateStr = String.format("%02d.%02d.20%02d", day, mounth,year);
+            String activationDateStr = String.format("%02d.%02d.20%02d", day, mounth, year);
             return new activationStatus(activationDateStr);
         }
 
@@ -518,8 +524,7 @@ public class NinebotAdapter extends BaseAdapter {
             int speed;
             if (protoVersion == 1) {
                 speed = MathsUtil.shortFromBytesLE(data, 28); //speed up to 320.00 km/h
-            }
-            else {
+            } else {
                 speed = Math.abs(MathsUtil.signedShortFromBytesLE(data, 10) / 10); //speed up to 32.000 km/h
             }
             int distance = MathsUtil.intFromBytesLE(data, 14);
@@ -690,7 +695,9 @@ public class NinebotAdapter extends BaseAdapter {
         Timber.i("Get instance");
         if (INSTANCE == null) {
             Timber.i("New instance");
-            INSTANCE = new NinebotAdapter();
+            INSTANCE = new NinebotAdapter(
+                    WheelData.getInstance()
+            );
         }
         return INSTANCE;
     }
@@ -702,7 +709,7 @@ public class NinebotAdapter extends BaseAdapter {
 
         }
         Timber.i("New instance");
-        INSTANCE = new NinebotAdapter();
+        INSTANCE = new NinebotAdapter(WheelData.getInstance());
     }
 
     public static synchronized void stopTimer() {
