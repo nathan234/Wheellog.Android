@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 
+import kotlin.Pair;
 import timber.log.Timber;
 
 /**
@@ -570,7 +571,9 @@ public class NinebotAdapter extends BaseAdapter {
         ArrayList<Status> outValues = new ArrayList<>();
         Timber.i("Got data ");
         for (byte c : data) {
-            if (unpacker.addChar(c)) {
+            Pair<Boolean, Integer> unpackerResult = unpacker.addChar(c, updateStep);
+            updateStep = unpackerResult.getSecond();
+            if (unpackerResult.getFirst()) {
                 Timber.i("Starting verification");
                 CANMessage result = CANMessage.verify(unpacker.getBuffer());
 
@@ -627,68 +630,10 @@ public class NinebotAdapter extends BaseAdapter {
                     } else if (result.parameter == CANMessage.Param.LiveData6.getValue()) {
                         Timber.i("Get life data");
                     }
-
                 }
             }
         }
         return outValues;
-    }
-
-    static class NinebotUnpacker {
-
-        enum UnpackerState {
-            unknown,
-            started,
-            collecting,
-            done
-        }
-
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        int oldc = 0;
-        int len = 0;
-        UnpackerState state = UnpackerState.unknown;
-
-        byte[] getBuffer() {
-            return buffer.toByteArray();
-        }
-
-        boolean addChar(int c) {
-
-            switch (state) {
-                case collecting:
-                    buffer.write(c);
-                    if (buffer.size() == len + 6) {
-                        state = UnpackerState.done;
-                        updateStep = 0;
-                        Timber.i("Len %d", len);
-                        Timber.i("Step reset");
-                        return true;
-                    }
-                    break;
-                case started:
-                    buffer.write(c);
-                    len = c & 0xff;
-                    state = UnpackerState.collecting;
-                    break;
-                default:
-                    if (c == (byte) 0xAA && oldc == (byte) 0x55) {
-                        Timber.i("Find start");
-                        buffer = new ByteArrayOutputStream();
-                        buffer.write(0x55);
-                        buffer.write(0xAA);
-                        state = UnpackerState.started;
-                    }
-                    oldc = c;
-            }
-            return false;
-        }
-
-        void reset() {
-            buffer = new ByteArrayOutputStream();
-            oldc = 0;
-            state = UnpackerState.unknown;
-
-        }
     }
 
     public static NinebotAdapter getInstance() {
