@@ -52,7 +52,7 @@ import com.cooper.wheellog.utils.PermissionsUtil.isMaxBleReq
 import com.cooper.wheellog.utils.SomeUtil.getSerializable
 import com.cooper.wheellog.utils.SomeUtil.playBeep
 import com.cooper.wheellog.utils.inmotion.InMotionAdapter
-import com.cooper.wheellog.utils.inmotion.InmotionAdapterV2
+import com.cooper.wheellog.utils.inmotion.InMotionAdapterV2
 import com.cooper.wheellog.utils.kingsong.KingsongAdapter
 import com.cooper.wheellog.utils.ninebot.NinebotAdapter
 import com.cooper.wheellog.utils.ninebot.NinebotZAdapter
@@ -373,12 +373,12 @@ class MainActivity : AppCompatActivity() {
                             when (WheelData.getInstance().wheelType) {
                                 WHEEL_TYPE.INMOTION -> {
                                     InMotionAdapter.newInstance()
-                                    InmotionAdapterV2.newInstance()
+                                    InMotionAdapterV2.newInstance()
                                     NinebotZAdapter.newInstance()
                                     NinebotAdapter.newInstance()
                                 }
                                 WHEEL_TYPE.INMOTION_V2 -> {
-                                    InmotionAdapterV2.newInstance()
+                                    InMotionAdapterV2.newInstance()
                                     NinebotZAdapter.newInstance()
                                     NinebotAdapter.newInstance()
                                 }
