@@ -133,26 +133,17 @@ public class NinebotZAdapter extends BaseAdapter {
 
     @Override
     public String getLedModeString() {
-        switch (WheelLog.AppConfig.getLedMode()) {
-            case "0":
-                return getContext().getString(R.string.off);
-            case "1":
-                return getContext().getString(R.string.led_type1);
-            case "2":
-                return getContext().getString(R.string.led_type2);
-            case "3":
-                return getContext().getString(R.string.led_type3);
-            case "4":
-                return getContext().getString(R.string.led_type4);
-            case "5":
-                return getContext().getString(R.string.led_type5);
-            case "6":
-                return getContext().getString(R.string.led_type6);
-            case "7":
-                return getContext().getString(R.string.led_type7);
-            default:
-                return getContext().getString(R.string.led_mode_nb_description);
-        }
+        return switch (WheelLog.AppConfig.getLedMode()) {
+            case "0" -> getContext().getString(R.string.off);
+            case "1" -> getContext().getString(R.string.led_type1);
+            case "2" -> getContext().getString(R.string.led_type2);
+            case "3" -> getContext().getString(R.string.led_type3);
+            case "4" -> getContext().getString(R.string.led_type4);
+            case "5" -> getContext().getString(R.string.led_type5);
+            case "6" -> getContext().getString(R.string.led_type6);
+            case "7" -> getContext().getString(R.string.led_type7);
+            default -> getContext().getString(R.string.led_mode_nb_description);
+        };
     }
 
     @Override
