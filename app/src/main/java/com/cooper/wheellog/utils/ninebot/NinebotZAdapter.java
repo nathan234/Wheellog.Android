@@ -11,6 +11,8 @@ import com.cooper.wheellog.utils.StringUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
+
+import kotlin.Pair;
 import timber.log.Timber;
 
 /**
@@ -60,106 +62,7 @@ public class NinebotZAdapter extends BaseAdapter {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                if (updateStep == 0) {
-                    Timber.i("State connection %d", stateCon);
-                    if (stateCon == 0) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getBleVersion().writeBuffer())) {
-                            Timber.i("Sent start message");
-                        } else Timber.i("Unable to send start message");
 
-                    } else if (stateCon == 1) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getKey().writeBuffer())) {
-                            Timber.i("Sent getkey message");
-                        } else Timber.i("Unable to send getkey message");
-
-                    } else if (stateCon == 2) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getSerialNumber().writeBuffer())) {
-                            Timber.i("Sent serial number message");
-                        } else Timber.i("Unable to send serial number message");
-
-                    } else if (stateCon == 3) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getVersion().writeBuffer())) {
-                            Timber.i("Sent version message");
-                        } else Timber.i("Unable to send version message");
-
-                    } else if (stateCon == 4) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getParams1().writeBuffer())) {
-                            Timber.i("Sent getParams1 message");
-                        } else Timber.i("Unable to send getParams1 message");
-
-                    } else if (stateCon == 5) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getParams2().writeBuffer())) {
-                            Timber.i("Sent getParams2 message");
-                        } else Timber.i("Unable to send getParams2 message");
-
-                    } else if (stateCon == 6) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getParams3().writeBuffer())) {
-                            Timber.i("Sent getParams3 message");
-                        } else Timber.i("Unable to send getParams2 message");
-
-                    } else if (stateCon == 7) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getBms1Sn().writeBuffer())) {
-                            Timber.i("Sent BMS1 SN message");
-                        } else Timber.i("Unable to send BMS1 SN message");
-                    } else if (stateCon == 8) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getBms1Life().writeBuffer())) {
-                            Timber.i("Sent BMS1 life message");
-                        } else Timber.i("Unable to send BMS1 life message");
-                    } else if (stateCon == 9) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getBms1Cells().writeBuffer())) {
-                            Timber.i("Sent BMS1 cells message");
-                        } else Timber.i("Unable to send BMS1 cells message");
-                    } else if (stateCon == 10) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getBms2Sn().writeBuffer())) {
-                            Timber.i("Sent BMS2 SN message");
-                        } else Timber.i("Unable to send BMS2 SN message");
-                    } else if (stateCon == 11) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getBms2Life().writeBuffer())) {
-                            Timber.i("Sent BMS2 life message");
-                        } else Timber.i("Unable to send BMS2 life message");
-                    } else if (stateCon == 12) {
-                        if (WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getBms2Cells().writeBuffer())) {
-                            Timber.i("Sent BMS2 cells message");
-                        } else Timber.i("Unable to send BMS2 cells message");
-
-                    } else if (settingCommandReady) {
-                        if (WheelData.getInstance().bluetoothCmd(settingCommand)) {
-                            settingCommandReady = false;
-                            Timber.i("Sent command message");
-                        } else Timber.i("Unable to send command message");
-
-                    } else if (settingRequestReady) {
-                        if (WheelData.getInstance().bluetoothCmd(settingRequest)) {
-                            settingRequestReady = false;
-                            Timber.i("Sent settings request message");
-                        } else Timber.i("Unable to send settings request message");
-
-                    } else {
-                        if (!WheelData.getInstance().bluetoothCmd(NinebotZAdapter.CANMessage.getLiveData().writeBuffer())) {
-                            Timber.i("Unable to send keep-alive message");
-                        } else {
-                            Timber.i("Sent keep-alive message");
-                        }
-                    }
-
-                }
-                updateStep += 1;
-
-                if ((updateStep == 5) && (stateCon > 6) && (stateCon < 13)) {
-                    stateCon += 1;
-                    Timber.i("Change state to %d 1", stateCon);
-                    if (stateCon > 12) stateCon = 7;
-                }
-                if (bmsMode && (stateCon == 13)) {
-                    stateCon = 7;
-                    Timber.i("Change state to %d 2", stateCon);
-                }
-                if (!bmsMode && (stateCon > 6) && (stateCon < 13)) {
-                    stateCon = 13;
-                    Timber.i("Change state to %d 3", stateCon);
-                }
-                updateStep %= 5;
-                Timber.i("Step: %d", updateStep);
             }
         };
         Timber.i("Ninebot Z timer started");
@@ -255,7 +158,9 @@ public class NinebotZAdapter extends BaseAdapter {
         setBmsReadingMode(wd.getBmsView());
         boolean retResult = false;
         for (byte c : data) {
-            if (unpacker.addChar(c)) {
+            Pair<Boolean, Integer> charResult = unpacker.addChar(c, updateStep);
+            updateStep = charResult.getSecond();
+            if (charResult.getFirst()) {
                 Timber.i("Starting verification");
                 CANMessage result = CANMessage.verify(unpacker.getBuffer());
 
@@ -1206,56 +1111,6 @@ public class NinebotZAdapter extends BaseAdapter {
 
         public byte[] getData() {
             return data;
-        }
-    }
-
-    static class NinebotZUnpacker {
-
-        enum UnpackerState {
-            unknown,
-            started,
-            collecting,
-            done
-        }
-
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        int oldc = 0;
-        int len = 0;
-        UnpackerState state = UnpackerState.unknown;
-
-        byte[] getBuffer() {
-            return buffer.toByteArray();
-        }
-
-        boolean addChar(int c) {
-
-            switch (state) {
-                case collecting:
-                    buffer.write(c);
-                    if (buffer.size() == len + 9) {
-                        state = UnpackerState.done;
-                        updateStep = 0;
-                        Timber.i("Len %d", len);
-                        Timber.i("Step reset");
-                        return true;
-                    }
-                    break;
-                case started:
-                    buffer.write(c);
-                    len = c & 0xff;
-                    state = UnpackerState.collecting;
-                    break;
-                default:
-                    if (c == (byte) 0xA5 && oldc == (byte) 0x5A) {
-                        Timber.i("Find start");
-                        buffer = new ByteArrayOutputStream();
-                        buffer.write(0x5A);
-                        buffer.write(0xA5);
-                        state = UnpackerState.started;
-                    }
-                    oldc = c;
-            }
-            return false;
         }
     }
 
