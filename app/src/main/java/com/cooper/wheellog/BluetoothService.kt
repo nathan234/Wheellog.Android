@@ -114,16 +114,16 @@ class BluetoothService: Service() {
                         WHEEL_TYPE.INMOTION -> {
                             InMotionAdapter.stopTimer()
                             InMotionAdapterV2.stopTimer()
-                            NinebotZAdapter.getInstance().resetConnection()
+                            NinebotZAdapter.instance!!.resetConnection()
                             NinebotAdapter.getInstance().resetConnection()
                         }
                         WHEEL_TYPE.INMOTION_V2 -> {
                             InMotionAdapterV2.stopTimer()
-                            NinebotZAdapter.getInstance().resetConnection()
+                            NinebotZAdapter.instance!!.resetConnection()
                             NinebotAdapter.getInstance().resetConnection()
                         }
                         WHEEL_TYPE.NINEBOT_Z -> {
-                            NinebotZAdapter.getInstance().resetConnection()
+                            NinebotZAdapter.instance!!.resetConnection()
                             NinebotAdapter.getInstance().resetConnection()
                         }
                         WHEEL_TYPE.NINEBOT -> NinebotAdapter.getInstance().resetConnection()

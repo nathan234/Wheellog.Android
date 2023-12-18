@@ -53,7 +53,7 @@ fun wheelScreen() {
 
 @Composable
 private fun ninebotZ() {
-    val adapter by remember { mutableStateOf(NinebotZAdapter.getInstance()) }
+    val adapter by remember { mutableStateOf(NinebotZAdapter.instance!!) }
     switchPref(
         name = stringResource(R.string.on_headlight_title),
         desc = stringResource(R.string.on_headlight_description),
@@ -102,7 +102,7 @@ private fun ninebotZ() {
             desc = stringResource(R.string.wheel_alarm1_description),
             position = AppConfig.wheelAlarm1Speed.toFloat(),
             min = 0f,
-            max = NinebotZAdapter.getInstance().wheelAlarmMax.toFloat(),
+            max = NinebotZAdapter.instance!!.wheelAlarmMax.toFloat(),
             unit = R.string.kmh,
         ) {
             AppConfig.wheelAlarm1Speed = it.toInt()
@@ -125,7 +125,7 @@ private fun ninebotZ() {
             desc = stringResource(R.string.wheel_alarm2_description),
             position = AppConfig.wheelAlarm2Speed.toFloat(),
             min = 0f,
-            max = NinebotZAdapter.getInstance().wheelAlarmMax.toFloat(),
+            max = NinebotZAdapter.instance!!.wheelAlarmMax.toFloat(),
             unit = R.string.kmh,
         ) {
             AppConfig.wheelAlarm2Speed = it.toInt()
@@ -148,7 +148,7 @@ private fun ninebotZ() {
             desc = stringResource(R.string.wheel_alarm3_description),
             position = AppConfig.wheelAlarm3Speed.toFloat(),
             min = 0f,
-            max = NinebotZAdapter.getInstance().wheelAlarmMax.toFloat(),
+            max = NinebotZAdapter.instance!!.wheelAlarmMax.toFloat(),
             unit = R.string.kmh,
         ) {
             AppConfig.wheelAlarm3Speed = it.toInt()
@@ -196,11 +196,11 @@ private fun ninebotZ() {
         max = 4f,
     ) {
         AppConfig.pedalSensivity = it.toInt()
-        adapter.pedalSensivity = it.toInt()
+        adapter.setPedalSensivity(it.toInt())
     }
     list(
         name = stringResource(R.string.led_mode_title),
-        desc = NinebotZAdapter.getInstance().ledModeString ?: "",
+        desc = NinebotZAdapter.instance!!.ledModeString ?: "",
         entries = mapOf(
             "0" to stringResource(R.string.off),
             "1" to stringResource(R.string.led_type1),
@@ -216,7 +216,7 @@ private fun ninebotZ() {
         AppConfig.ledMode = it.first
         adapter.updateLedMode(Integer.parseInt(it.first))
     }
-    if (NinebotZAdapter.getInstance().getLedIsAvailable(1)) {
+    if (NinebotZAdapter.instance!!.getLedIsAvailable(1)) {
         sliderPref(
             name = stringResource(R.string.nb_led_color1_title),
             desc = stringResource(R.string.nb_led_color_description),
@@ -228,7 +228,7 @@ private fun ninebotZ() {
             adapter.setLedColor(it.toInt(), 1)
         }
     }
-    if (NinebotZAdapter.getInstance().getLedIsAvailable(2)) {
+    if (NinebotZAdapter.instance!!.getLedIsAvailable(2)) {
         sliderPref(
             name = stringResource(R.string.nb_led_color2_title),
             desc = stringResource(R.string.nb_led_color_description),
@@ -240,7 +240,7 @@ private fun ninebotZ() {
             adapter.setLedColor(it.toInt(), 2)
         }
     }
-    if (NinebotZAdapter.getInstance().getLedIsAvailable(3)) {
+    if (NinebotZAdapter.instance!!.getLedIsAvailable(3)) {
         sliderPref(
             name = stringResource(R.string.nb_led_color3_title),
             desc = stringResource(R.string.nb_led_color_description),
@@ -252,7 +252,7 @@ private fun ninebotZ() {
             adapter.setLedColor(it.toInt(), 3)
         }
     }
-    if (NinebotZAdapter.getInstance().getLedIsAvailable(4)) {
+    if (NinebotZAdapter.instance!!.getLedIsAvailable(4)) {
         sliderPref(
             name = stringResource(R.string.nb_led_color4_title),
             desc = stringResource(R.string.nb_led_color_description),
@@ -272,7 +272,7 @@ private fun ninebotZ() {
         max = 127f,
     ) {
         AppConfig.speakerVolume = it.toInt()
-        adapter.speakerVolume = it.toInt()
+        adapter.setSpeakerVolume(it.toInt())
     }
     switchPref(
         name = stringResource(R.string.lock_mode_title),
