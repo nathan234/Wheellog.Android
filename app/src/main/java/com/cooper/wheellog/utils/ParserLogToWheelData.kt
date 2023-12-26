@@ -13,7 +13,7 @@ class ParserLogToWheelData {
     fun parseFile(fileUtil: FileUtil) {
         val inputStream = fileUtil.inputStream
         if (inputStream == null) {
-            Timber.wtf(fileUtil.context.getString(R.string.error_inputstream_null) + " " + fileUtil.fileName)
+            Timber.wtf(fileUtil.context?.getString(R.string.error_inputstream_null) + " " + fileUtil.fileName)
             return
         }
 
@@ -28,7 +28,7 @@ class ParserLogToWheelData {
             }
             if (!header.containsKey(LogHeaderEnum.LATITUDE) || !header.containsKey(LogHeaderEnum.LONGITUDE)) {
                 inputStream.close()
-                Timber.wtf(fileUtil.context.getString(R.string.error_this_file_without_gps, fileUtil.fileName))
+                Timber.wtf(fileUtil.context?.getString(R.string.error_this_file_without_gps, fileUtil.fileName))
                 return
             }
 

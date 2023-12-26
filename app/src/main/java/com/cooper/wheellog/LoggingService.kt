@@ -104,7 +104,7 @@ class LoggingService : Service() {
         ) {
             val lastFileUtil = FileUtil.getLastLog(applicationContext)
             if (lastFileUtil != null &&
-                lastFileUtil.file.path.contains(mac.replace(':', '_'))
+                lastFileUtil.file?.path?.contains(mac.replace(':', '_')) == true
             ) {
                 fileUtil = lastFileUtil
                 // parse prev log for filling wheeldata values
@@ -116,9 +116,11 @@ class LoggingService : Service() {
                 val dao = ElectroClub.instance.dao
                 if (dao != null) {
                     ioState.launch {
-                        dao.getTripByFileName(fileUtil!!.file.name)?.apply {
-                            duration = 0
-                            dao.update(this)
+                        fileUtil!!.file?.name?.let {
+                            dao.getTripByFileName(it)?.apply {
+                                duration = 0
+                                dao.update(this)
+                            }
                         }
                     }
                 }

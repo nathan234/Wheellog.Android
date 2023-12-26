@@ -122,7 +122,7 @@ class NotificationUtil(private val context: Context) {
                 if (LoggingService.isInstanceCreated()) ThemeManager.getId(ThemeIconEnum.NotificationLogOn)
                 else ThemeManager.getId(ThemeIconEnum.NotificationLogOff))
         notificationView.setImageViewResource(R.id.ib_watch,
-                if (PebbleService.isInstanceCreated()) ThemeManager.getId(ThemeIconEnum.NotificationWatchOn)
+                if (PebbleService.isInstanceCreated) ThemeManager.getId(ThemeIconEnum.NotificationWatchOn)
                 else ThemeManager.getId(ThemeIconEnum.NotificationWatchOff))
         notificationView.setImageViewResource(R.id.ib_beep, ThemeManager.getId(ThemeIconEnum.NotificationHorn))
         notificationView.setImageViewResource(R.id.ib_light, ThemeManager.getId(ThemeIconEnum.NotificationLight))
