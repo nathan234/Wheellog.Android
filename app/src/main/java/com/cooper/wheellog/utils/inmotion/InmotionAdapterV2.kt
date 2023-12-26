@@ -44,33 +44,44 @@ class InmotionAdapterV2 : BaseAdapter() {
                             return false
                         }
                     } else if (result.flags == Message.Flag.Default.value) {
-                        if (result.command == Message.Command.Settings.value) {
-                            requestSettings = false
-                            return if (model == Model.V12) {
-                                false
-                            } else if (model == Model.V13) {
-                                false
-                            } else {
-                                result.parseSettings()
+                        when (result.command) {
+                            Message.Command.Settings.value -> {
+                                requestSettings = false
+                                return when (model) {
+                                    Model.V12 -> {
+                                        false
+                                    }
+                                    Model.V13 -> {
+                                        false
+                                    }
+                                    else -> {
+                                        result.parseSettings()
+                                    }
+                                }
                             }
-                        } else if (result.command == Message.Command.Diagnistic.value) {
-                            return result.parseDiagnostic()
-                        } else if (result.command == Message.Command.BatteryRealTimeInfo.value) {
-                            return result.parseBatteryRealTimeInfo()
-                        } else if (result.command == Message.Command.TotalStats.value) {
-                            return result.parseTotalStats()
-                        } else if (result.command == Message.Command.RealTimeInfo.value) {
-                            return if (model == Model.V12) {
-                                result.parseRealTimeInfoV12(context)
-                            } else if (model == Model.V13) {
-                                result.parseRealTimeInfoV13(context)
-                            } else if (proto < 2) {
-                                result.parseRealTimeInfoV11(context)
-                            } else {
-                                result.parseRealTimeInfoV11_1_4(context)
+                            Message.Command.Diagnistic.value -> {
+                                return result.parseDiagnostic()
                             }
-                        } else {
-                            Timber.i("Get unknown command: %02X", result.command)
+                            Message.Command.BatteryRealTimeInfo.value -> {
+                                return result.parseBatteryRealTimeInfo()
+                            }
+                            Message.Command.TotalStats.value -> {
+                                return result.parseTotalStats()
+                            }
+                            Message.Command.RealTimeInfo.value -> {
+                                return if (model == Model.V12) {
+                                    result.parseRealTimeInfoV12(context)
+                                } else if (model == Model.V13) {
+                                    result.parseRealTimeInfoV13(context)
+                                } else if (proto < 2) {
+                                    result.parseRealTimeInfoV11(context)
+                                } else {
+                                    result.parseRealTimeInfoV11_1_4(context)
+                                }
+                            }
+                            else -> {
+                                Timber.i("Get unknown command: %02X", result.command)
+                            }
                         }
                     }
                 }
