@@ -15,10 +15,10 @@ class CalculatorTest {
     @Before
     fun setUp() {
         data = spyk(WheelData())
-        every { data.bluetoothService.applicationContext } returns mockkClass(Context::class, relaxed = true)
+        every { data.bluetoothService?.applicationContext } returns mockkClass(Context::class, relaxed = true)
         WheelLog.AppConfig = mockkClass(AppConfig::class, relaxed = true)
+        WheelData.instance = data
         mockkStatic(WheelData::class)
-        every { WheelData.getInstance() } returns data
         mockkObject(SomeUtil)
         var time = 0L
         every { SomeUtil.getNow() } answers {

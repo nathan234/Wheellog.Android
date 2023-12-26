@@ -77,7 +77,7 @@ object AudioUtil {
     var toneDuration = 0
 
     suspend fun playAlarm(alarmType: ALARM_TYPE) {
-        if (WheelLog.AppConfig.useWheelBeepForAlarm && WheelData.getInstance() != null) {
+        if (WheelLog.AppConfig.useWheelBeepForAlarm && WheelData.instance!! != null) {
             SomeUtil.playBeep(onlyByWheel = true, onlyDefault = false)
             return
         }

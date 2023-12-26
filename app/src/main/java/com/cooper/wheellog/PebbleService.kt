@@ -49,7 +49,7 @@ class PebbleService : Service() {
             outgoingDictionary.addInt32(KEY_USE_MPH, if (WheelLog.AppConfig.useMph) 1 else 0)
             outgoingDictionary.addInt32(KEY_MAX_SPEED, WheelLog.AppConfig.maxSpeed)
         }
-        val data = WheelData.getInstance() ?: return@Runnable
+        val data = WheelData.instance!! ?: return@Runnable
         when (displayedScreen) {
             PEBBLE_APP_SCREEN.GUI -> {
                 if (refreshAll || lastSpeed != data.speed) {

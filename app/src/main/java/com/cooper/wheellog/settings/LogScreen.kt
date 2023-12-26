@@ -167,7 +167,7 @@ fun logScreen()
                     autoUploadDependency = it
                 }
 
-                if (autoUploadDependency && WheelData.getInstance().isConnected) {
+                if (autoUploadDependency && WheelData.instance!!.isConnected) {
                     val activity = LocalContext.current as Activity
                     clickablePref(
                         name = stringResource(R.string.select_garage_ec_title),

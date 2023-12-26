@@ -22,9 +22,9 @@ class InmotionAdapterV2Test {
         mockkObject(WheelLog)
         every { WheelLog.appContext } returns mockkClass(Context::class, relaxed = true)
         data = spyk(WheelData())
+        WheelData.instance = data
         WheelLog.AppConfig = mockkClass(AppConfig::class, relaxed = true)
         mockkStatic(WheelData::class)
-        every { WheelData.getInstance() } returns data
     }
 
     @After

@@ -64,7 +64,7 @@ class LoggingService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        if (WheelData.getInstance() == null) {
+        if (WheelData.instance!! == null) {
             stopSelf()
             return START_NOT_STICKY // kill itself without restart
         }
@@ -98,7 +98,7 @@ class LoggingService : Service() {
         }
         sdf = SimpleDateFormat("yyyy-MM-dd,HH:mm:ss.SSS", Locale.US)
         var writeToLastLog = false
-        val mac = WheelData.getInstance().mac
+        val mac = WheelData.instance!!.mac
         if (WheelLog.AppConfig.continueThisDayLog &&
             WheelLog.AppConfig.continueThisDayLogMacException != mac
         ) {
@@ -129,7 +129,7 @@ class LoggingService : Service() {
         if (!writeToLastLog) {
             val sdFormatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.US)
             val filename = sdFormatter.format(Date()) + ".csv"
-            if (!fileUtil!!.prepareFile(filename, WheelData.getInstance().mac)) {
+            if (!fileUtil!!.prepareFile(filename, WheelData.instance!!.mac)) {
                 stopSelf()
                 return START_STICKY
             }
@@ -299,11 +299,11 @@ class LoggingService : Service() {
                 mLocationDistance
             )
         }
-        val wd = WheelData.getInstance()
+        val wd = WheelData.instance!!
         fileUtil!!.writeLine(
             String.format(
                 Locale.US, "%s,%s%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%d,%d,%d,%d,%d,%.2f,%.2f,%s,%s",
-                sdf!!.format(WheelData.getInstance().timeStamp),
+                sdf!!.format(WheelData.instance!!.timeStamp),
                 LocationDataString,
                 wd.speedDouble,
                 wd.voltageDouble,

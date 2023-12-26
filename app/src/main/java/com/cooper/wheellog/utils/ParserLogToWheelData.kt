@@ -36,7 +36,7 @@ class ParserLogToWheelData {
             var sdf = SimpleDateFormat("yyyy-MM-dd,HH:mm:ss.SSS", Locale.US)
             val startDate = sdf.parse(firstRow[header[LogHeaderEnum.DATE]!!] + "," + firstRow[header[LogHeaderEnum.TIME]!!])
             val rideStartTime = startDate!!.time
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             wd.setStartParameters(
                 rideStartTime,
                 firstRow[header[LogHeaderEnum.TOTALDISTANCE]!!].toLongOrNull() ?: 0L

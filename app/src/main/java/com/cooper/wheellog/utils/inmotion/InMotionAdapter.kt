@@ -113,7 +113,7 @@ class InMotionAdapter : BaseAdapter() {
     }
 
     override val isReady: Boolean
-        get() = model != Model.UNKNOWN && WheelData.getInstance().serial != ""
+        get() = model != Model.UNKNOWN && WheelData.instance!!.serial != ""
 
     enum class Mode(val value: Int) {
         rookie(0),
@@ -344,7 +344,7 @@ class InMotionAdapter : BaseAdapter() {
                     if (updateStep == 0) {
                         if (passwordSent < 6) {
                             if (
-                                WheelData.getInstance()
+                                WheelData.instance!!
                                     .bluetoothCmd(CANMessage.getPassword(password).writeBuffer())
                             ) {
                                 Timber.i("Sent password message")
@@ -354,7 +354,7 @@ class InMotionAdapter : BaseAdapter() {
                             }
                         } else if ((model == Model.UNKNOWN) or needSlowData) {
                             if (
-                                WheelData.getInstance()
+                                WheelData.instance!!
                                     .bluetoothCmd(CANMessage.slowData.writeBuffer())
                             ) {
                                 Timber.i("Sent infos message")
@@ -362,7 +362,7 @@ class InMotionAdapter : BaseAdapter() {
                                 updateStep = 5
                             }
                         } else if (settingCommandReady) {
-                            if (WheelData.getInstance().bluetoothCmd(settingCommand)) {
+                            if (WheelData.instance!!.bluetoothCmd(settingCommand)) {
                                 needSlowData = true
                                 settingCommandReady = false
                                 Timber.i("Sent command message")
@@ -371,7 +371,7 @@ class InMotionAdapter : BaseAdapter() {
                             }
                         } else {
                             if (
-                                !WheelData.getInstance()
+                                !WheelData.instance!!
                                     .bluetoothCmd(CANMessage.standardMessage().writeBuffer())
                             ) {
                                 Timber.i("Unable to send keep-alive message")
@@ -639,15 +639,15 @@ class InMotionAdapter : BaseAdapter() {
             } else {
                 workMode = getLegacyWorkModeString(workModeInt)
             }
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             wd.angle = angle
             wd.roll = roll
             wd.speed = (speed * 360.0).toInt()
             wd.voltage = voltage
-            wd.setBatteryLevel(batt)
-            wd.setCurrent(current)
-            wd.setTotalDistance(totalDistance)
-            wd.setWheelDistance(distance)
+            wd.batteryLevel = (batt)
+            wd.current = (current)
+            wd.totalDistance = (totalDistance)
+            wd.wheelDistance = (distance)
             wd.temperature = temperature * 100
             wd.temperature2 = temperature2 * 100
             wd.modeStr = workMode
@@ -728,8 +728,8 @@ class InMotionAdapter : BaseAdapter() {
                             hex.toString()
                         )
                 }
-            val wd = WheelData.getInstance()
-            wd.setAlert(fullText)
+            val wd = WheelData.instance!!
+            wd.alert = (fullText)
             return true
         }
 
@@ -773,9 +773,9 @@ class InMotionAdapter : BaseAdapter() {
             for (j in 0..7) {
                 serialNumber.append(String.format("%02X", ex_data!![7 - j]))
             }
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             wd.serial = serialNumber.toString()
-            wd.setModel(getModelString(lmodel))
+            wd.model = (getModelString(lmodel))
             wd.version = version
             WheelLog.AppConfig.lightEnabled = light
             WheelLog.AppConfig.ledEnabled = led

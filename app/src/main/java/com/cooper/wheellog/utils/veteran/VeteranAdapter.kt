@@ -69,7 +69,7 @@ class VeteranAdapter(
                 wd.version = version
                 wd.speed = speed
                 wd.topSpeed = speed
-                wd.setWheelDistance(distance.toLong())
+                wd.wheelDistance = (distance.toLong())
                 wd.totalDistance = totalDistance.toLong()
                 wd.temperature = temperature
                 wd.phaseCurrent = phaseCurrent
@@ -77,7 +77,7 @@ class VeteranAdapter(
                 wd.voltage = voltage
                 wd.voltageSag = voltage
                 wd.batteryLevel = battery
-                wd.chargingStatus = chargeMode
+                wd.setChargingStatus(chargeMode)
                 wd.angle = pitchAngle / 100.0
                 wd.output = hwPwm
                 wd.updateRideTime()
@@ -150,7 +150,7 @@ class VeteranAdapter(
                         VeteranUnpacker(
                             ByteArrayOutputStream(),
                         ),
-                        WheelData.getInstance(),
+                        WheelData.instance!!,
                         WheelLog.AppConfig,
                     )
                 }

@@ -23,8 +23,8 @@ fun alarmScreen() {
         var alarmsEnabled by remember { mutableStateOf(AppConfig.alarmsEnabled) }
         var pwmBasedAlarms by remember { mutableStateOf(AppConfig.pwmBasedAlarms) }
         val ksAlteredAlarms =
-            WheelData.getInstance().wheelType == Constants.WHEEL_TYPE.KINGSONG
-                    && WheelData.getInstance().model.compareTo("KS-18A") != 0
+            WheelData.instance!!.wheelType == Constants.WHEEL_TYPE.KINGSONG
+                    && WheelData.instance!!.model.compareTo("KS-18A") != 0
 
         switchPref(
             name = stringResource(R.string.enable_alarms_title),

@@ -37,8 +37,8 @@ class RawDataTest {
         config = mockkClass(AppConfig::class, relaxed = true)
         WheelLog.AppConfig = config
         data = spyk(WheelData())
+        WheelData.instance = data
         mockkStatic(WheelData::class)
-        every { WheelData.getInstance() } returns data
     }
 
     @After
@@ -58,11 +58,11 @@ class RawDataTest {
                 data,
                 GotwayUnpacker(),
                 GotwayFrameADecoder(
-                    WheelData.getInstance(),
+                    WheelData.instance!!,
                     GotwayScaledVoltageCalculator(config),
                     GotwayBatteryCalculator(),
                 ),
-                GotwayFrameBDecoder(WheelData.getInstance(), config),
+                GotwayFrameBDecoder(WheelData.instance!!, config),
             )
         data.wheelType = Constants.WHEEL_TYPE.GOTWAY
         val inputStream: InputStream = File("src/test/resources/rawDecodeTest.csv").inputStream()

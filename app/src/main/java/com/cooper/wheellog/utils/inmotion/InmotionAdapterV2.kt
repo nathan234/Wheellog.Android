@@ -121,33 +121,33 @@ class InmotionAdapterV2 : BaseAdapter() {
                     if (updateStep == 0) {
                         if (stateCon == 0) {
                             if (
-                                WheelData.getInstance().bluetoothCmd(Message.carType.writeBuffer())
+                                WheelData.instance!!.bluetoothCmd(Message.carType.writeBuffer())
                             ) {
                                 Timber.i("Sent car type message")
                             } else updateStep = 35
                         } else if (stateCon == 1) {
                             if (
-                                WheelData.getInstance()
+                                WheelData.instance!!
                                     .bluetoothCmd(Message.serialNumber.writeBuffer())
                             ) {
                                 Timber.i("Sent s/n message")
                             } else updateStep = 35
                         } else if (stateCon == 2) {
                             if (
-                                WheelData.getInstance().bluetoothCmd(Message.versions.writeBuffer())
+                                WheelData.instance!!.bluetoothCmd(Message.versions.writeBuffer())
                             ) {
                                 stateCon += 1
                                 Timber.i("Sent versions message")
                             } else updateStep = 35
                         } else if (settingCommandReady) {
-                            if (WheelData.getInstance().bluetoothCmd(settingCommand)) {
+                            if (WheelData.instance!!.bluetoothCmd(settingCommand)) {
                                 settingCommandReady = false
                                 requestSettings = true
                                 Timber.i("Sent command message")
                             } else updateStep = 35 // after +1 and %10 = 0
                         } else if ((stateCon == 3) or requestSettings) {
                             if (
-                                WheelData.getInstance()
+                                WheelData.instance!!
                                     .bluetoothCmd(Message.currentSettings.writeBuffer())
                             ) {
                                 stateCon += 1
@@ -155,7 +155,7 @@ class InmotionAdapterV2 : BaseAdapter() {
                             } else updateStep = 35
                         } else if (stateCon == 4) {
                             if (
-                                WheelData.getInstance()
+                                WheelData.instance!!
                                     .bluetoothCmd(Message.uselessData.writeBuffer())
                             ) {
                                 Timber.i("Sent useless data message")
@@ -163,7 +163,7 @@ class InmotionAdapterV2 : BaseAdapter() {
                             } else updateStep = 35
                         } else if (stateCon == 5) {
                             if (
-                                WheelData.getInstance()
+                                WheelData.instance!!
                                     .bluetoothCmd(Message.statistics.writeBuffer())
                             ) {
                                 Timber.i("Sent statistics data message")
@@ -171,7 +171,7 @@ class InmotionAdapterV2 : BaseAdapter() {
                             } else updateStep = 35
                         } else {
                             if (
-                                WheelData.getInstance()
+                                WheelData.instance!!
                                     .bluetoothCmd(Message.realTimeData.writeBuffer())
                             ) {
                                 Timber.i("Sent realtime data message")
@@ -329,7 +329,7 @@ class InmotionAdapterV2 : BaseAdapter() {
 
         fun parseMainData(): Boolean {
             Timber.i("Parse main data")
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             wd.resetRideTime()
             if (data[0] == 0x01.toByte() && len >= 6) {
                 stateCon += 1
@@ -344,7 +344,7 @@ class InmotionAdapterV2 : BaseAdapter() {
                 val feature = data[5].toInt() // 01
                 val reverse = data[6].toInt() // 00
                 model = Model.findById(series)
-                wd.setModel(model.name2)
+                wd.model = (model.name2)
                 wd.version = "-" // need to find how to parse
             } else if (data[0] == 0x02.toByte() && len >= 17) {
                 stateCon += 1
@@ -477,7 +477,7 @@ class InmotionAdapterV2 : BaseAdapter() {
                 return false
             }
             Timber.i("Parse total stats data")
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             val mTotal = MathsUtil.intFromBytesLE(data, 0).toLong()
             val mTotal2 = MathsUtil.getInt4(data, 0)
             val mDissipation = MathsUtil.intFromBytesLE(data, 4).toLong()
@@ -492,7 +492,7 @@ class InmotionAdapterV2 : BaseAdapter() {
             min = (mPowerOnTime / 60 % 60).toInt()
             hour = (mPowerOnTime / 3600).toInt()
             val mPowerOnTimeStr = String.format("%d:%02d:%02d", hour, min, sec)
-            wd.setTotalDistance(mTotal * 10)
+            wd.totalDistance = (mTotal * 10)
             return false
         }
 
@@ -552,7 +552,7 @@ class InmotionAdapterV2 : BaseAdapter() {
 
         fun parseRealTimeInfoV11(sContext: Context?): Boolean {
             Timber.i("Parse V11 realtime stats data")
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
             val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
             val mSpeed = MathsUtil.signedShortFromBytesLE(data, 4)
@@ -583,11 +583,11 @@ class InmotionAdapterV2 : BaseAdapter() {
             wd.motorPower = mMotPower.toDouble()
             wd.cpuTemp = mCpuTemp
             wd.imuTemp = mImuTemp
-            wd.setCurrent(mCurrent)
+            wd.current = (mCurrent)
             wd.speed = mSpeed
             wd.currentLimit = mDynamicCurrentLimit.toDouble() / 100.0
             wd.speedLimit = mDynamicSpeedLimit.toDouble() / 100.0
-            wd.setBatteryLevel(mBatLevel)
+            wd.batteryLevel = (mBatLevel)
             wd.temperature = mMosTemp * 100
             wd.temperature2 = mBoardTemp * 100
             wd.angle = mPitchAngle.toDouble() / 100.0
@@ -597,7 +597,7 @@ class InmotionAdapterV2 : BaseAdapter() {
             wd.topSpeed = mSpeed
             wd.voltageSag = mVoltage
             wd.setPower(mBatPower * 100)
-            wd.setWheelDistance(mMileage.toLong())
+            wd.wheelDistance = (mMileage.toLong())
             //// state data
             val i = if (data.size < 49) 36 else 38
             val mPcMode = data[i].toInt() and 0x07 // lock, drive, shutdown, idle
@@ -632,7 +632,7 @@ class InmotionAdapterV2 : BaseAdapter() {
 
             //// errors data
             val inmoError = getError(i + 5)
-            wd.setAlert(inmoError)
+            wd.alert = (inmoError)
             if (inmoError !== "" && sContext != null) {
                 Timber.i("News to send: %s, sending Intent", inmoError)
                 val intent = Intent(Constants.ACTION_WHEEL_NEWS_AVAILABLE)
@@ -658,7 +658,7 @@ class InmotionAdapterV2 : BaseAdapter() {
 
         fun parseRealTimeInfoV11_1_4(sContext: Context?): Boolean {
             Timber.i("Parse V11 1.4+ realtime stats data")
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
             val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
             val mSpeed = MathsUtil.signedShortFromBytesLE(data, 4)
@@ -704,11 +704,11 @@ class InmotionAdapterV2 : BaseAdapter() {
             wd.motorPower = mMotPower.toDouble()
             wd.cpuTemp = mCpuTemp
             wd.imuTemp = mImuTemp
-            wd.setCurrent(mCurrent)
+            wd.current = (mCurrent)
             wd.speed = mSpeed
             wd.currentLimit = mDynamicCurrentLimit.toDouble() / 100.0
             wd.speedLimit = mDynamicSpeedLimit.toDouble() / 100.0
-            wd.setBatteryLevel(Math.round(mBatLevel / 100.0).toInt())
+            wd.batteryLevel = (Math.round(mBatLevel / 100.0).toInt())
             wd.temperature = mMosTemp * 100
             wd.temperature2 = mBoardTemp * 100
             wd.output = mPwm
@@ -719,7 +719,7 @@ class InmotionAdapterV2 : BaseAdapter() {
             wd.topSpeed = mSpeed
             wd.voltageSag = mVoltage
             wd.setPower(mBatPower * 100)
-            wd.setWheelDistance(mMileage.toLong())
+            wd.wheelDistance = (mMileage.toLong())
             //// state data
             val mPcMode = data[56].toInt() and 0x07 // lock, drive, shutdown, idle
             val mMcMode = data[56].toInt() shr 3 and 0x07
@@ -754,7 +754,7 @@ class InmotionAdapterV2 : BaseAdapter() {
             val inmoError = getError(61)
             // if (!inmoError.equals("")) System.out.println(String.format(Locale.US,"Err: %s",
             // inmoError));
-            wd.setAlert(inmoError)
+            wd.alert = (inmoError)
             if (inmoError !== "" && sContext != null) {
                 Timber.i("News to send: %s, sending Intent", inmoError)
                 val intent = Intent(Constants.ACTION_WHEEL_NEWS_AVAILABLE)
@@ -766,7 +766,7 @@ class InmotionAdapterV2 : BaseAdapter() {
 
         fun parseRealTimeInfoV12(sContext: Context?): Boolean {
             Timber.i("Parse V12 realtime stats data")
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
             val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
             val mSpeed = MathsUtil.signedShortFromBytesLE(data, 4)
@@ -809,11 +809,11 @@ class InmotionAdapterV2 : BaseAdapter() {
             wd.motorPower = mMotPower.toDouble()
             wd.cpuTemp = mCpuTemp
             wd.imuTemp = mImuTemp
-            wd.setCurrent(mCurrent)
+            wd.current = (mCurrent)
             wd.speed = mSpeed
             wd.currentLimit = mDynamicCurrentLimit.toDouble() / 100.0
             wd.speedLimit = mDynamicSpeedLimit.toDouble() / 100.0
-            wd.setBatteryLevel(Math.round(mBatLevel / 100.0).toInt())
+            wd.batteryLevel = (Math.round(mBatLevel / 100.0).toInt())
             wd.temperature = mMosTemp * 100
             wd.temperature2 = mMotTemp * 100
             wd.output = mPwm
@@ -824,7 +824,7 @@ class InmotionAdapterV2 : BaseAdapter() {
             wd.topSpeed = mSpeed
             wd.voltageSag = mVoltage
             wd.setPower(mBatPower * 100)
-            wd.setWheelDistance(mMileage.toLong())
+            wd.wheelDistance = (mMileage.toLong())
             //// state data
             val mPcMode = data[54].toInt() and 0x07 // lock, drive, shutdown, idle
             val mMcMode = data[54].toInt() shr 3 and 0x07
@@ -859,7 +859,7 @@ class InmotionAdapterV2 : BaseAdapter() {
             val inmoError = getError(59)
             // if (!inmoError.equals("")) System.out.println(String.format(Locale.US,"Err: %s",
             // inmoError));
-            wd.setAlert(inmoError)
+            wd.alert = (inmoError)
             if (inmoError !== "" && sContext != null) {
                 Timber.i("News to send: %s, sending Intent", inmoError)
                 val intent = Intent(Constants.ACTION_WHEEL_NEWS_AVAILABLE)
@@ -871,7 +871,7 @@ class InmotionAdapterV2 : BaseAdapter() {
 
         fun parseRealTimeInfoV13(sContext: Context?): Boolean {
             Timber.i("Parse V13 realtime stats data")
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             val mVoltage = MathsUtil.shortFromBytesLE(data, 0)
             val mCurrent = MathsUtil.signedShortFromBytesLE(data, 2)
             // int mSpeed = MathsUtil.signedShortFromBytesLE(data, 4);
@@ -927,11 +927,11 @@ class InmotionAdapterV2 : BaseAdapter() {
             wd.motorPower = mMotPower.toDouble()
             wd.cpuTemp = mCpuTemp
             wd.imuTemp = mImuTemp
-            wd.setCurrent(mCurrent)
+            wd.current = (mCurrent)
             wd.speed = mSpeed
             wd.currentLimit = mDynamicCurrentLimit.toDouble() / 100.0
             wd.speedLimit = mDynamicSpeedLimit.toDouble() / 100.0
-            wd.setBatteryLevel(Math.round((mBatLevel1 + mBatLevel2) / 200.0).toInt())
+            wd.batteryLevel = (Math.round((mBatLevel1 + mBatLevel2) / 200.0).toInt())
             wd.temperature = mMosTemp * 100
             wd.temperature2 = mMotTemp * 100
             wd.output = mPwm
@@ -942,7 +942,7 @@ class InmotionAdapterV2 : BaseAdapter() {
             wd.topSpeed = mSpeed
             wd.voltageSag = mVoltage
             wd.setPower(mBatPower * 100)
-            wd.setWheelDistance(mMileage)
+            wd.wheelDistance = (mMileage)
             //// state data
             val mPcMode = data[74].toInt() and 0x07 // lock, drive, shutdown, idle
             val mMcMode = data[74].toInt() shr 3 and 0x07
@@ -976,7 +976,7 @@ class InmotionAdapterV2 : BaseAdapter() {
             //// errors data
             val inmoError = getError(76)
             if (inmoError != "") println(String.format(Locale.US, "Err: %s", inmoError))
-            wd.setAlert(inmoError)
+            wd.alert = (inmoError)
             /*
             if ((inmoError != "") && (sContext != null)) {
                 Timber.i("News to send: %s, sending Intent", inmoError);

@@ -56,7 +56,7 @@ class KingSongLiveDataDecoderTest {
         val mode = 0
 
         // Mock the responses from the WheelData
-        every { wd.getModel() } returns "KS-18L"
+        every { wd.model } returns "KS-18L"
 
         // Assume we have predefined values in the byte array
         every { wd.voltage = any() } just Runs

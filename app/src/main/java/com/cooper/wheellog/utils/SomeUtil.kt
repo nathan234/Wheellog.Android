@@ -66,12 +66,12 @@ object SomeUtil {
     @Suppress("DEPRECATION")
     @JvmStatic
     fun playBeep(onlyByWheel: Boolean, onlyDefault: Boolean) {
-        if (WheelData.getInstance() == null) {
+        if (WheelData.instance!! == null) {
             return
         }
 
         if (WheelLog.AppConfig.beepByWheel || onlyByWheel) {
-            WheelData.getInstance().wheelBeep()
+            WheelData.instance!!.wheelBeep()
             return
         }
 

@@ -13,10 +13,10 @@ class WheelDataTest {
     @Before
     fun setUp() {
         data = spyk(WheelData())
-        every { data.bluetoothService.applicationContext } returns mockkClass(Context::class, relaxed = true)
+        WheelData.instance = data
+        every { data.bluetoothService?.applicationContext } returns mockkClass(Context::class, relaxed = true)
         WheelLog.AppConfig = mockkClass(AppConfig::class, relaxed = true)
         mockkStatic(WheelData::class)
-        every { WheelData.getInstance() } returns data
     }
 
     @After
@@ -27,11 +27,11 @@ class WheelDataTest {
     @Test
     fun `Battery per km | 95 to 94`() {
         // Arrange.
-        data.setBatteryLevel(95)
+        data.batteryLevel =(95)
         data.totalDistance = 1_000
 
         // Act.
-        data.setBatteryLevel(94)
+        data.batteryLevel = (94)
         data.totalDistance += 2_000
 
         // Assert.
@@ -42,11 +42,11 @@ class WheelDataTest {
     @Test
     fun `Battery per km | 50 to 0`() {
         // Arrange.
-        data.setBatteryLevel(50)
+        data.batteryLevel = (50)
         data.totalDistance = 0
 
         // Act.
-        data.setBatteryLevel(0)
+        data.batteryLevel = (0)
         data.totalDistance += 25_000
 
         // Assert.

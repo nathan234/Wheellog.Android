@@ -32,7 +32,7 @@ object Alarms {
     private fun newTimerTask(): TimerTask {
         return object : TimerTask() {
             override fun run() {
-                val wd = WheelData.getInstance() ?: return
+                val wd = WheelData.instance!! ?: return
                 val mContext: Context = WheelLog.appContext ?: return
                 if (!reCheckAlarm(wd.calculatedPwm / 100, mContext)) {
                     stop()
@@ -119,7 +119,7 @@ object Alarms {
                 playSound(mContext, R.raw.warning_pwm)
             } else {
                 val warningSpeed = WheelLog.AppConfig.warningSpeed
-                if (warningSpeed != 0 && warningSpeedPeriod != 0 && WheelData.getInstance().speedDouble >= warningSpeed && System.currentTimeMillis() - lastPlayWarningSpeedTime > warningSpeedPeriod) {
+                if (warningSpeed != 0 && warningSpeedPeriod != 0 && WheelData.instance!!.speedDouble >= warningSpeed && System.currentTimeMillis() - lastPlayWarningSpeedTime > warningSpeedPeriod) {
                     lastPlayWarningSpeedTime = System.currentTimeMillis()
                     playSound(mContext, R.raw.sound_warning_speed)
                 }
@@ -131,7 +131,7 @@ object Alarms {
     private fun oldAlarms(mContext: Context): Boolean {
         if (checkOldAlarmSpeed(WheelLog.AppConfig.alarm1Speed, WheelLog.AppConfig.alarm1Battery)) {
             AudioUtil.toneDuration = 50
-            raiseAlarm(ALARM_TYPE.SPEED1, WheelData.getInstance().speedDouble, mContext)
+            raiseAlarm(ALARM_TYPE.SPEED1, WheelData.instance!!.speedDouble, mContext)
             return true
         } else if (checkOldAlarmSpeed(
                 WheelLog.AppConfig.alarm2Speed,
@@ -139,7 +139,7 @@ object Alarms {
             )
         ) {
             AudioUtil.toneDuration = 100
-            raiseAlarm(ALARM_TYPE.SPEED2, WheelData.getInstance().speedDouble, mContext)
+            raiseAlarm(ALARM_TYPE.SPEED2, WheelData.instance!!.speedDouble, mContext)
             return true
         } else if (checkOldAlarmSpeed(
                 WheelLog.AppConfig.alarm3Speed,
@@ -147,7 +147,7 @@ object Alarms {
             )
         ) {
             AudioUtil.toneDuration = 180
-            raiseAlarm(ALARM_TYPE.SPEED3, WheelData.getInstance().speedDouble, mContext)
+            raiseAlarm(ALARM_TYPE.SPEED3, WheelData.instance!!.speedDouble, mContext)
             return true
         } else {
             // check if speed alarm executing and stop it
@@ -159,8 +159,8 @@ object Alarms {
     private fun checkOldAlarmSpeed(alarmSpeed: Int, alarmBattery: Int): Boolean {
         return alarmSpeed > 0
             && alarmBattery > 0
-            && WheelData.getInstance().batteryLevel <= alarmBattery
-            && WheelData.getInstance().speedDouble >= alarmSpeed
+            && WheelData.instance!!.batteryLevel <= alarmBattery
+            && WheelData.instance!!.speedDouble >= alarmSpeed
     }
 
     private fun temperatureAlarms(mContext: Context): Boolean {
@@ -168,10 +168,10 @@ object Alarms {
             return true
         }
         val alarmTemperature = WheelLog.AppConfig.alarmTemperature
-        if (alarmTemperature > 0 && WheelData.getInstance().temperature >= alarmTemperature) {
+        if (alarmTemperature > 0 && WheelData.instance!!.temperature >= alarmTemperature) {
             raiseAlarm(
                 ALARM_TYPE.TEMPERATURE,
-                WheelData.getInstance().temperature.toDouble(),
+                WheelData.instance!!.temperature.toDouble(),
                 mContext
             )
             temperatureAlarmExecuting.value = true
@@ -184,10 +184,10 @@ object Alarms {
             return true
         }
         val alarmCurrent = WheelLog.AppConfig.alarmCurrent * 100
-        if (alarmCurrent > 0 && WheelData.getInstance().current >= alarmCurrent) {
+        if (alarmCurrent > 0 && WheelData.instance!!.current >= alarmCurrent) {
             raiseAlarm(
                 ALARM_TYPE.CURRENT,
-                WheelData.getInstance().currentDouble,
+                WheelData.instance!!.currentDouble,
                 mContext
             )
             currentAlarmExecuting.value = true
@@ -200,10 +200,10 @@ object Alarms {
             return true
         }
         val alarmBattery = WheelLog.AppConfig.alarmBattery
-        if (alarmBattery > 0 && WheelData.getInstance().batteryLevel <= alarmBattery) {
+        if (alarmBattery > 0 && WheelData.instance!!.batteryLevel <= alarmBattery) {
             raiseAlarm(
                     ALARM_TYPE.BATTERY,
-                    WheelData.getInstance().batteryLevel.toDouble(),
+                    WheelData.instance!!.batteryLevel.toDouble(),
                     mContext
             )
             batteryAlarmExecuting.value = true
@@ -247,25 +247,25 @@ object Alarms {
                     String.format(
                         Locale.US,
                         mContext.getString(R.string.alarm_text_speed_v),
-                        WheelData.getInstance().speedDouble
+                        WheelData.instance!!.speedDouble
                     )
                 ALARM_TYPE.CURRENT ->
                     String.format(
                         Locale.US,
                         mContext.getString(R.string.alarm_text_current_v),
-                        WheelData.getInstance().currentDouble
+                        WheelData.instance!!.currentDouble
                     )
                 ALARM_TYPE.TEMPERATURE ->
                     String.format(
                         Locale.US,
                         mContext.getString(R.string.alarm_text_temperature_v),
-                        WheelData.getInstance().temperature
+                        WheelData.instance!!.temperature
                     )
                 ALARM_TYPE.BATTERY ->
                     String.format(
                             Locale.US,
                             mContext.getString(R.string.alarm_text_battery_v),
-                            WheelData.getInstance().batteryLevel
+                            WheelData.instance!!.batteryLevel
                     )
             }
             WheelLog.Notifications.alarmText = miText

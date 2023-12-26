@@ -43,7 +43,7 @@ class GotwayFrameADecoderTest {
         verify { gotwayBatteryCalculator.getBattery(useBetterPercents, any()) }
         verify { wheelData.speed = any() }
         verify { wheelData.topSpeed = any() }
-        verify { wheelData.setWheelDistance(any()) }
+        verify { wheelData.wheelDistance = any() }
         verify { wheelData.temperature = any() }
         verify { wheelData.phaseCurrent = any() }
         verify { wheelData.voltage = any() }
