@@ -16,7 +16,7 @@ class GotwayFrameADecoder(
     private val gotwayBatteryCalculator: GotwayBatteryCalculator,
 ) {
     fun decode(
-        buff: ByteArray?,
+        buff: ByteArray,
         useRatio: Boolean,
         useBetterPercents: Boolean?,
         gotwayNegative: Int,

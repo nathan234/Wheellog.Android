@@ -493,7 +493,7 @@ class InMotionAdapter : BaseAdapter() {
         var ch = 0
         var format = CanFormat.StandardFormat.value
         var type = CanFrame.DataFrame.value
-        var ex_data: ByteArray? = null
+        lateinit var ex_data: ByteArray
 
         internal constructor(bArr: ByteArray) {
             if (bArr.size < 16) return
