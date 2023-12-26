@@ -109,7 +109,7 @@ class KingsongAdapter(
         }
     }
 
-    private fun decodeKingSongSpeed(data: ByteArray?) {
+    private fun decodeKingSongSpeed(data: ByteArray) {
         speedLimit = MathsUtil.getInt2R(data, 2) / 100.0
         wd.speedLimit = speedLimit
     }
@@ -154,7 +154,7 @@ class KingsongAdapter(
         }
     }
 
-    private fun decodeKingsongDistanceTimeFan(data: ByteArray?) {
+    private fun decodeKingsongDistanceTimeFan(data: ByteArray) {
         val distance = MathsUtil.getInt4R(data, 2).toLong()
         wd.wheelDistance = (distance)
         wd.updateRideTime()
