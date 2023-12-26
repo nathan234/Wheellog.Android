@@ -1073,9 +1073,9 @@ class WheelView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
                 val wdField = WheelData::class.java.getDeclaredField("mInstance")
                 wdField.isAccessible = true
                 wdField[null] = wd
-                ReflectUtil.SetPrivateField(wd, "mCalculatedPwm", 0.05)
-                ReflectUtil.SetPrivateField(wd, "mMaxPwm", 0.97)
-                ReflectUtil.SetPrivateField(wd, "mConnectionState", true)
+                ReflectUtil.setPrivateField(wd, "mCalculatedPwm", 0.05)
+                ReflectUtil.setPrivateField(wd, "mMaxPwm", 0.97)
+                ReflectUtil.setPrivateField(wd, "mConnectionState", true)
             } catch (ignored: Exception) {
             }
         } else {
