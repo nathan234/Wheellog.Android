@@ -2,14 +2,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.library")
-    kotlin("android")
+    kotlin("multiplatform")
 }
 
 android {
     compileSdkVersion(34)
 
     defaultConfig {
-        minSdkVersion(21)
+        minSdkVersion(24)
         targetSdkVersion(34)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -27,28 +27,49 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
+//    kotlinOptions {
+//        jvmTarget = JavaVersion.VERSION_17.toString()
+//    }
 
     namespace = "com.wheellog.shared"
 }
 
-val coreKtxVersion = "1.12.0" // replace with your version
-val appcompactVersion = "1.6.1" // replace with your version
-val materialVersion = "1.10.0" // replace with your version
+kotlin {
+    android()
+    ios()
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+            }
+        }
+        val commonTest by getting {
+            dependencies {
 
-dependencies {
-    implementation("androidx.core:core-ktx:$coreKtxVersion")
-    implementation("androidx.appcompat:appcompat:$appcompactVersion")
-    implementation("com.google.android.material:material:$materialVersion")
-
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.truth:truth:1.1.5")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
-    testImplementation("io.mockk:mockk:1.13.8")
+            }
+        }
+        val androidMain by getting {
+            dependencies {
+                val coreKtxVersion = "1.12.0" // replace with your version
+                val appcompactVersion = "1.6.1" // replace with your version
+                val materialVersion = "1.10.0" // replace with your version
+                implementation("androidx.core:core-ktx:$coreKtxVersion")
+                implementation("androidx.appcompat:appcompat:$appcompactVersion")
+                implementation("com.google.android.material:material:$materialVersion")
+            }
+        }
+        val androidUnitTest by getting {
+            dependencies {
+                implementation("junit:junit:4.13.2")
+                implementation("com.google.truth:truth:1.1.5")
+                implementation("org.junit.jupiter:junit-jupiter:5.10.0")
+                implementation("io.mockk:mockk:1.13.8")
+            }
+        }
+        val iosMain by getting
+        val iosTest by getting
+    }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
-}
+//tasks.withType<KotlinCompile> {
+//    kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+//}

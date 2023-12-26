@@ -49,8 +49,10 @@ abstract class TripDatabase : RoomDatabase() {
                     context.applicationContext,
                     TripDatabase::class.java,
                     "trip_database"
-                )
-                    .addMigrations(migration1To2, migration2To1)
+                ).apply {
+                    fallbackToDestructiveMigration()
+                }
+//                    .addMigrations(migration1To2, migration2To1)
                     .build()
                 INSTANCE = instance
                 return instance
