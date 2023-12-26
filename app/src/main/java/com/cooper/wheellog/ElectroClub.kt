@@ -229,7 +229,7 @@ class ElectroClub {
     }
 
     fun getAndSelectGarageByMacOrShowChooseDialog(mac: String, activity: Activity, success: (String?) -> Unit) {
-        if (!WheelData.getInstance().isConnected || WheelLog.AppConfig.ecGarage != null)
+        if (!WheelData.instance!!.isConnected || WheelLog.AppConfig.ecGarage != null)
             return // not connected or already selected
 
         getGarage { transportList ->

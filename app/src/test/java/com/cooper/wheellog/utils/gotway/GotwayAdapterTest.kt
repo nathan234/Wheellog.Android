@@ -37,16 +37,16 @@ class GotwayAdapterTest {
         WheelLog.AppConfig = config
         data = spyk(WheelData())
         data.wheelType = Constants.WHEEL_TYPE.GOTWAY
+        WheelData.instance = data
         mockkStatic(WheelData::class)
-        every { WheelData.getInstance() } returns data
         mockkConstructor(android.os.Handler::class)
         every { anyConstructed<android.os.Handler>().postDelayed(any(), any()) } returns true
         adapter = GotwayAdapter(
             config,
             data,
             GotwayUnpacker(),
-            GotwayFrameADecoder(WheelData.getInstance(), GotwayScaledVoltageCalculator(config), GotwayBatteryCalculator()),
-            GotwayFrameBDecoder(WheelData.getInstance(), config),
+            GotwayFrameADecoder(WheelData.instance!!, GotwayScaledVoltageCalculator(config), GotwayBatteryCalculator()),
+            GotwayFrameBDecoder(WheelData.instance!!, config),
         )
     }
 

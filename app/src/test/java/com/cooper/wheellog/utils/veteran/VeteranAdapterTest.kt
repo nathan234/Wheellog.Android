@@ -39,7 +39,6 @@ class VeteranAdapterTest {
         data = spyk(WheelData())
         data.wheelType = Constants.WHEEL_TYPE.VETERAN
         mockkStatic(WheelData::class)
-        every { WheelData.getInstance() } returns data
         adapter = VeteranAdapter(VeteranBatteryCalculator(), VeteranUnpacker(ByteArrayOutputStream()), data, WheelLog.AppConfig)
     }
 

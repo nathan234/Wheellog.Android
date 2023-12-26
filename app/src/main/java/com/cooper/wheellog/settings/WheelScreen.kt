@@ -34,7 +34,7 @@ fun wheelScreen() {
         modifier = Modifier
             .verticalScroll(rememberScrollState()),
     ) {
-        when (WheelData.getInstance().wheelType) {
+        when (WheelData.instance!!.wheelType) {
             Constants.WHEEL_TYPE.NINEBOT_Z -> ninebotZ()
             Constants.WHEEL_TYPE.INMOTION -> inmotion()
             Constants.WHEEL_TYPE.INMOTION_V2 -> inmotionV2()
@@ -45,7 +45,7 @@ fun wheelScreen() {
                 name = stringResource(R.string.unknown_device),
             )
         }
-        if (WheelData.getInstance().wheelType != Constants.WHEEL_TYPE.Unknown) {
+        if (WheelData.instance!!.wheelType != Constants.WHEEL_TYPE.Unknown) {
             forAllWheel()
         }
     }
@@ -312,7 +312,7 @@ private fun ninebotZ() {
         name = stringResource(R.string.wheel_calibration),
         themeIcon = ThemeIconEnum.SettingsCalibration,
     ) {
-        if (WheelData.getInstance().speed < 1) {
+        if (WheelData.instance!!.speed < 1) {
             showDialogCalibration = true
         }
     }
@@ -403,7 +403,7 @@ private fun inmotion() {
         confirmButtonText = stringResource(R.string.power_off),
         alertDesc = stringResource(R.string.power_off_message),
         themeIcon = ThemeIconEnum.SettingsPowerOff,
-        condition = { WheelData.getInstance().speed < 1 },
+        condition = { WheelData.instance!!.speed < 1 },
         onConfirm = { adapter.powerOff() },
     )
     clickableAndAlert(
@@ -411,7 +411,7 @@ private fun inmotion() {
         confirmButtonText = stringResource(R.string.wheel_calibration),
         alertDesc = stringResource(R.string.wheel_calibration_message_inmo),
         themeIcon = ThemeIconEnum.SettingsCalibration,
-        condition = { WheelData.getInstance().speed < 1 },
+        condition = { WheelData.instance!!.speed < 1 },
         onConfirm = { adapter.wheelCalibration() },
     )
 }
@@ -576,7 +576,7 @@ private fun inmotionV2() {
         confirmButtonText = stringResource(R.string.power_off),
         alertDesc = stringResource(R.string.power_off_message),
         themeIcon = ThemeIconEnum.SettingsPowerOff,
-        condition = { WheelData.getInstance().speed < 1 },
+        condition = { WheelData.instance!!.speed < 1 },
         onConfirm = { adapter.powerOff() },
     )
     clickableAndAlert(
@@ -584,7 +584,7 @@ private fun inmotionV2() {
         confirmButtonText = stringResource(R.string.wheel_calibration),
         alertDesc = stringResource(R.string.wheel_calibration_message_inmo),
         themeIcon = ThemeIconEnum.SettingsCalibration,
-        condition = { WheelData.getInstance().speed < 1 },
+        condition = { WheelData.instance!!.speed < 1 },
         onConfirm = { adapter.wheelCalibration() },
     )
 }
@@ -696,7 +696,7 @@ private fun kingsong() {
         confirmButtonText = stringResource(R.string.power_off),
         alertDesc = stringResource(R.string.power_off_message),
         themeIcon = ThemeIconEnum.SettingsPowerOff,
-        condition = { WheelData.getInstance().speed < 1 },
+        condition = { WheelData.instance!!.speed < 1 },
         onConfirm = { adapter.powerOff() },
     )
     clickableAndAlert(
@@ -704,7 +704,7 @@ private fun kingsong() {
         confirmButtonText = stringResource(R.string.wheel_calibration),
         alertDesc = stringResource(R.string.wheel_calibration_message_inmo),
         themeIcon = ThemeIconEnum.SettingsCalibration,
-        condition = { WheelData.getInstance().speed < 1 },
+        condition = { WheelData.instance!!.speed < 1 },
         onConfirm = { adapter.wheelCalibration() },
     )
 }
@@ -834,7 +834,7 @@ private fun begode() {
         confirmButtonText = stringResource(R.string.wheel_calibration),
         alertDesc = stringResource(R.string.wheel_calibration_message_inmo),
         themeIcon = ThemeIconEnum.SettingsCalibration,
-        condition = { WheelData.getInstance().speed < 1 },
+        condition = { WheelData.instance!!.speed < 1 },
         onConfirm = { adapter.wheelCalibration() },
     )
     switchPref(

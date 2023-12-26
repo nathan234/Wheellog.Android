@@ -31,24 +31,24 @@ class NinebotAdapter : BaseAdapter() {
             override fun run() {
                 if (updateStep == 0) {
                     if (stateCon == 0) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.serialNumber.writeBuffer())
                         ) {
                             Timber.i("Sent serial number message")
                         } else updateStep = 39
                     } else if (stateCon == 1) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.version.writeBuffer())
                         ) {
                             Timber.i("Sent serial version message")
                         } else updateStep = 39
                     } else if (settingCommandReady) {
-                        if (WheelData.getInstance().bluetoothCmd(settingCommand)) {
+                        if (WheelData.instance!!.bluetoothCmd(settingCommand)) {
                             settingCommandReady = false
                             Timber.i("Sent command message")
                         } else updateStep = 39
                     } else {
-                        if (!WheelData.getInstance()
+                        if (!WheelData.instance!!
                                 .bluetoothCmd(CANMessage.liveData.writeBuffer())
                         ) {
                             Timber.i("Unable to send keep-alive message")
@@ -101,13 +101,13 @@ class NinebotAdapter : BaseAdapter() {
         if (statuses.size < 1) {
             return false
         }
-        val wd = WheelData.getInstance()
+        val wd = WheelData.instance!!
         wd.resetRideTime()
         for (status in statuses) {
             Timber.i(status.toString())
             if (status is serialNumberStatus) {
                 wd.serial = status.serialNumber
-                wd.setModel("Ninebot " + wd.protoVer)
+                wd.model = ("Ninebot " + wd.protoVer)
             } else if (status is versionStatus) {
                 wd.version = status.version
             } else {
@@ -116,19 +116,19 @@ class NinebotAdapter : BaseAdapter() {
                 val battery = status.batt
                 wd.speed = speed
                 wd.voltage = voltage
-                wd.setCurrent(status.current)
-                wd.setTotalDistance(status.distance.toLong())
+                wd.current = (status.current)
+                wd.totalDistance = (status.distance.toLong())
                 wd.temperature = status.temperature * 10
                 wd.updateRideTime()
-                wd.setBatteryLevel(battery)
+                wd.batteryLevel = (battery)
             }
         }
         return true
     }
 
     override val isReady: Boolean
-        get() = (WheelData.getInstance().serial != ""
-                && WheelData.getInstance().version != "" && WheelData.getInstance().voltage != 0)
+        get() = (WheelData.instance!!.serial != ""
+                && WheelData.instance!!.version != "" && WheelData.instance!!.voltage != 0)
 
     open class Status {
         val speed: Int

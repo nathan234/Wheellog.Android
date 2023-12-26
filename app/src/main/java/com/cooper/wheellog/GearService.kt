@@ -109,32 +109,32 @@ class GearService : SAAgent(TAG, GearSAPServiceProviderConnection::class.java) {
         val timerTask: TimerTask = object : TimerTask() {
             override fun run() {
                 var message: String
-                message = if (WheelData.getInstance() != null) {
+                message = if (WheelData.instance!! != null) {
                     String.format(
                         Locale.ROOT, "{ \"speed\":%.2f," +
                                 "\"voltage\":%.2f,\"current\":%.2f,\"power\":%.2f," +
                                 "\"batteryLevel\":%d,\"distance\":%d,\"totalDistance\":%d,\"temperature\":%d," +
                                 "\"temperature2\":%d," +
                                 "\"angle\":%.2f,\"roll\":%.2f,\"isAlarmExecuting\":%d",  //                        "\"mode\":%s,\"alert\":%s"+
-                        WheelData.getInstance().speedDouble,
-                        WheelData.getInstance().voltageDouble,
-                        WheelData.getInstance().currentDouble,
-                        WheelData.getInstance().powerDouble,
-                        WheelData.getInstance().batteryLevel,
-                        WheelData.getInstance().distance,
-                        WheelData.getInstance().totalDistance,
-                        WheelData.getInstance().temperature,
-                        WheelData.getInstance().temperature2,
-                        WheelData.getInstance().angle,
-                        WheelData.getInstance().roll,
-                        alarm //                        WheelData.getInstance().getModeStr(),
-                        //                        WheelData.getInstance().getAlert()
+                        WheelData.instance!!.speedDouble,
+                        WheelData.instance!!.voltageDouble,
+                        WheelData.instance!!.currentDouble,
+                        WheelData.instance!!.powerDouble,
+                        WheelData.instance!!.batteryLevel,
+                        WheelData.instance!!.distance,
+                        WheelData.instance!!.totalDistance,
+                        WheelData.instance!!.temperature,
+                        WheelData.instance!!.temperature2,
+                        WheelData.instance!!.angle,
+                        WheelData.instance!!.roll,
+                        alarm //                        WheelData.instance!!.getModeStr(),
+                        //                        WheelData.instance!!.getAlert()
                     )
                 } else {
                     "{"
                 }
                 if (locationListener != null) {
-                    if (WheelData.getInstance() != null) {
+                    if (WheelData.instance!! != null) {
                         message = message + "," + locationMessage
                     } else {
                         message = locationMessage

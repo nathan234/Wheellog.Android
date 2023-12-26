@@ -23,21 +23,21 @@ fun tripScreen( ) {
             desc = stringResource(R.string.reset_max_values_description),
             showArrowIcon = false,
         ) {
-            WheelData.getInstance().resetMaxValues()
+            WheelData.instance!!.resetMaxValues()
         }
         val context = LocalContext.current
         clickablePref(
             name = stringResource(R.string.reset_lowest_battery_title),
             showArrowIcon = false,
         ) {
-            WheelData.getInstance().resetVoltageSag()
+            WheelData.instance!!.resetVoltageSag()
             context.sendBroadcast(Intent(Constants.ACTION_PREFERENCE_RESET))
         }
         clickablePref(
             name = stringResource(R.string.reset_user_distance_title),
             showArrowIcon = false,
         ) {
-            WheelData.getInstance().resetUserDistance()
+            WheelData.instance!!.resetUserDistance()
         }
     }
 }

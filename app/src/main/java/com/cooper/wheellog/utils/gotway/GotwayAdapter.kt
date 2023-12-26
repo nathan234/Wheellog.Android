@@ -76,7 +76,7 @@ class GotwayAdapter(
                     if (alert shr 5 and 0x01 == 1) alertLine += "OverTemperature "
                     if (alert shr 6 and 0x01 == 1) alertLine += "errHallSensors "
                     if (alert shr 7 and 0x01 == 1) alertLine += "TransportMode"
-                    wd.setAlert(alertLine)
+                    wd.alert = (alertLine)
                     if (alertLine !== "" && context != null) {
                         Timber.i("News to send: %s, sending Intent", alertLine)
                         val intent = Intent(Constants.ACTION_WHEEL_NEWS_AVAILABLE)
@@ -107,16 +107,16 @@ class GotwayAdapter(
     }
 
     override val isReady: Boolean
-        get() = WheelData.getInstance().voltage != 0
+        get() = WheelData.instance!!.voltage != 0
 
     private fun sendCommand(s: String, delayed: String = "b", timer: Int = 100) {
         sendCommand(s.toByteArray(), delayed.toByteArray(), timer)
     }
 
     private fun sendCommand(s: ByteArray, delayed: ByteArray, timer: Int) {
-        WheelData.getInstance().bluetoothCmd(s)
+        WheelData.instance!!.bluetoothCmd(s)
         if (timer > 0) {
-            Handler().postDelayed({ WheelData.getInstance().bluetoothCmd(delayed) }, timer.toLong())
+            Handler().postDelayed({ WheelData.instance!!.bluetoothCmd(delayed) }, timer.toLong())
         }
     }
 
@@ -226,7 +226,7 @@ class GotwayAdapter(
             }
 
     override fun wheelBeep() {
-        WheelData.getInstance().bluetoothCmd("b".toByteArray())
+        WheelData.instance!!.bluetoothCmd("b".toByteArray())
     }
 
     override fun updateMaxSpeed(maxSpeed: Int) {
@@ -236,7 +236,7 @@ class GotwayAdapter(
         if (maxSpeed != 0) {
             hhh[0] = (maxSpeed / 10 + 0x30).toByte()
             lll[0] = (maxSpeed % 10 + 0x30).toByte()
-            WheelData.getInstance().bluetoothCmd("b".toByteArray())
+            WheelData.instance!!.bluetoothCmd("b".toByteArray())
             Handler().postDelayed({ sendCommand("W", "Y") }, 100)
             Handler().postDelayed({ sendCommand(hhh, lll, 100) }, 300)
             Handler().postDelayed({ sendCommand("b", "b") }, 500)
@@ -254,7 +254,7 @@ class GotwayAdapter(
         val instance: GotwayAdapter
             get() {
                 if (INSTANCE == null) {
-                    val wd = WheelData.getInstance()
+                    val wd = WheelData.instance!!
                     val appConfig = WheelLog.AppConfig
                     INSTANCE =
                         GotwayAdapter(

@@ -38,7 +38,6 @@ class ElectroClubTest {
         WheelLog.AppConfig = mockkClass(AppConfig::class, relaxed = true)
         every { db.tripDao().getTripByFileName(any()) } returns tripDataDbEntry
         mockkStatic(WheelData::class)
-        every { WheelData.getInstance() } returns wd
     }
 
     @After

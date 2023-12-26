@@ -31,7 +31,7 @@ class WearOs(var context: Context): MessageClient.OnMessageReceivedListener, Sha
             sendMessage(Constants.wearOsPingMessage)
             return
         }
-        val wd = WheelData.getInstance()
+        val wd = WheelData.instance!!
         val dataRequest = PutDataMapRequest.create(Constants.wearOsDataItemPath)
         dataRequest.dataMap.apply {
             putDouble(Constants.wearOsSpeedData, wd.speedDouble)
@@ -85,7 +85,7 @@ class WearOs(var context: Context): MessageClient.OnMessageReceivedListener, Sha
                     sendPingJob.cancel()
                 }
                 Constants.wearOsHornMessage -> SomeUtil.playBeep()
-                Constants.wearOsLightMessage -> WheelData.getInstance().adapter?.switchFlashlight()
+                Constants.wearOsLightMessage -> WheelData.instance!!.adapter?.switchFlashlight()
                 else -> Timber.wtf("Unknown message from wear")
             }
         }

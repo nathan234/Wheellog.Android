@@ -57,89 +57,89 @@ class NinebotZAdapter : BaseAdapter() {
                 if (updateStep == 0) {
                     Timber.i("State connection %d", stateCon)
                     if (stateCon == 0) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.bleVersion.writeBuffer())
                         ) {
                             Timber.i("Sent start message")
                         } else Timber.i("Unable to send start message")
                     } else if (stateCon == 1) {
-                        if (WheelData.getInstance().bluetoothCmd(CANMessage.key.writeBuffer())) {
+                        if (WheelData.instance!!.bluetoothCmd(CANMessage.key.writeBuffer())) {
                             Timber.i("Sent getkey message")
                         } else Timber.i("Unable to send getkey message")
                     } else if (stateCon == 2) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.serialNumber.writeBuffer())
                         ) {
                             Timber.i("Sent serial number message")
                         } else Timber.i("Unable to send serial number message")
                     } else if (stateCon == 3) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.version.writeBuffer())
                         ) {
                             Timber.i("Sent version message")
                         } else Timber.i("Unable to send version message")
                     } else if (stateCon == 4) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.params1.writeBuffer())
                         ) {
                             Timber.i("Sent getParams1 message")
                         } else Timber.i("Unable to send getParams1 message")
                     } else if (stateCon == 5) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.params2.writeBuffer())
                         ) {
                             Timber.i("Sent getParams2 message")
                         } else Timber.i("Unable to send getParams2 message")
                     } else if (stateCon == 6) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.params3.writeBuffer())
                         ) {
                             Timber.i("Sent getParams3 message")
                         } else Timber.i("Unable to send getParams2 message")
                     } else if (stateCon == 7) {
-                        if (WheelData.getInstance().bluetoothCmd(CANMessage.bms1Sn.writeBuffer())) {
+                        if (WheelData.instance!!.bluetoothCmd(CANMessage.bms1Sn.writeBuffer())) {
                             Timber.i("Sent BMS1 SN message")
                         } else Timber.i("Unable to send BMS1 SN message")
                     } else if (stateCon == 8) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.bms1Life.writeBuffer())
                         ) {
                             Timber.i("Sent BMS1 life message")
                         } else Timber.i("Unable to send BMS1 life message")
                     } else if (stateCon == 9) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.bms1Cells.writeBuffer())
                         ) {
                             Timber.i("Sent BMS1 cells message")
                         } else Timber.i("Unable to send BMS1 cells message")
                     } else if (stateCon == 10) {
-                        if (WheelData.getInstance().bluetoothCmd(CANMessage.bms2Sn.writeBuffer())) {
+                        if (WheelData.instance!!.bluetoothCmd(CANMessage.bms2Sn.writeBuffer())) {
                             Timber.i("Sent BMS2 SN message")
                         } else Timber.i("Unable to send BMS2 SN message")
                     } else if (stateCon == 11) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.bms2Life.writeBuffer())
                         ) {
                             Timber.i("Sent BMS2 life message")
                         } else Timber.i("Unable to send BMS2 life message")
                     } else if (stateCon == 12) {
-                        if (WheelData.getInstance()
+                        if (WheelData.instance!!
                                 .bluetoothCmd(CANMessage.bms2Cells.writeBuffer())
                         ) {
                             Timber.i("Sent BMS2 cells message")
                         } else Timber.i("Unable to send BMS2 cells message")
                     } else if (settingCommandReady) {
-                        if (WheelData.getInstance().bluetoothCmd(settingCommand)) {
+                        if (WheelData.instance!!.bluetoothCmd(settingCommand)) {
                             settingCommandReady = false
                             Timber.i("Sent command message")
                         } else Timber.i("Unable to send command message")
                     } else if (settingRequestReady) {
-                        if (WheelData.getInstance().bluetoothCmd(settingRequest)) {
+                        if (WheelData.instance!!.bluetoothCmd(settingRequest)) {
                             settingRequestReady = false
                             Timber.i("Sent settings request message")
                         } else Timber.i("Unable to send settings request message")
                     } else {
-                        if (!WheelData.getInstance()
+                        if (!WheelData.instance!!
                                 .bluetoothCmd(CANMessage.liveData.writeBuffer())
                         ) {
                             Timber.i("Unable to send keep-alive message")
@@ -244,7 +244,7 @@ class NinebotZAdapter : BaseAdapter() {
 
     override fun decode(data: ByteArray?): Boolean {
         Timber.i("Ninebot_z decoding")
-        val wd = WheelData.getInstance()
+        val wd = WheelData.instance!!
         setBmsReadingMode(wd.bmsView)
         var retResult = false
         for (c in data!!) {
@@ -322,8 +322,8 @@ class NinebotZAdapter : BaseAdapter() {
     }
 
     override val isReady: Boolean
-        get() = (WheelData.getInstance().serial != ""
-                && WheelData.getInstance().version != "" && WheelData.getInstance().voltage != 0)
+        get() = (WheelData.instance!!.serial != ""
+                && WheelData.instance!!.version != "" && WheelData.instance!!.voltage != 0)
 
     override fun setDrl(drl: Boolean) {
         // ToDo check if it is the same as old value
@@ -577,9 +577,9 @@ class NinebotZAdapter : BaseAdapter() {
 
         fun parseSerialNumber() {
             val serialNumber = String(data)
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             wd.serial = serialNumber
-            wd.setModel("Ninebot Z")
+            wd.model = ("Ninebot Z")
         }
 
         fun parseParams1() {
@@ -626,7 +626,7 @@ class NinebotZAdapter : BaseAdapter() {
 
         fun parseVersionNumber() {
             var versionNumber = ""
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             versionNumber += String.format("%X.", data[1].toInt() and 0x0f)
             versionNumber += String.format("%1X.", data[0].toInt() shr 4 and 0x0f)
             versionNumber += String.format("%1X", data[0].toInt() and 0x0f)
@@ -634,7 +634,7 @@ class NinebotZAdapter : BaseAdapter() {
         }
 
         fun parseActivationDate() { ////// ToDo: add to wheeldata
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             val activationDate = MathsUtil.shortFromBytesLE(data, 0)
             val year = activationDate shr 9
             val mounth = activationDate shr 5 and 0x0f
@@ -644,7 +644,7 @@ class NinebotZAdapter : BaseAdapter() {
         }
 
         fun parseLiveData() {
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             val errorcode = MathsUtil.shortFromBytesLE(data, 0)
             val alarmcode = MathsUtil.shortFromBytesLE(data, 2)
             val escstatus = MathsUtil.shortFromBytesLE(data, 4)
@@ -664,18 +664,18 @@ class NinebotZAdapter : BaseAdapter() {
             //alert = String.format(Locale.ENGLISH, "error: %04X, warn: %04X, status: %04X", errorcode, alarmcode, escstatus);
             wd.speed = speed
             wd.voltage = voltage
-            wd.setCurrent(current)
-            wd.setTotalDistance(distance.toLong())
+            wd.current = (current)
+            wd.totalDistance = (distance.toLong())
             wd.temperature = temperature * 10
-            //wd.setAlert(alert);
+            //wd.alert = (alert);
             wd.updateRideTime()
-            wd.setBatteryLevel(batt)
+            wd.batteryLevel = (batt)
             wd.voltageSag = voltage
             wd.setPower(power)
         }
 
         fun parseBmsSn(bmsnum: Int) {
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             val serialNumber = String(data, 0, 14)
             var versionNumber = ""
             versionNumber += String.format("%X.", data[15])
@@ -701,7 +701,7 @@ class NinebotZAdapter : BaseAdapter() {
         }
 
         fun parseBmsLife(bmsnum: Int) {
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             val bmsStatus = MathsUtil.shortFromBytesLE(data, 0)
             val remCap = MathsUtil.shortFromBytesLE(data, 2)
             val remPerc = MathsUtil.shortFromBytesLE(data, 4)
@@ -724,7 +724,7 @@ class NinebotZAdapter : BaseAdapter() {
         }
 
         fun parseBmsCells(bmsnum: Int) {
-            val wd = WheelData.getInstance()
+            val wd = WheelData.instance!!
             val cell1 = MathsUtil.shortFromBytesLE(data, 0)
             val cell2 = MathsUtil.shortFromBytesLE(data, 2)
             val cell3 = MathsUtil.shortFromBytesLE(data, 4)

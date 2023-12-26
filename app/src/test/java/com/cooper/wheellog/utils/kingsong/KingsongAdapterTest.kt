@@ -34,16 +34,16 @@ class KingsongAdapterTest {
         data = spyk(WheelData())
         data.wheelType = Constants.WHEEL_TYPE.KINGSONG
         WheelLog.AppConfig = mockkClass(AppConfig::class, relaxed = true)
+        WheelData.instance = data
         mockkStatic(WheelData::class)
-        every { WheelData.getInstance() } returns data
         adapter = KingsongAdapter(
-            WheelData.getInstance(),
+            WheelData.instance!!,
             WheelLog.AppConfig,
             KingSongLiveDataDecoder(
-                WheelData.getInstance(),
-                KingSongBatteryCalculator(WheelData.getInstance(), WheelLog.AppConfig),
+                WheelData.instance!!,
+                KingSongBatteryCalculator(WheelData.instance!!, WheelLog.AppConfig),
             ),
-            KingSongFFFrameDecoder(WheelData.getInstance()),
+            KingSongFFFrameDecoder(WheelData.instance!!),
         )
     }
 

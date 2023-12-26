@@ -49,13 +49,13 @@ fun startScreen(
 
         var isSpecificVisible by remember {
             mutableStateOf(
-                WheelData.getInstance()?.wheelType != Constants.WHEEL_TYPE.Unknown
+                WheelData.instance!!?.wheelType != Constants.WHEEL_TYPE.Unknown
             )
         }
         systemBroadcastReceiver(systemAction = Constants.ACTION_WHEEL_MODEL_CHANGED) { intent ->
             if (intent?.action == Constants.ACTION_WHEEL_MODEL_CHANGED) {
                 isSpecificVisible =
-                    WheelData.getInstance()?.wheelType != Constants.WHEEL_TYPE.Unknown
+                    WheelData.instance!!?.wheelType != Constants.WHEEL_TYPE.Unknown
             }
         }
 

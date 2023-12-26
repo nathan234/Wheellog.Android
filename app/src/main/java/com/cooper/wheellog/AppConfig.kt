@@ -17,7 +17,7 @@ class AppConfig(var context: Context) {
     private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private var specificPrefix: String = ""
     private val separator = ";"
-    private val wd by lazy { WheelData.getInstance() }
+    private val wd by lazy { WheelData.instance!! }
 
     init {
         // Clear all preferences if they are incompatible

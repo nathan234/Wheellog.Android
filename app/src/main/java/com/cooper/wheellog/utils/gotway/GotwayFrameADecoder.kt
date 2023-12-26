@@ -53,7 +53,7 @@ class GotwayFrameADecoder(
             Math.round(gotwayScaledVoltageCalculator.getScaledVoltage(voltage.toDouble())).toInt()
         wd.speed = speed
         wd.topSpeed = speed
-        wd.setWheelDistance(distance.toLong())
+        wd.wheelDistance = (distance.toLong())
         wd.temperature = temperature
         wd.phaseCurrent = phaseCurrent
         wd.voltage = voltage

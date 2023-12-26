@@ -110,7 +110,7 @@ class BluetoothService: Service() {
                             startBeepTimer()
                         }
                     }
-                    when (WheelData.getInstance().wheelType) {
+                    when (WheelData.instance!!.wheelType) {
                         WHEEL_TYPE.INMOTION -> {
                             InMotionAdapter.stopTimer()
                             InmotionAdapterV2.stopTimer()
@@ -144,19 +144,19 @@ class BluetoothService: Service() {
             override fun onServicesDiscovered(peripheral: BluetoothPeripheral) {
                 super.onServicesDiscovered(peripheral)
                 Timber.i("onServicesDiscovered called")
-                var recognisedWheel = WheelData.getInstance().detectWheel(
+                var recognisedWheel = WheelData.instance!!.detectWheel(
                         wheelAddress,
                         applicationContext,
                         R.raw.bluetooth_services
                     )
                 if (!recognisedWheel) {
-                    recognisedWheel = WheelData.getInstance().detectWheel(
+                    recognisedWheel = WheelData.instance!!.detectWheel(
                         wheelAddress,
                         applicationContext,
                         R.raw.bluetooth_proxy_services
                     )
                 }
-                WheelData.getInstance().isConnected = recognisedWheel
+                WheelData.instance!!.isConnected = recognisedWheel
                 if (recognisedWheel) {
                     sendBroadcast(Intent(Constants.ACTION_WHEEL_TYPE_RECOGNIZED))
                 } else {
@@ -209,7 +209,7 @@ class BluetoothService: Service() {
             }
             if (fileUtilRawData!!.isNull) {
                 val fileNameForRawData = "RAW_" + sdf.format(Date()) + ".csv"
-                fileUtilRawData!!.prepareFile(fileNameForRawData, WheelData.getInstance().mac)
+                fileUtilRawData!!.prepareFile(fileNameForRawData, WheelData.instance!!.mac)
             }
             fileUtilRawData!!.writeLine(
                 String.format(
@@ -221,13 +221,13 @@ class BluetoothService: Service() {
         } else if (fileUtilRawData != null && !fileUtilRawData!!.isNull) {
             fileUtilRawData!!.close()
         }
-        val wd = WheelData.getInstance()
+        val wd = WheelData.instance!!
         when (wd.wheelType) {
             WHEEL_TYPE.KINGSONG -> if (characteristic.uuid == Constants.KINGSONG_READ_CHARACTER_UUID) {
                 wd.decodeResponse(value, applicationContext)
-                if (WheelData.getInstance().name.isEmpty()) {
+                if (WheelData.instance!!.name.isEmpty()) {
                     KingsongAdapter.instance!!.requestNameData()
-                } else if (WheelData.getInstance().serial.isEmpty()) {
+                } else if (WheelData.instance!!.serial.isEmpty()) {
                     KingsongAdapter.instance!!.requestSerialData()
                 }
             }
@@ -284,7 +284,7 @@ class BluetoothService: Service() {
         reconnectTimer = Timer().apply {
             scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
-                    val wd = WheelData.getInstance()
+                    val wd = WheelData.instance!!
                     if (connectionState == ConnectionState.CONNECTED
                         && wd != null
                         && wd.lastLifeData > 0
@@ -434,7 +434,7 @@ class BluetoothService: Service() {
         }
         Timber.i("Transmitted: %s", stringBuilder.toString())
         try {
-            when (WheelData.getInstance().wheelType) {
+            when (WheelData.instance!!.wheelType) {
                 WHEEL_TYPE.KINGSONG -> {
                     val characteristic = getServiceCharacteristic(
                         Constants.KINGSONG_SERVICE_UUID,
@@ -450,7 +450,7 @@ class BluetoothService: Service() {
                     return wheelConnection!!.writeCharacteristic(characteristic, cmd, WriteType.WITHOUT_RESPONSE)
                 }
                 WHEEL_TYPE.NINEBOT -> {
-                    if (WheelData.getInstance().protoVer.compareTo("") == 0) {
+                    if (WheelData.instance!!.protoVer.compareTo("") == 0) {
                         val characteristic = getServiceCharacteristic(
                             Constants.NINEBOT_SERVICE_UUID,
                             Constants.NINEBOT_WRITE_CHARACTER_UUID

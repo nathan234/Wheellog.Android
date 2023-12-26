@@ -10,7 +10,7 @@ object KingsongUtils {
             inArray(
                 wd.model,
                 arrayOf("KS-18L", "KS-16X", "KS-16XF", "RW", "KS-18LH", "KS-18LY", "KS-S18"),
-            ) || wd.name.startsWith("ROCKW") || wd.btName.compareTo("RW") == 0
+            ) || wd.name.startsWith("ROCKW") || wd.btName?.compareTo("RW") == 0
             )
     }
 

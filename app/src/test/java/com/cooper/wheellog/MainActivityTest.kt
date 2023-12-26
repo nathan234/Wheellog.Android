@@ -37,7 +37,7 @@ class MainActivityTest {
 
         // Act.
         // Assert.
-        assertThat(WheelData.getInstance()).isNotNull()
+        assertThat(WheelData.instance!!).isNotNull()
         assertThat(activity.mMenu?.hasVisibleItems()).isEqualTo(true)
         assertThat(activity.pager.adapter).isNotNull()
         assertThat(activity.pager.adapter!!.itemCount).isEqualTo(4)
@@ -49,13 +49,13 @@ class MainActivityTest {
     fun `click on wheel menu`() {
         // Arrange.
         val shadowActivity = Shadows.shadowOf(activity)
-        WheelData.getInstance().bluetoothService = mockkClass(BluetoothService::class, relaxed = true)
+        WheelData.instance!!.bluetoothService = mockkClass(BluetoothService::class, relaxed = true)
 
         // Act.
         shadowActivity.clickMenuItem(R.id.miWheel)
 
         // Assert.
-        verify (exactly = 1) { WheelData.getInstance().bluetoothService.toggleConnectToWheel() }
+        verify (exactly = 1) { WheelData.instance!!.bluetoothService?.toggleConnectToWheel() }
     }
 
     @Test

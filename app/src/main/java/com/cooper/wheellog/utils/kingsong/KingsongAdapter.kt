@@ -156,11 +156,11 @@ class KingsongAdapter(
 
     private fun decodeKingsongDistanceTimeFan(data: ByteArray?) {
         val distance = MathsUtil.getInt4R(data, 2).toLong()
-        wd.setWheelDistance(distance)
+        wd.wheelDistance = (distance)
         wd.updateRideTime()
         wd.topSpeed = MathsUtil.getInt2R(data, 8)
         wd.fanStatus = data!![12].toInt()
-        wd.chargingStatus = data[13].toInt()
+        wd.setChargingStatus(data[13].toInt())
         wd.temperature2 = MathsUtil.getInt2R(data, 14)
     }
 
@@ -347,7 +347,7 @@ class KingsongAdapter(
             get() {
                 Timber.i("Get instance")
                 if (INSTANCE == null) {
-                    val wd = WheelData.getInstance()
+                    val wd = WheelData.instance!!
                     val appConfig = WheelLog.AppConfig
                     Timber.i("New instance")
                     INSTANCE = KingsongAdapter(
