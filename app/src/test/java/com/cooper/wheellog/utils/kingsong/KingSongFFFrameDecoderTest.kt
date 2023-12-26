@@ -22,19 +22,20 @@ class KingSongFFFrameDecoderTest {
     fun `decode sets bms values for packet number 0x00`() {
         // Arrange
         val wheelData = mockk<WheelData>(relaxed = true)
+        val mathsUtils = mockk<MathsUtil>(relaxed = true)
         val bms = mockk<SmartBms>(relaxed = true)
-        val decoder = KingSongFFFrameDecoder(wheelData)
+        val decoder = KingSongFFFrameDecoder(wheelData, mathsUtils)
         val data = ByteArray(20)
         // Assuming packet number is 0x00
         data[16] = 0xF1.toByte() // BMS1 identifier
         data[17] = 0x00.toByte() // Packet number 0x00
 
         // Mock the getInt2R method for all the required indices
-        every { MathsUtil.getInt2R(data, 2) } returns 4200 // Mocked Voltage
-        every { MathsUtil.getInt2R(data, 4) } returns -150 // Mocked Current (could be negative)
-        every { MathsUtil.getInt2R(data, 6) } returns 650 // Mocked Remaining Capacity
-        every { MathsUtil.getInt2R(data, 8) } returns 100 // Mocked Factory Capacity
-        every { MathsUtil.getInt2R(data, 10) } returns 200 // Mocked Full Cycles
+        every { mathsUtils.getInt2R(data, 2) } returns 4200 // Mocked Voltage
+        every { mathsUtils.getInt2R(data, 4) } returns -150 // Mocked Current (could be negative)
+        every { mathsUtils.getInt2R(data, 6) } returns 650 // Mocked Remaining Capacity
+        every { mathsUtils.getInt2R(data, 8) } returns 100 // Mocked Factory Capacity
+        every { mathsUtils.getInt2R(data, 10) } returns 200 // Mocked Full Cycles
 
         // Mocking BMS related methods
         every { wheelData.bms1 } returns bms
@@ -46,11 +47,11 @@ class KingSongFFFrameDecoderTest {
 
         // Assert
         // Verify that getInt2R was called with the correct parameters
-        verify { MathsUtil.getInt2R(data, 2) }
-        verify { MathsUtil.getInt2R(data, 4) }
-        verify { MathsUtil.getInt2R(data, 6) }
-        verify { MathsUtil.getInt2R(data, 8) }
-        verify { MathsUtil.getInt2R(data, 10) }
+        verify { mathsUtils.getInt2R(data, 2) }
+        verify { mathsUtils.getInt2R(data, 4) }
+        verify { mathsUtils.getInt2R(data, 6) }
+        verify { mathsUtils.getInt2R(data, 8) }
+        verify { mathsUtils.getInt2R(data, 10) }
 
         // Assert that the correct values are set on the bms object
         verify { bms.voltage = 42.0 } // 4200 / 1000
