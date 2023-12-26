@@ -114,19 +114,19 @@ class BluetoothService: Service() {
                         WHEEL_TYPE.INMOTION -> {
                             InMotionAdapter.stopTimer()
                             InmotionAdapterV2.stopTimer()
-                            NinebotZAdapter.getInstance().resetConnection()
-                            NinebotAdapter.getInstance().resetConnection()
+                            NinebotZAdapter.instance?.resetConnection()
+                            NinebotAdapter.instance?.resetConnection()
                         }
                         WHEEL_TYPE.INMOTION_V2 -> {
                             InmotionAdapterV2.stopTimer()
-                            NinebotZAdapter.getInstance().resetConnection()
-                            NinebotAdapter.getInstance().resetConnection()
+                            NinebotZAdapter.instance?.resetConnection()
+                            NinebotAdapter.instance?.resetConnection()
                         }
                         WHEEL_TYPE.NINEBOT_Z -> {
-                            NinebotZAdapter.getInstance().resetConnection()
-                            NinebotAdapter.getInstance().resetConnection()
+                            NinebotZAdapter.instance?.resetConnection()
+                            NinebotAdapter.instance?.resetConnection()
                         }
-                        WHEEL_TYPE.NINEBOT -> NinebotAdapter.getInstance().resetConnection()
+                        WHEEL_TYPE.NINEBOT -> NinebotAdapter.instance?.resetConnection()
                         else -> {}
                     }
                     isWheelSearch = true
