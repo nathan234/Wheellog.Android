@@ -344,7 +344,7 @@ class InmotionAdapterV2 : BaseAdapter() {
                 val feature = data[5].toInt() // 01
                 val reverse = data[6].toInt() // 00
                 model = Model.findById(series)
-                wd.setModel(model.getName())
+                wd.setModel(model.name2)
                 wd.version = "-" // need to find how to parse
             } else if (data[0] == 0x02.toByte() && len >= 17) {
                 stateCon += 1
@@ -1329,10 +1329,6 @@ class InmotionAdapterV2 : BaseAdapter() {
         }
     }
 
-    fun getModel2(): Model {
-        return model
-    }
-
     fun setModel2(m: Model) {
         model = m
     }
@@ -1348,17 +1344,11 @@ class InmotionAdapterV2 : BaseAdapter() {
         private var lightSwitchCounter = 0
         @JvmStatic
         var model = Model.UNKNOWN
-            get() = field
-            private set(value) {
-                field = value
-            }
+            private set
 
         @JvmStatic
         var proto = 0
-            get() = field
-            private set(value) {
-                field = value
-            }
+            private set
 
         @Synchronized
         fun newInstance() {
