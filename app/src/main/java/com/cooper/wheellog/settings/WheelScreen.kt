@@ -320,7 +320,7 @@ private fun ninebotZ() {
 
 @Composable
 private fun inmotion() {
-    val adapter by remember { mutableStateOf(InMotionAdapter.getInstance()) }
+    val adapter by remember { mutableStateOf(InMotionAdapter.instance) }
     var speedMultipier = 1.0f
     var speedUnit = R.string.kmh
     if (AppConfig.useMph) {
@@ -335,7 +335,7 @@ private fun inmotion() {
         AppConfig.lightEnabled = it
         adapter.setLightState(it)
     }
-    if (InMotionAdapter.getInstance().ledThere) {
+    if (InMotionAdapter.instance.ledThere) {
         switchPref(
             name = stringResource(R.string.leds_settings_title),
             desc = stringResource(R.string.leds_settings_description),
@@ -358,7 +358,7 @@ private fun inmotion() {
         desc = stringResource(R.string.tilt_back_description),
         position = AppConfig.wheelMaxSpeed.toFloat(),
         min = 3f,
-        max = InMotionAdapter.getInstance().maxSpeed.toFloat(),
+        max = InMotionAdapter.instance!!.maxSpeed.toFloat(),
         unit = speedUnit,
         visualMultiple = speedMultipier,
     ) {
@@ -377,7 +377,7 @@ private fun inmotion() {
         AppConfig.pedalsAdjustment = (it * 10).toInt()
         adapter.setPedalTilt(it.toInt() * 10)
     }
-    if (InMotionAdapter.getInstance().wheelModesWheel) {
+    if (InMotionAdapter.instance.wheelModesWheel) {
         switchPref(
             name = stringResource(R.string.ride_mode_title),
             desc = stringResource(R.string.ride_mode_description),
@@ -418,7 +418,7 @@ private fun inmotion() {
 
 @Composable
 private fun inmotionV2() {
-    val adapter by remember { mutableStateOf(InmotionAdapterV2.getInstance()) }
+    val adapter by remember { mutableStateOf(InmotionAdapterV2.instance!!) }
     var speedMultipier = 1.0f
     var speedUnit = R.string.kmh
     if (AppConfig.useMph) {
@@ -500,7 +500,7 @@ private fun inmotionV2() {
         desc = stringResource(R.string.tilt_back_description),
         position = AppConfig.wheelMaxSpeed.toFloat(),
         min = 3f,
-        max = InmotionAdapterV2.getInstance().maxSpeed.toFloat(),
+        max = InmotionAdapterV2.instance!!.maxSpeed.toFloat(),
         unit = speedUnit,
         visualMultiple = speedMultipier,
     ) {

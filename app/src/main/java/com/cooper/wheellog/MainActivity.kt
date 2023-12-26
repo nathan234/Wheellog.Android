@@ -496,7 +496,7 @@ class MainActivity : AppCompatActivity() {
         miWatch?.isVisible = WheelLog.AppConfig.mainMenuButtons.contains("watch")
         mMenu?.findItem(R.id.miReset)?.isVisible = WheelLog.AppConfig.mainMenuButtons.contains("reset")
 
-        if (PebbleService.isInstanceCreated()) {
+        if (PebbleService.isInstanceCreated) {
             miWatch!!.setIcon(ThemeManager.getId(ThemeIconEnum.MenuWatchOn))
         } else {
             miWatch!!.setIcon(ThemeManager.getId(ThemeIconEnum.MenuWatchOff))
@@ -1000,12 +1000,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun stopPebbleService() {
-        if (PebbleService.isInstanceCreated()) togglePebbleService()
+        if (PebbleService.isInstanceCreated) togglePebbleService()
     }
 
     private fun togglePebbleService() {
         val pebbleServiceIntent = Intent(applicationContext, PebbleService::class.java)
-        if (PebbleService.isInstanceCreated()) stopService(pebbleServiceIntent) else ContextCompat.startForegroundService(
+        if (PebbleService.isInstanceCreated) stopService(pebbleServiceIntent) else ContextCompat.startForegroundService(
             this,
             pebbleServiceIntent
         )
