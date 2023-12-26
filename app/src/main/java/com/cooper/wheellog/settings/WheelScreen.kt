@@ -418,7 +418,7 @@ private fun inmotion() {
 
 @Composable
 private fun inmotionV2() {
-    val adapter by remember { mutableStateOf(InmotionAdapterV2.getInstance()) }
+    val adapter by remember { mutableStateOf(InmotionAdapterV2.instance!!) }
     var speedMultipier = 1.0f
     var speedUnit = R.string.kmh
     if (AppConfig.useMph) {
@@ -500,7 +500,7 @@ private fun inmotionV2() {
         desc = stringResource(R.string.tilt_back_description),
         position = AppConfig.wheelMaxSpeed.toFloat(),
         min = 3f,
-        max = InmotionAdapterV2.getInstance().maxSpeed.toFloat(),
+        max = InmotionAdapterV2.instance!!.maxSpeed.toFloat(),
         unit = speedUnit,
         visualMultiple = speedMultipier,
     ) {

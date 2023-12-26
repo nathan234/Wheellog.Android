@@ -90,7 +90,7 @@ class InmotionAdapterV2Test {
     @Test
     fun `decode with v11 escape data`() {
         // Arrange.
-        adapter.setModel(InmotionAdapterV2.Model.V11)
+        adapter.setModel2(Model.V11)
         val byteArray1 = "aaaa1431843020a5a50068025207870080009400882c5fc4b000d7001000f4ff2b037c1564190000d9d9492b00000000000000000000a5a5".hexToByteArray() // wheel type
         // Act.
         val result1 = adapter.decode(byteArray1)
@@ -117,8 +117,8 @@ class InmotionAdapterV2Test {
     @Test
     fun `decode v11 new fw with PWM`() {
         // Arrange.
-        adapter.setModel(InmotionAdapterV2.Model.V11)
-        adapter.setProto(1)
+        adapter.setModel2(Model.V11)
+        adapter.setProto2(1)
         val byteArray1 = "aaaa143384411f8e03a5a506e90bd80242021600122a5acbb000cc002a0000000bfd7c1564190000d4d1ff09490a0000000000000000000010".hexToByteArray() // wheel type
         // Act.
         val result1 = adapter.decode(byteArray1)
@@ -145,8 +145,8 @@ class InmotionAdapterV2Test {
     @Test
     fun `decode with v11 escape data2`() {
         // Arrange.
-        adapter.setModel(InmotionAdapterV2.Model.V11)
-        adapter.setProto(1)
+        adapter.setModel2(Model.V11)
+        adapter.setProto2(1)
         val byteArray1 = "aaaa143184a5aa1e8100640b1301650059001504a0234cc0b000ce00180000007c007c1564190000d1d3492b00000000000000000000a5a5".hexToByteArray() // wheel type
         // Act.
         val result1 = adapter.decode(byteArray1)
@@ -173,8 +173,8 @@ class InmotionAdapterV2Test {
     @Test
     fun `decode with v11 v1_4_0`() {
         // Arrange.
-        adapter.setModel(InmotionAdapterV2.Model.V11)
-        adapter.setProto(2)
+        adapter.setModel2(Model.V11)
+        adapter.setProto2(2)
         val byteArray1 = "aaaa1445842d1d10000000efff070000000000000000002b0300000000000000008a149612e02e8813641900000000cbb000cccad1000028000000000049140000000000000000000021".hexToByteArray() // wheel type
         // Act.
         val result1 = adapter.decode(byteArray1)
@@ -201,7 +201,7 @@ class InmotionAdapterV2Test {
     @Test
     fun `decode version with v11 v1_4_0`() {
         // Arrange.
-        adapter.setModel(InmotionAdapterV2.Model.V11)
+        adapter.setModel2(Model.V11)
         val byteArray1 = "aaaa111d820622000003040300070221000004011a000602230d00010107000001b9".hexToByteArray() // wheel type
         // Act.
         val result1 = adapter.decode(byteArray1)
@@ -213,7 +213,7 @@ class InmotionAdapterV2Test {
     @Test
     fun `decode version with v12`() {
         // Arrange.
-        adapter.setModel(InmotionAdapterV2.Model.V11)
+        adapter.setModel2(Model.V11)
         val byteArray1 = "aaaa111d820622790002042000060221040005017d000602233700010203000402bb".hexToByteArray() // wheel type
         // Act.
         val result1 = adapter.decode(byteArray1)
@@ -322,7 +322,7 @@ class InmotionAdapterV2Test {
     @Test
     fun `decode with v12 data 3`() {
         // Arrange.
-        adapter.setModel(InmotionAdapterV2.Model.V12)
+        adapter.setModel2(Model.V12)
         val byteArray1 = "aaaa14438415273500930496014b0535003a0000008d000000fdfe010010271c255046581b581b000000000000ceca00cfd1d0b08d646400000000490000000000000000000000bc".hexToByteArray() // wheel type
         // Act.
         val result1 = adapter.decode(byteArray1)
@@ -350,7 +350,7 @@ class InmotionAdapterV2Test {
     @Test
     fun `decode with v12 data 4`() {
         // Arrange.
-        adapter.setModel(InmotionAdapterV2.Model.V12)
+        adapter.setModel2(Model.V12)
         val byteArray1 = "aaaa1443842627090000000000060000000000000000000000b3fd000010271c255046581b581b000000000000ceca00ced0cfb048282800000000490000000000000000000000ef".hexToByteArray() // wheel type
         // Act.
         val result1 = adapter.decode(byteArray1)
@@ -429,7 +429,7 @@ class InmotionAdapterV2Test {
     @Test
     fun `Inmotion v12 - decode long trip`() {
         // Arrange.
-        adapter.setModel(InmotionAdapterV2.Model.V11)
+        adapter.setModel(Model.V11)
         val inputStream: InputStream = File("src/test/resources/RAW_2021_11_29_09_14_06.csv").inputStream()
         //val startTime = sdf.parse("09:30:10.000")
         val startTime = sdf.parse("09:00:00.000")
