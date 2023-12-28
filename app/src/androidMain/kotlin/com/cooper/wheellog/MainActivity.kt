@@ -37,7 +37,6 @@ import com.cooper.wheellog.DialogHelper.checkAndShowPrivatePolicyDialog
 import com.cooper.wheellog.DialogHelper.checkBatteryOptimizationsAndShowAlert
 import com.cooper.wheellog.DialogHelper.checkPWMIsSetAndShowAlert
 import com.cooper.wheellog.companion.WearOs
-import com.cooper.wheellog.data.TripDatabase.Companion.getDataBase
 import com.cooper.wheellog.databinding.ActivityMainBinding
 import com.cooper.wheellog.settings.mainScreen
 import com.cooper.wheellog.ui.theme.AppTheme
@@ -587,24 +586,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ElectroClub.instance.apply {
-            lifecycle.coroutineScope.launch {
-                dao = getDataBase(this@MainActivity).tripDao()
-            }
-            errorListener = { method: String?, error: String? ->
-                val message = "[ec] $method error: $error"
-                Timber.i(message)
-                runOnUiThread { showSnackBar(message, 4000) }
-            }
-            successListener = label@{ method: String?, success: Any? ->
-                if (method == ElectroClub.GET_GARAGE_METHOD) {
-                    return@label
-                }
-                val message = "[ec] $method ok: $success"
-                Timber.i(message)
-                runOnUiThread { showSnackBar(message, 4000) }
-            }
-        }
+        // todo ElectroClub DB is not working
+//        ElectroClub.instance.apply {
+//            lifecycle.coroutineScope.launch {
+//                dao = getDataBase(this@MainActivity).tripDao()
+//            }
+//            errorListener = { method: String?, error: String? ->
+//                val message = "[ec] $method error: $error"
+//                Timber.i(message)
+//                runOnUiThread { showSnackBar(message, 4000) }
+//            }
+//            successListener = label@{ method: String?, success: Any? ->
+//                if (method == ElectroClub.GET_GARAGE_METHOD) {
+//                    return@label
+//                }
+//                val message = "[ec] $method ok: $success"
+//                Timber.i(message)
+//                runOnUiThread { showSnackBar(message, 4000) }
+//            }
+//        }
         createPager()
         pipView = binding.pipView
 
