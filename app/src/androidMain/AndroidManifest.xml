@@ -39,6 +39,7 @@
     <uses-permission android:name="com.samsung.WATCH_APP_TYPE.Companion" />
     <uses-permission-sdk-23 android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_TYPE_LOCATION" />
 
@@ -105,19 +106,19 @@
             android:name=".ScanActivity"
             android:theme="@style/OriginalTheme.Dialog.Alert" />
 
-        <service android:name=".PebbleService"
+        <service android:name=".services.PebbleService"
             android:foregroundServiceType="connectedDevice"
             android:exported="false" />
-        <service android:name=".BluetoothService"
+        <service android:name=".services.BluetoothService"
             android:foregroundServiceType="connectedDevice"
             android:exported="false" />
-        <service android:name=".LoggingService"
+        <service android:name=".services.LoggingService"
             android:foregroundServiceType="location"
             android:exported="false" />
         <service android:name="com.cooper.wheellog.GearService"
             android:foregroundServiceType="connectedDevice"
             android:exported="false" /> <!-- Services needed for Samsung Gear watches -->
-        <service android:name="com.cooper.wheellog.GarminConnectIQ"
+        <service android:name="com.cooper.wheellog.services.GarminConnectIQ"
             android:foregroundServiceType="connectedDevice"
             android:exported="false" /> <!-- Services needed for Garmin ConnectIQ devices -->
 

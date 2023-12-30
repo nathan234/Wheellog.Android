@@ -2,6 +2,7 @@ package com.cooper.wheellog
 
 import android.Manifest
 import android.provider.Settings
+import com.cooper.wheellog.services.BluetoothService
 import io.mockk.*
 import org.junit.Before
 import org.junit.Test

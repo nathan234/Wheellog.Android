@@ -1,10 +1,13 @@
-package com.cooper.wheellog
+package com.cooper.wheellog.services
 
 import android.app.Service
 import android.bluetooth.*
 import android.content.Intent
 import android.os.*
 import android.os.PowerManager.WakeLock
+import com.cooper.wheellog.R
+import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.utils.*
 import com.cooper.wheellog.utils.Constants.WHEEL_TYPE
 import com.cooper.wheellog.utils.SomeUtil.playSound
@@ -147,7 +150,7 @@ class BluetoothService: Service() {
                 var recognisedWheel = WheelData.instance!!.detectWheel(
                         wheelAddress,
                         applicationContext,
-                        R.raw.bluetooth_services
+                    R.raw.bluetooth_services
                     )
                 if (!recognisedWheel) {
                     recognisedWheel = WheelData.instance!!.detectWheel(

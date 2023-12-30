@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Properties
@@ -129,6 +128,7 @@ android {
 }
 
 val composeVersion by extra("1.5.3")
+val coroutinesVersion by extra("1.8.0-RC2")
 val lifecycleVersion by extra("2.6.2")
 val roomVersion by extra("2.6.1")
 val coreKtxVersion by extra("1.12.0")
@@ -153,7 +153,7 @@ kotlin {
             dependencies {
                 implementation(project(":shared"))
                 // todo wearos is broken with the multiplatform build
-//                implementation(project(":wearos"))
+                //                implementation(project(":wearos"))
 
                 // Compose
                 implementation("androidx.compose.foundation:foundation:$composeVersion")
@@ -170,9 +170,10 @@ kotlin {
 
                 // Database
                 implementation("androidx.room:room-runtime:$roomVersion")
-                implementation( "androidx.room:room-ktx:$roomVersion")
+                implementation("androidx.room:room-ktx:$roomVersion")
                 // todo room is broken with the multiplatform build, crashes at startup
-//                kapt.annotationProcessor("androidx.room:room-compiler:$roomVersion")
+                //
+                // kapt.annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
                 // Bluetooth
                 implementation("com.github.weliem:blessed-android:2.4.1")
@@ -210,7 +211,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
             }
 
-//            tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "17" }
+            //            tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "17" }
         }
         val androidUnitTest by getting {
             dependencies {

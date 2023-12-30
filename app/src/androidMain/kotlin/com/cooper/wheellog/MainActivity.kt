@@ -27,17 +27,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.coroutineScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.cooper.wheellog.BluetoothService.LocalBinder
+import com.cooper.wheellog.services.BluetoothService.LocalBinder
 import com.cooper.wheellog.DialogHelper.checkAndShowPrivatePolicyDialog
 import com.cooper.wheellog.DialogHelper.checkBatteryOptimizationsAndShowAlert
 import com.cooper.wheellog.DialogHelper.checkPWMIsSetAndShowAlert
 import com.cooper.wheellog.companion.WearOs
 import com.cooper.wheellog.databinding.ActivityMainBinding
+import com.cooper.wheellog.services.BluetoothService
+import com.cooper.wheellog.services.GarminConnectIQ
+import com.cooper.wheellog.services.LoggingService
+import com.cooper.wheellog.services.PebbleService
 import com.cooper.wheellog.settings.mainScreen
 import com.cooper.wheellog.ui.theme.AppTheme
 import com.cooper.wheellog.utils.*
@@ -59,7 +62,6 @@ import com.cooper.wheellog.views.PiPView
 import com.google.android.material.snackbar.Snackbar
 import com.welie.blessed.ConnectionState
 // import com.yandex.metrica.YandexMetrica
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*

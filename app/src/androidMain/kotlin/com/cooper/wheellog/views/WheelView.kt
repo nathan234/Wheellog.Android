@@ -14,7 +14,7 @@ import com.cooper.wheellog.*
 import com.cooper.wheellog.DialogHelper.setBlackIcon
 import com.cooper.wheellog.utils.Alarms
 import com.cooper.wheellog.utils.Calculator
-import com.cooper.wheellog.utils.MathsUtil.dpToPx
+import com.cooper.wheellog.views.Utils.dpToPx
 import com.cooper.wheellog.utils.MathsUtil.kmToMiles
 import com.cooper.wheellog.utils.ReflectUtil
 import com.cooper.wheellog.utils.SomeUtil

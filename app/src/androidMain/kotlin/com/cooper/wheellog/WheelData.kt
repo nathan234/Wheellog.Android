@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import com.cooper.wheellog.WheelLog.Companion.appContext
+import com.cooper.wheellog.services.BluetoothService
 import com.cooper.wheellog.utils.Alarms.checkAlarm
 import com.cooper.wheellog.utils.BaseAdapter
 import com.cooper.wheellog.utils.Calculator.pushPower

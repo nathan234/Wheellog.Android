@@ -1,8 +1,7 @@
 package com.cooper.wheellog.utils
 
-import android.content.Context
-import android.util.TypedValue
-import java.nio.ByteBuffer
+// used to be Java NIO Buffer
+import okio.Buffer
 import kotlin.math.max
 import kotlin.math.min
 
@@ -21,50 +20,96 @@ object MathsUtil {
         return temp * 9.0 / 5.0 + 32
     }
 
-    fun dpToPx(context: Context, dp: Int): Int {
-        return Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp.toFloat(),
-                context.resources.displayMetrics
-            )
-        )
-    }
+//    fun getInt2(arr: ByteArray?, offset: Int): Int {
+//        return ByteBuffer.wrap(arr, offset, 2).getShort().toInt()
+//    }
 
     fun getInt2(arr: ByteArray?, offset: Int): Int {
-        return ByteBuffer.wrap(arr, offset, 2).getShort().toInt()
+        if (arr == null || offset + 2 > arr.size) {
+            throw IllegalArgumentException("Invalid array or offset")
+        }
+        val buffer = Buffer()
+        buffer.write(arr, offset, 2)
+        return buffer.readShort().toInt()
     }
+
+//    fun getInt2R(arr: ByteArray, offset: Int): Int {
+//        return ByteBuffer.wrap(reverseEvery2(arr, offset, 2), 0, 2).getShort().toInt()
+//    }
 
     fun getInt2R(arr: ByteArray, offset: Int): Int {
-        return ByteBuffer.wrap(reverseEvery2(arr, offset, 2), 0, 2).getShort().toInt()
+        val reversedArr = reverseEvery2(arr, offset, 2)
+        val buffer = Buffer()
+        buffer.write(reversedArr, 0, 2)
+        return buffer.readShort().toInt()
     }
+
+//    fun getInt4(arr: ByteArray?, offset: Int): Long {
+//        return ByteBuffer.wrap(arr, offset, 4).getInt().toLong()
+//    }
 
     fun getInt4(arr: ByteArray?, offset: Int): Long {
-        return ByteBuffer.wrap(arr, offset, 4).getInt().toLong()
+        if (arr == null || offset + 4 > arr.size) {
+            throw IllegalArgumentException("Invalid array or offset")
+        }
+        val buffer = Buffer()
+        buffer.write(arr, offset, 4)
+        return buffer.readInt().toLong()
     }
+
+//    fun getInt4R(arr: ByteArray, offset: Int): Int {
+//        return ByteBuffer.wrap(reverseEvery2(arr, offset, 4), 0, 4).getInt()
+//    }
 
     fun getInt4R(arr: ByteArray, offset: Int): Int {
-        return ByteBuffer.wrap(reverseEvery2(arr, offset, 4), 0, 4).getInt()
+        val reversedArr = reverseEvery2(arr, offset, 4)
+        val buffer = Buffer()
+        buffer.write(reversedArr, 0, 4)
+        return buffer.readInt()
     }
+
+//    fun getBytes(input: Short): ByteArray {
+//        return ByteBuffer.allocate(2).putShort(input).array()
+//    }
 
     fun getBytes(input: Short): ByteArray {
-        return ByteBuffer.allocate(2).putShort(input).array()
+        val buffer = Buffer()
+        buffer.writeShort(input.toInt())
+        return buffer.readByteArray()
     }
+
+//    fun getBytes(input: Int): ByteArray {
+//        return ByteBuffer.allocate(4).putInt(input).array()
+//    }
 
     fun getBytes(input: Int): ByteArray {
-        return ByteBuffer.allocate(4).putInt(input).array()
+        val buffer = Buffer()
+        buffer.writeInt(input)
+        return buffer.readByteArray()
     }
 
-    @JvmOverloads
-    fun reverseEvery2(input: ByteArray, offset: Int = 0, len: Int = input.size): ByteArray {
-        val result = ByteArray(len)
-        System.arraycopy(input, offset, result, 0, len)
-        var i = 0
-        while (i < len - 1) {
-            val temp = result[i]
-            result[i] = result[i + 1]
-            result[i + 1] = temp
-            i += 2
+//    @JvmOverloads
+//    fun reverseEvery2(input: ByteArray, offset: Int = 0, len: Int = input.size): ByteArray {
+//        val result = ByteArray(len)
+//        System.arraycopy(input, offset, result, 0, len)
+//        var i = 0
+//        while (i < len - 1) {
+//            val temp = result[i]
+//            result[i] = result[i + 1]
+//            result[i + 1] = temp
+//            i += 2
+//        }
+//        return result
+//    }
+
+    fun reverseEvery2(arr: ByteArray, offset: Int = 0, length: Int = arr.size): ByteArray {
+        val result = arr.copyOfRange(offset, offset + length)
+        for (i in 0 until length step 2) {
+            if (i + 1 < length) {
+                val temp = result[i]
+                result[i] = result[i + 1]
+                result[i + 1] = temp
+            }
         }
         return result
     }

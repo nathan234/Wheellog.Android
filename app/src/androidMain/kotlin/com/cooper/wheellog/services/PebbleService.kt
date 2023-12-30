@@ -1,4 +1,4 @@
-package com.cooper.wheellog
+package com.cooper.wheellog.services
 
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -8,6 +8,8 @@ import android.content.IntentFilter
 import android.os.Handler
 import android.os.IBinder
 import androidx.core.content.ContextCompat
+import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.utils.Constants
 import com.cooper.wheellog.utils.Constants.ALARM_TYPE
 import com.cooper.wheellog.utils.Constants.PEBBLE_APP_SCREEN
