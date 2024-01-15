@@ -3,17 +3,16 @@ package com.cooper.wheellog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.cooper.wheellog.MainActivity
-import com.cooper.wheellog.utils.Constants.ACTION_PEBBLE_APP_READY
-import com.cooper.wheellog.utils.Constants.ACTION_PEBBLE_APP_SCREEN
-import com.cooper.wheellog.utils.Constants.INTENT_EXTRA_LAUNCHED_FROM_PEBBLE
-import com.cooper.wheellog.utils.Constants.INTENT_EXTRA_PEBBLE_APP_VERSION
-import com.cooper.wheellog.utils.Constants.INTENT_EXTRA_PEBBLE_DISPLAYED_SCREEN
-import com.cooper.wheellog.utils.Constants.PEBBLE_APP_UUID
-import com.cooper.wheellog.utils.Constants.PEBBLE_KEY_DISPLAYED_SCREEN
-import com.cooper.wheellog.utils.Constants.PEBBLE_KEY_LAUNCH_APP
-import com.cooper.wheellog.utils.Constants.PEBBLE_KEY_PLAY_HORN
-import com.cooper.wheellog.utils.Constants.PEBBLE_KEY_READY
+import com.cooper.wheellog.models.Constants.ACTION_PEBBLE_APP_READY
+import com.cooper.wheellog.models.Constants.ACTION_PEBBLE_APP_SCREEN
+import com.cooper.wheellog.models.Constants.INTENT_EXTRA_LAUNCHED_FROM_PEBBLE
+import com.cooper.wheellog.models.Constants.INTENT_EXTRA_PEBBLE_APP_VERSION
+import com.cooper.wheellog.models.Constants.INTENT_EXTRA_PEBBLE_DISPLAYED_SCREEN
+import com.cooper.wheellog.models.Constants.PEBBLE_APP_UUID
+import com.cooper.wheellog.models.Constants.PEBBLE_KEY_DISPLAYED_SCREEN
+import com.cooper.wheellog.models.Constants.PEBBLE_KEY_LAUNCH_APP
+import com.cooper.wheellog.models.Constants.PEBBLE_KEY_PLAY_HORN
+import com.cooper.wheellog.models.Constants.PEBBLE_KEY_READY
 import com.cooper.wheellog.utils.SomeUtil.playBeep
 import com.getpebble.android.kit.Constants
 import com.getpebble.android.kit.PebbleKit
@@ -50,7 +49,7 @@ class PebbleBroadcastReceiver : BroadcastReceiver() {
                 context.startService(pebbleServiceIntent)
             } else if (data.contains(PEBBLE_KEY_READY)) {
                 val watch_app_version = data.getInteger(PEBBLE_KEY_READY).toInt()
-                if (watch_app_version < com.cooper.wheellog.utils.Constants.PEBBLE_APP_VERSION) sendPebbleAlert(
+                if (watch_app_version < com.cooper.wheellog.models.Constants.PEBBLE_APP_VERSION) sendPebbleAlert(
                     context,
                     "A newer version of the app is available. Please upgrade to make sure the app works as expected."
                 )

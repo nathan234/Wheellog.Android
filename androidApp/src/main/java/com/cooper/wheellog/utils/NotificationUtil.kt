@@ -14,6 +14,8 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.cooper.wheellog.*
+import com.cooper.wheellog.models.Constants
+import com.cooper.wheellog.wheeldata.WheelData
 import com.welie.blessed.ConnectionState
 import java.util.*
 
@@ -33,7 +35,8 @@ class NotificationUtil(private val context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
         }
-        val channel = NotificationChannel(Constants.NOTIFICATION_CHANNEL_ID_NOTIFICATION,
+        val channel = NotificationChannel(
+            Constants.NOTIFICATION_CHANNEL_ID_NOTIFICATION,
                 Constants.notificationChannelName,
                 NotificationManager.IMPORTANCE_MIN).apply {
             description = Constants.notificationChannelDescription

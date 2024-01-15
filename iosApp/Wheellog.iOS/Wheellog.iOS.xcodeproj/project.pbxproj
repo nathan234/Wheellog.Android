@@ -15,6 +15,8 @@
 		CD6EDE682B54DB6D00081DB1 /* Wheellog_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE672B54DB6D00081DB1 /* Wheellog_iOSTests.swift */; };
 		CD6EDE722B54DB6D00081DB1 /* Wheellog_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE712B54DB6D00081DB1 /* Wheellog_iOSUITests.swift */; };
 		CD6EDE742B54DB6D00081DB1 /* Wheellog_iOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE732B54DB6D00081DB1 /* Wheellog_iOSUITestsLaunchTests.swift */; };
+		CD6EDE822B54DCE400081DB1 /* IWheelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE812B54DCE400081DB1 /* IWheelData.swift */; };
+		CD6EDE872B54DE3800081DB1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE862B54DE3700081DB1 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		CD6EDE6D2B54DB6D00081DB1 /* Wheellog.iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Wheellog.iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD6EDE712B54DB6D00081DB1 /* Wheellog_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wheellog_iOSUITests.swift; sourceTree = "<group>"; };
 		CD6EDE732B54DB6D00081DB1 /* Wheellog_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wheellog_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		CD6EDE812B54DCE400081DB1 /* IWheelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IWheelData.swift; sourceTree = "<group>"; };
+		CD6EDE862B54DE3700081DB1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,8 @@
 		CD6EDE522B54DB6B00081DB1 /* Wheellog.iOS */ = {
 			isa = PBXGroup;
 			children = (
+				CD6EDE852B54DDE600081DB1 /* models */,
+				CD6EDE802B54DCC500081DB1 /* WheelData */,
 				CD6EDE532B54DB6B00081DB1 /* Wheellog_iOSApp.swift */,
 				CD6EDE552B54DB6B00081DB1 /* ContentView.swift */,
 				CD6EDE572B54DB6B00081DB1 /* Item.swift */,
@@ -130,6 +136,22 @@
 				CD6EDE732B54DB6D00081DB1 /* Wheellog_iOSUITestsLaunchTests.swift */,
 			);
 			path = Wheellog.iOSUITests;
+			sourceTree = "<group>";
+		};
+		CD6EDE802B54DCC500081DB1 /* WheelData */ = {
+			isa = PBXGroup;
+			children = (
+				CD6EDE812B54DCE400081DB1 /* IWheelData.swift */,
+			);
+			path = WheelData;
+			sourceTree = "<group>";
+		};
+		CD6EDE852B54DDE600081DB1 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				CD6EDE862B54DE3700081DB1 /* Constants.swift */,
+			);
+			path = models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,6 +287,8 @@
 				CD6EDE562B54DB6B00081DB1 /* ContentView.swift in Sources */,
 				CD6EDE582B54DB6B00081DB1 /* Item.swift in Sources */,
 				CD6EDE542B54DB6B00081DB1 /* Wheellog_iOSApp.swift in Sources */,
+				CD6EDE822B54DCE400081DB1 /* IWheelData.swift in Sources */,
+				CD6EDE872B54DE3800081DB1 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

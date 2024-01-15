@@ -1,6 +1,7 @@
 package com.cooper.wheellog.utils
 
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.models.Constants
+import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.utils.gotway.GotwayAdapter
 import com.cooper.wheellog.utils.veteran.VeteranAdapter
 import timber.log.Timber

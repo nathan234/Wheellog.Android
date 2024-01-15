@@ -1,7 +1,7 @@
 package com.cooper.wheellog.utils.gotway
 
 import com.cooper.wheellog.AppConfig
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.utils.MathsUtil
 import kotlin.math.roundToLong
 

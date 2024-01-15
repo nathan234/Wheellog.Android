@@ -39,12 +39,13 @@ import com.cooper.wheellog.DialogHelper.checkPWMIsSetAndShowAlert
 import com.cooper.wheellog.companion.WearOs
 import com.cooper.wheellog.data.TripDatabase.Companion.getDataBase
 import com.cooper.wheellog.databinding.ActivityMainBinding
+import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.settings.mainScreen
 import com.cooper.wheellog.ui.theme.AppTheme
 import com.cooper.wheellog.utils.*
 import com.cooper.wheellog.utils.Alarms.checkAlarm
-import com.cooper.wheellog.utils.Constants.ALARM_TYPE
-import com.cooper.wheellog.utils.Constants.WHEEL_TYPE
+import com.cooper.wheellog.models.Constants.ALARM_TYPE
+import com.cooper.wheellog.models.Constants.WHEEL_TYPE
 import com.cooper.wheellog.utils.PermissionsUtil.checkBlePermissions
 import com.cooper.wheellog.utils.PermissionsUtil.checkExternalFilePermission
 import com.cooper.wheellog.utils.PermissionsUtil.checkNotificationsPermissions
@@ -57,6 +58,7 @@ import com.cooper.wheellog.utils.kingsong.KingsongAdapter
 import com.cooper.wheellog.utils.ninebot.NinebotAdapter
 import com.cooper.wheellog.utils.ninebot.NinebotZAdapter
 import com.cooper.wheellog.views.PiPView
+import com.cooper.wheellog.wheeldata.WheelData
 import com.google.android.material.snackbar.Snackbar
 import com.welie.blessed.ConnectionState
 // import com.yandex.metrica.YandexMetrica

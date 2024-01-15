@@ -3,10 +3,10 @@ package com.cooper.wheellog.utils.gotway
 import android.content.Intent
 import android.os.Handler
 import com.cooper.wheellog.AppConfig
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.utils.BaseAdapter
-import com.cooper.wheellog.utils.Constants
+import com.cooper.wheellog.models.Constants
 import timber.log.Timber
 
 class GotwayAdapter(

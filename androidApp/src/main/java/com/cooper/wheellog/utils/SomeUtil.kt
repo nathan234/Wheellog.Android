@@ -10,14 +10,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.CountDownTimer
 import android.view.View
-import android.widget.*
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import com.cooper.wheellog.MainActivity
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.WheelLog
 import kotlinx.coroutines.*
 import java.io.IOException

@@ -7,10 +7,11 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.WheelLog
+import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.utils.AudioUtil.playAlarm
-import com.cooper.wheellog.utils.Constants.ALARM_TYPE
+import com.cooper.wheellog.models.Constants.ALARM_TYPE
 import com.cooper.wheellog.utils.SomeUtil.playSound
 import kotlinx.coroutines.*
 import timber.log.Timber

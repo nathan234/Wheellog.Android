@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.utils.Alarms
 import com.cooper.wheellog.utils.SomeUtil

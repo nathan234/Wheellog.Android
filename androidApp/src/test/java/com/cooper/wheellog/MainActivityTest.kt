@@ -2,6 +2,7 @@ package com.cooper.wheellog
 
 import android.Manifest
 import android.provider.Settings
+import com.cooper.wheellog.wheeldata.WheelData
 import io.mockk.*
 import org.junit.Before
 import org.junit.Test

@@ -3,8 +3,9 @@ package com.cooper.wheellog.utils
 import android.content.Context
 import com.cooper.wheellog.AppConfig
 import com.cooper.wheellog.BluetoothService
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.WheelLog
+import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.utils.Utils.Companion.hexToByteArray
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every

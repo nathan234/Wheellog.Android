@@ -1,7 +1,7 @@
 package com.cooper.wheellog.utils.kingsong
 
 import com.cooper.wheellog.AppConfig
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import kotlin.math.roundToInt
 
 class KingSongBatteryCalculator(

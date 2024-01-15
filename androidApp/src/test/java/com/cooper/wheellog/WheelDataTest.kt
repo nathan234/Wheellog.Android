@@ -1,6 +1,7 @@
 package com.cooper.wheellog
 
 import android.content.Context
+import com.cooper.wheellog.wheeldata.WheelData
 import com.google.common.truth.Truth.assertThat
 import io.mockk.*
 import org.junit.After

@@ -9,11 +9,12 @@ import android.os.Environment
 import android.os.IBinder
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.cooper.wheellog.utils.Constants
+import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.utils.FileUtil
 import com.cooper.wheellog.utils.ParserLogToWheelData
 import com.cooper.wheellog.utils.PermissionsUtil.checkExternalFilePermission
 import com.cooper.wheellog.utils.PermissionsUtil.checkLocationPermission
+import com.cooper.wheellog.wheeldata.WheelData
 import com.welie.blessed.ConnectionState
 import kotlinx.coroutines.*
 import timber.log.Timber

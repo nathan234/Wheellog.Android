@@ -1,5 +1,5 @@
 -keep class com.cooper.wheellog.MainActivity
--keep class com.cooper.wheellog.WheelData
+-keep class com.cooper.wheellog.wheeldata.WheelData
 
 -dontwarn org.bouncycastle.jsse.BCSSLParameters
 -dontwarn org.bouncycastle.jsse.BCSSLSocket

@@ -21,9 +21,10 @@ import androidx.core.widget.doAfterTextChanged
 import com.cooper.wheellog.databinding.EdittextLayoutBinding
 import com.cooper.wheellog.databinding.PrivacyPolicyBinding
 import com.cooper.wheellog.databinding.UpdatePwmSettingsBinding
-import com.cooper.wheellog.utils.Constants
+import com.cooper.wheellog.models.Constants
 //import com.yandex.metrica.YandexMetrica
 import com.cooper.wheellog.utils.PermissionsUtil
+import com.cooper.wheellog.wheeldata.WheelData
 
 object DialogHelper {
     /**

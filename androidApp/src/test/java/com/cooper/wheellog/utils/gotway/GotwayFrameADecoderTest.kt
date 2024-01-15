@@ -1,4 +1,4 @@
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.utils.gotway.GotwayBatteryCalculator
 import com.cooper.wheellog.utils.gotway.GotwayFrameADecoder
 import com.cooper.wheellog.utils.gotway.GotwayScaledVoltageCalculator

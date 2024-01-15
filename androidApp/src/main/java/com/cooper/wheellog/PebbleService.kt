@@ -8,9 +8,10 @@ import android.content.IntentFilter
 import android.os.Handler
 import android.os.IBinder
 import androidx.core.content.ContextCompat
-import com.cooper.wheellog.utils.Constants
-import com.cooper.wheellog.utils.Constants.ALARM_TYPE
-import com.cooper.wheellog.utils.Constants.PEBBLE_APP_SCREEN
+import com.cooper.wheellog.models.Constants
+import com.cooper.wheellog.models.Constants.ALARM_TYPE
+import com.cooper.wheellog.models.Constants.PEBBLE_APP_SCREEN
+import com.cooper.wheellog.wheeldata.WheelData
 import com.getpebble.android.kit.PebbleKit
 import com.getpebble.android.kit.PebbleKit.PebbleAckReceiver
 import com.getpebble.android.kit.PebbleKit.PebbleNackReceiver

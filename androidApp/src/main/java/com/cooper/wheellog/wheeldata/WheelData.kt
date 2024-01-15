@@ -1,15 +1,18 @@
-package com.cooper.wheellog
+package com.cooper.wheellog.wheeldata
 
 import android.bluetooth.BluetoothGattDescriptor
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
+import com.cooper.wheellog.BluetoothService
+import com.cooper.wheellog.MainActivity
+import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.WheelLog.Companion.appContext
 import com.cooper.wheellog.utils.Alarms.checkAlarm
 import com.cooper.wheellog.utils.BaseAdapter
 import com.cooper.wheellog.utils.Calculator.pushPower
-import com.cooper.wheellog.utils.Constants
-import com.cooper.wheellog.utils.Constants.WHEEL_TYPE
+import com.cooper.wheellog.models.Constants
+import com.cooper.wheellog.models.Constants.WHEEL_TYPE
 import com.cooper.wheellog.utils.GotwayVirtualAdapter
 import com.cooper.wheellog.utils.MathsUtil
 import com.cooper.wheellog.utils.SmartBms

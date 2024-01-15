@@ -1,7 +1,7 @@
 package com.cooper.wheellog.utils
 
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import timber.log.Timber
 import java.io.*
 import java.text.SimpleDateFormat

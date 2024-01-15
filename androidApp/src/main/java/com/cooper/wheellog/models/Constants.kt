@@ -1,4 +1,4 @@
-package com.cooper.wheellog.utils
+package com.cooper.wheellog.models
 
 import java.util.*
 

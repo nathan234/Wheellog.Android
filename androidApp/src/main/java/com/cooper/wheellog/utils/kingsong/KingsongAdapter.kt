@@ -1,7 +1,7 @@
 package com.cooper.wheellog.utils.kingsong
 
 import com.cooper.wheellog.AppConfig
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.utils.BaseAdapter
 import com.cooper.wheellog.utils.MathsUtil

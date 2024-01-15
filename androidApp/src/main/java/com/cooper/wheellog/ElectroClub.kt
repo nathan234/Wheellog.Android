@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AlertDialog
 import com.cooper.wheellog.data.TripDao
 import com.cooper.wheellog.data.TripDataDbEntry
+import com.cooper.wheellog.wheeldata.WheelData
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

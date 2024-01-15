@@ -6,9 +6,10 @@ import android.content.Intent
 import android.os.IBinder
 import android.widget.Toast
 import com.cooper.wheellog.utils.Alarms
-import com.cooper.wheellog.utils.Constants
+import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.utils.*
 import com.cooper.wheellog.utils.SomeUtil.playBeep
+import com.cooper.wheellog.wheeldata.WheelData
 import com.garmin.android.connectiq.ConnectIQ
 import com.garmin.android.connectiq.ConnectIQ.*
 import com.garmin.android.connectiq.IQApp

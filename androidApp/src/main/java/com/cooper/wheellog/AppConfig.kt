@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_UNSPECIFIED
 import androidx.preference.PreferenceManager
 import com.cooper.wheellog.utils.MiBandEnum
 import com.cooper.wheellog.utils.ThemeEnum
+import com.cooper.wheellog.wheeldata.WheelData
 import com.wheellog.shared.Constants
 import com.wheellog.shared.WearPage
 import com.wheellog.shared.WearPages

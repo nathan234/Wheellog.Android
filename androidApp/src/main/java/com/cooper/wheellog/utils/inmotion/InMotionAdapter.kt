@@ -2,10 +2,10 @@ package com.cooper.wheellog.utils.inmotion
 
 import android.content.Intent
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelData
+import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.utils.BaseAdapter
-import com.cooper.wheellog.utils.Constants
+import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.utils.MathsUtil
 import com.cooper.wheellog.utils.StringUtil.toHexString
 import com.cooper.wheellog.utils.inmotion.InMotionAdapter.CANMessage.IDValue

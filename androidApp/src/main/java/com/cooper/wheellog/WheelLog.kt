@@ -5,11 +5,10 @@ import android.app.Application
 // import com.yandex.metrica.YandexMetrica
 import com.cooper.wheellog.utils.NotificationUtil
 import com.cooper.wheellog.utils.VolumeKeyController
-import com.cooper.wheellog.utils.ThemeManager
 import android.content.ContentResolver
 import android.content.Context
 import android.content.res.Configuration
-import timber.log.Timber
+import com.cooper.wheellog.wheeldata.WheelData
 
 class WheelLog : Application() {
     override fun onCreate() {

@@ -20,6 +20,7 @@ import com.cooper.wheellog.utils.SomeUtil
 import com.cooper.wheellog.utils.SomeUtil.getColorEx
 import com.cooper.wheellog.utils.StringUtil.toTempString
 import com.cooper.wheellog.utils.ThemeManager
+import com.cooper.wheellog.wheeldata.WheelData
 import timber.log.Timber
 import java.util.*
 import kotlin.math.*

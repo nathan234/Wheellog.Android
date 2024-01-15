@@ -2,6 +2,7 @@ package com.cooper.wheellog
 
 import com.cooper.wheellog.data.TripDataDbEntry
 import com.cooper.wheellog.data.TripDatabase
+import com.cooper.wheellog.wheeldata.WheelData
 import com.google.common.truth.Truth.assertThat
 import io.mockk.*
 import kotlinx.coroutines.runBlocking

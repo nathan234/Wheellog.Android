@@ -1,6 +1,6 @@
-package com.cooper.wheellog
+package com.cooper.wheellog.wheeldata
 
-import com.cooper.wheellog.utils.Constants
+import com.cooper.wheellog.models.Constants
 
 interface IWheelData {
     fun bluetoothCmd(cmd: ByteArray?): Boolean

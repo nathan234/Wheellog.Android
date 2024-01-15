@@ -14,7 +14,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.cooper.wheellog.utils.Alarms.alarm
-import com.cooper.wheellog.utils.Constants
+import com.cooper.wheellog.models.Constants
+import com.cooper.wheellog.wheeldata.WheelData
 import com.samsung.android.sdk.SsdkUnsupportedException
 import com.samsung.android.sdk.accessory.SA
 import com.samsung.android.sdk.accessory.SAAgent

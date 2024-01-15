@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.cooper.wheellog.WheelLog.Companion.AppConfig
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelData
-import com.cooper.wheellog.utils.Constants
+import com.cooper.wheellog.wheeldata.WheelData
+import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.utils.MathsUtil
 
 @Composable

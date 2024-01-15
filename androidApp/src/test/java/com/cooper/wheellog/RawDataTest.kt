@@ -1,7 +1,7 @@
 package com.cooper.wheellog
 
 import android.content.Context
-import com.cooper.wheellog.utils.Constants
+import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.utils.inmotion.InMotionAdapter
 import com.cooper.wheellog.utils.Utils.Companion.hexToByteArray
 import com.cooper.wheellog.utils.gotway.GotwayAdapter
@@ -10,6 +10,7 @@ import com.cooper.wheellog.utils.gotway.GotwayFrameADecoder
 import com.cooper.wheellog.utils.gotway.GotwayFrameBDecoder
 import com.cooper.wheellog.utils.gotway.GotwayScaledVoltageCalculator
 import com.cooper.wheellog.utils.gotway.GotwayUnpacker
+import com.cooper.wheellog.wheeldata.WheelData
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockkClass
