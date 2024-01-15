@@ -1070,7 +1070,7 @@ class WheelView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
             try {
                 val wd = WheelData()
                 wd.setCalculatedPwm(0.05)
-                wd.setMaxPwm(0.97)
+                wd.maxPwm = 0.97
                 wd.setConnectionState(true)
             } catch (ignored: Exception) {
             }

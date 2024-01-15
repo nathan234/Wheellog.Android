@@ -1095,10 +1095,6 @@ class WheelData: IWheelData {
         mCalculatedPwm = d
     }
 
-    fun setMaxPwm(d: Double) {
-        mMaxPwm = d
-    }
-
     fun setConnectionState(b: Boolean) {
         mConnectionState = b
     }
