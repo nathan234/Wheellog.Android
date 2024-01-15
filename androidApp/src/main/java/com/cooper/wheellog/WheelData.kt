@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.max
 import kotlin.math.min
 
-class WheelData {
+class WheelData: IWheelData {
     private var ridingTimerControl: Timer? = null
     var bluetoothService: BluetoothService? = null
     private var graph_last_update_time: Long = 0
@@ -124,25 +124,25 @@ class WheelData {
             else -> null
         }
 
-    fun bluetoothCmd(cmd: ByteArray?): Boolean {
+    override fun bluetoothCmd(cmd: ByteArray?): Boolean {
         return if (bluetoothService == null) {
             false
         } else bluetoothService!!.writeWheelCharacteristic(cmd)
     }
 
-    fun startRidingTimerControl() {
+    override fun startRidingTimerControl() {
         val timerTask: TimerTask = object : TimerTask() {
             override fun run() {
                 if (mConnectionState && mSpeed > RIDING_SPEED) mRidingTime += 1
             }
         }
         ridingTimerControl = Timer()
-        ridingTimerControl!!.scheduleAtFixedRate(timerTask, 0, 1000)
+        ridingTimerControl!!.schedule(timerTask, 0, 1000)
     }
 
     ///// test purpose, please let it be
-    fun startAlarmTest() {
-        Timer().scheduleAtFixedRate(object : TimerTask() {
+    override fun startAlarmTest() {
+        Timer().schedule(object : TimerTask() {
             override fun run() {
                 val mContext = appContext
                 checkAlarm(mCalculatedPwm, mContext!!)
@@ -163,19 +163,19 @@ class WheelData {
         WheelLog.AppConfig.pwmBasedAlarms = false
     }
 
-    val isHardwarePWM: Boolean
+    override val isHardwarePWM: Boolean
         get() = when (wheelType) {
             WHEEL_TYPE.KINGSONG, WHEEL_TYPE.Unknown -> true
             WHEEL_TYPE.INMOTION_V2 -> proto >= 2
             WHEEL_TYPE.VETERAN -> VeteranAdapter.instance!!.ver >= 2 // 2+
             else -> false
         }
-    var speed: Int
+    override var speed: Int
         get() = Math.round(mSpeed / 10.0).toInt()
         set(speed) {
             mSpeed = speed
         }
-    var btName: String?
+    override var btName: String?
         get() = mBtName
         set(btName) {
             if (btName != null) {
@@ -183,217 +183,217 @@ class WheelData {
             }
         }
 
-    fun updateLight(enabledLight: Boolean) {
+    override fun updateLight(enabledLight: Boolean) {
         if (adapter != null) {
             adapter!!.setLightState(enabledLight)
         }
     }
 
-    fun updateLed(enabledLed: Boolean) {
+    override fun updateLed(enabledLed: Boolean) {
         if (adapter != null) {
             adapter!!.setLedState(enabledLed)
         }
     }
 
-    fun updateTailLight(tailLight: Boolean) {
+    override fun updateTailLight(tailLight: Boolean) {
         if (adapter != null) {
             adapter!!.setTailLightState(tailLight)
         }
     }
 
-    fun wheelBeep() {
+    override fun wheelBeep() {
         if (adapter != null) {
             adapter!!.wheelBeep()
         }
     }
 
-    fun updatePedalsMode(pedalsMode: Int) {
+    override fun updatePedalsMode(pedalsMode: Int) {
         if (adapter != null) {
             adapter!!.updatePedalsMode(pedalsMode)
         }
     }
 
-    fun updateStrobe(strobeMode: Int) {
+    override fun updateStrobe(strobeMode: Int) {
         if (adapter != null) {
             adapter!!.updateStrobeMode(strobeMode)
         }
     }
 
-    fun updateLedMode(ledMode: Int) {
+    override fun updateLedMode(ledMode: Int) {
         if (adapter != null) {
             adapter!!.updateLedMode(ledMode)
         }
     }
 
-    fun updateAlarmMode(alarmMode: Int) {
+    override fun updateAlarmMode(alarmMode: Int) {
         if (adapter != null) {
             adapter!!.updateAlarmMode(alarmMode)
         }
     }
 
-    fun wheelCalibration() {
+    override fun wheelCalibration() {
         if (adapter != null) {
             adapter!!.wheelCalibration()
         }
     }
 
-    fun powerOff() {
+    override fun powerOff() {
         if (adapter != null) {
             adapter!!.powerOff()
         }
     }
 
-    fun updateHandleButton(enabledButton: Boolean) {
+    override fun updateHandleButton(enabledButton: Boolean) {
         if (adapter != null) {
             adapter!!.setHandleButtonState(enabledButton)
         }
     }
 
-    fun updateBrakeAssistant(brakeAssist: Boolean) {
+    override fun updateBrakeAssistant(brakeAssist: Boolean) {
         if (adapter != null) {
             adapter!!.setBrakeAssist(brakeAssist)
         }
     }
 
-    fun setLedColor(value: Int, ledNum: Int) {
+    override fun setLedColor(value: Int, ledNum: Int) {
         if (adapter != null) {
             adapter!!.setLedColor(value, ledNum)
         }
     }
 
-    fun updateAlarmEnabled(value: Boolean, num: Int) {
+    override fun updateAlarmEnabled(value: Boolean, num: Int) {
         if (adapter != null) {
             adapter!!.setAlarmEnabled(value, num)
         }
     }
 
-    fun updateAlarmSpeed(value: Int, num: Int) {
+    override fun updateAlarmSpeed(value: Int, num: Int) {
         if (adapter != null) {
             adapter!!.setAlarmSpeed(value, num)
         }
     }
 
-    fun updateLimitedModeEnabled(value: Boolean) {
+    override fun updateLimitedModeEnabled(value: Boolean) {
         if (adapter != null) {
             adapter!!.setLimitedModeEnabled(value)
         }
     }
 
-    fun updateLimitedSpeed(value: Int) {
+    override fun updateLimitedSpeed(value: Int) {
         if (adapter != null) {
             adapter!!.setLimitedSpeed(value)
         }
     }
 
-    fun updateMaxSpeed(wheelMaxSpeed: Int) {
+    override fun updateMaxSpeed(wheelMaxSpeed: Int) {
         if (adapter != null) {
             adapter!!.updateMaxSpeed(wheelMaxSpeed)
         }
     }
 
-    fun updateSpeakerVolume(speakerVolume: Int) {
+    override fun updateSpeakerVolume(speakerVolume: Int) {
         if (adapter != null) {
             adapter!!.setSpeakerVolume(speakerVolume)
         }
     }
 
-    fun updatePedals(pedalAdjustment: Int) {
+    override fun updatePedals(pedalAdjustment: Int) {
         if (adapter != null) {
             adapter!!.setPedalTilt(pedalAdjustment)
         }
     }
 
-    fun updatePedalSensivity(pedalSensivity: Int) {
+    override fun updatePedalSensivity(pedalSensivity: Int) {
         if (adapter != null) {
             adapter!!.setPedalSensivity(pedalSensivity)
         }
     }
 
-    fun updateRideMode(rideMode: Boolean) {
+    override fun updateRideMode(rideMode: Boolean) {
         if (adapter != null) {
             adapter!!.setRideMode(rideMode)
         }
     }
 
-    fun updateLockMode(enable: Boolean) {
+    override fun updateLockMode(enable: Boolean) {
         if (adapter != null) {
             adapter!!.setLockMode(enable)
         }
     }
 
-    fun updateTransportMode(enable: Boolean) {
+    override fun updateTransportMode(enable: Boolean) {
         if (adapter != null) {
             adapter!!.setTransportMode(enable)
         }
     }
 
-    fun updateDrl(enable: Boolean) {
+    override fun updateDrl(enable: Boolean) {
         if (adapter != null) {
             adapter!!.setDrl(enable)
         }
     }
 
-    fun updateGoHome(enable: Boolean) {
+    override fun updateGoHome(enable: Boolean) {
         if (adapter != null) {
             adapter!!.setGoHomeMode(enable)
         }
     }
 
-    fun updateFancierMode(enable: Boolean) {
+    override fun updateFancierMode(enable: Boolean) {
         if (adapter != null) {
             adapter!!.setFancierMode(enable)
         }
     }
 
-    fun updateMute(enable: Boolean) {
+    override fun updateMute(enable: Boolean) {
         if (adapter != null) {
             adapter!!.setMute(enable)
         }
     }
 
-    fun updateFanQuiet(enable: Boolean) {
+    override fun updateFanQuiet(enable: Boolean) {
         if (adapter != null) {
             adapter!!.setFanQuiet(enable)
         }
     }
 
-    fun updateFanState(enable: Boolean) {
+    override fun updateFanState(enable: Boolean) {
         if (adapter != null) {
             adapter!!.setFan(enable)
         }
     }
 
-    fun updateLightBrightness(brightness: Int) {
+    override fun updateLightBrightness(brightness: Int) {
         if (adapter != null) {
             adapter!!.setLightBrightness(brightness)
         }
     }
 
-    var temperature: Int
+    override var temperature: Int
         get() = mTemperature / 100
         set(value) {
             mTemperature = value
         }
-    var maxTemp: Int
+    override var maxTemp: Int
         get() = mMaxTemp / 100
         set(temp) {
             if (temp > mMaxTemp && temp > 0) mMaxTemp = temp
         }
-    var temperature2: Int
+    override var temperature2: Int
         get() = mTemperature2 / 100
         set(value) {
             mTemperature2 = value
         }
-    val maxCurrentDouble: Double
+    override val maxCurrentDouble: Double
         get() = mMaxCurrent / 100
-    val maxPowerDouble: Double
+    override val maxPowerDouble: Double
         get() = mMaxPower / 100
-    var output: Int
+    override var output: Int
         get() = mOutput / 100
         set(value) {
             mOutput = value
         }
-    var batteryLevel: Int
+    override var batteryLevel: Int
         get() = mBattery
         set(battery) {
             var battery = battery
@@ -417,22 +417,22 @@ class WheelData {
             mBattery = battery
         }
 
-    fun setChargingStatus(charging: Int): Int {
+    override fun setChargingStatus(charging: Int): Int {
         return charging.also { chargingStatus = it }
     }
 
-    var isConnected: Boolean
+    override var isConnected: Boolean
         get() = mConnectionState
         set(connected) {
             mConnectionState = connected
             Timber.i("State %b", connected)
         }
-    var version: String
+    override var version: String
         get() = if (mVersion == "") "Unknown" else mVersion
         set(value) {
             mVersion = value
         }
-    var wheelType: WHEEL_TYPE
+    override var wheelType: WHEEL_TYPE
         get() = mWheelType
         set(wheelType) {
             val isChanged = wheelType !== mWheelType
@@ -443,7 +443,7 @@ class WheelData {
                 mContext!!.sendBroadcast(intent)
             }
         }
-    var model: String
+    override var model: String
         get() = mModel
         set(model) {
             val isChanged = model !== mModel
@@ -623,26 +623,26 @@ class WheelData {
     val mac: String
         get() = if (bluetoothService != null) bluetoothService!!.wheelAddress else "default"
 
-    fun resetUserDistance() {
+    override fun resetUserDistance() {
         if (mTotalDistance != 0L) {
             WheelLog.AppConfig.userDistance = mTotalDistance
             mUserDistance = mTotalDistance
         }
     }
 
-    fun resetMaxValues() {
+    override fun resetMaxValues() {
         mTopSpeed = 0
         mMaxPwm = 0.0
         mMaxCurrent = 0.0
         mMaxPower = 0.0
     }
 
-    fun resetExtremumValues() {
+    override fun resetExtremumValues() {
         resetMaxValues()
         batteryLowestLevel = 101
     }
 
-    fun resetVoltageSag() {
+    override fun resetVoltageSag() {
         Timber.i("Sag WD")
         mVoltageSag = 20000
         if (bluetoothService != null) {
@@ -650,11 +650,11 @@ class WheelData {
         }
     }
 
-    val distanceDouble: Double
+    override val distanceDouble: Double
         get() = (mTotalDistance - mStartTotalDistance) / 1000.0
-    val totalDistanceDouble: Double
+    override val totalDistanceDouble: Double
         get() = mTotalDistance / 1000.0
-    var totalDistance: Long
+    override var totalDistance: Long
         get() = mTotalDistance
         set(totalDistance) {
             if (mStartTotalDistance == 0L && mTotalDistance != 0L) mStartTotalDistance =
@@ -739,10 +739,10 @@ class WheelData {
             val isReadyIntent = Intent(Constants.ACTION_WHEEL_IS_READY)
             mContext.sendBroadcast(isReadyIntent)
         }
-        CheckMuteMusic()
+        checkMuteMusic()
     }
 
-    private fun CheckMuteMusic() {
+    private fun checkMuteMusic() {
         if (!WheelLog.AppConfig.useStopMusic) return
         val muteSpeedThreshold = 3.5
         val speed = speedDouble
@@ -1089,6 +1089,18 @@ class WheelData {
             }
         }
         return false
+    }
+
+    fun setCalculatedPwm(d: Double) {
+        mCalculatedPwm = d
+    }
+
+    fun setMaxPwm(d: Double) {
+        mMaxPwm = d
+    }
+
+    fun setConnectionState(b: Boolean) {
+        mConnectionState = b
     }
 
     companion object {

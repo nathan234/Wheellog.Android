@@ -615,6 +615,7 @@ class NinebotAdapter : BaseAdapter() {
         private var gamma = ByteArray(16)
         private var stateCon = 0
         private var protoVersion: Byte = 0
+
         @JvmStatic
         val instance: NinebotAdapter?
             get() {

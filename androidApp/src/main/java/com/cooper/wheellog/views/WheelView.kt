@@ -16,7 +16,6 @@ import com.cooper.wheellog.utils.Alarms
 import com.cooper.wheellog.utils.Calculator
 import com.cooper.wheellog.utils.MathsUtil.dpToPx
 import com.cooper.wheellog.utils.MathsUtil.kmToMiles
-import com.cooper.wheellog.utils.ReflectUtil
 import com.cooper.wheellog.utils.SomeUtil
 import com.cooper.wheellog.utils.SomeUtil.getColorEx
 import com.cooper.wheellog.utils.StringUtil.toTempString
@@ -1070,12 +1069,9 @@ class WheelView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
             mWheelModel = "GotInSong Z10"
             try {
                 val wd = WheelData()
-                val wdField = WheelData::class.java.getDeclaredField("mInstance")
-                wdField.isAccessible = true
-                wdField[null] = wd
-                ReflectUtil.setPrivateField(wd, "mCalculatedPwm", 0.05)
-                ReflectUtil.setPrivateField(wd, "mMaxPwm", 0.97)
-                ReflectUtil.setPrivateField(wd, "mConnectionState", true)
+                wd.setCalculatedPwm(0.05)
+                wd.setMaxPwm(0.97)
+                wd.setConnectionState(true)
             } catch (ignored: Exception) {
             }
         } else {
