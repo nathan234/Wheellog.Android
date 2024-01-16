@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.os.Handler
 import android.os.IBinder
 import androidx.core.content.ContextCompat
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.models.Constants.ALARM_TYPE
 import com.cooper.wheellog.models.Constants.PEBBLE_APP_SCREEN

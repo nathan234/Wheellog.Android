@@ -17,16 +17,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import com.cooper.wheellog.R
 import com.cooper.wheellog.wheeldata.WheelData
-import com.cooper.wheellog.WheelLog.Companion.AppConfig
+import com.cooper.wheellog.app.WheelLog.Companion.AppConfig
+import com.cooper.wheellog.decoders.gotway.GotwayAdapter
 import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.utils.MathsUtil
-import com.cooper.wheellog.utils.ThemeIconEnum
-import com.cooper.wheellog.utils.gotway.GotwayAdapter
-import com.cooper.wheellog.utils.inmotion.InMotionAdapter
-import com.cooper.wheellog.utils.inmotion.InmotionAdapterV2
-import com.cooper.wheellog.utils.kingsong.KingsongAdapter
-import com.cooper.wheellog.utils.ninebot.NinebotZAdapter
-import com.cooper.wheellog.utils.veteran.VeteranAdapter
+import com.cooper.wheellog.app.ThemeIconEnum
+import com.cooper.wheellog.decoders.inmotion.InMotionAdapter
+import com.cooper.wheellog.decoders.inmotion.InmotionAdapterV2
+import com.cooper.wheellog.decoders.kingsong.KingsongAdapter
+import com.cooper.wheellog.decoders.ninebot.NinebotZAdapter
+import com.cooper.wheellog.decoders.veteran.VeteranAdapter
 
 @Composable
 fun wheelScreen() {

@@ -1,9 +1,15 @@
 package com.cooper.wheellog
 
 import android.content.Context
+import com.cooper.wheellog.app.AppConfig
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.wheeldata.WheelData
 import com.google.common.truth.Truth.assertThat
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockkClass
+import io.mockk.mockkStatic
+import io.mockk.spyk
+import io.mockk.unmockkAll
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -15,7 +21,10 @@ class WheelDataTest {
     fun setUp() {
         data = spyk(WheelData())
         WheelData.instance = data
-        every { data.bluetoothService?.applicationContext } returns mockkClass(Context::class, relaxed = true)
+        every { data.bluetoothService?.applicationContext } returns mockkClass(
+            Context::class,
+            relaxed = true
+        )
         WheelLog.AppConfig = mockkClass(AppConfig::class, relaxed = true)
         mockkStatic(WheelData::class)
     }
@@ -28,7 +37,7 @@ class WheelDataTest {
     @Test
     fun `Battery per km | 95 to 94`() {
         // Arrange.
-        data.batteryLevel =(95)
+        data.batteryLevel = (95)
         data.totalDistance = 1_000
 
         // Act.

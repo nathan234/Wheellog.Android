@@ -22,14 +22,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cooper.wheellog.DialogHelper.setBlackIcon
 import com.cooper.wheellog.ElectroClub
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelLog
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.data.TripDataDbEntry
 import com.cooper.wheellog.data.TripParser
 import com.cooper.wheellog.databinding.ListTripItemBinding
 import com.cooper.wheellog.map.MapActivity
 import com.cooper.wheellog.utils.SomeUtil.doAsync
 import com.cooper.wheellog.utils.MathsUtil
-import com.cooper.wheellog.utils.ThemeIconEnum
+import com.cooper.wheellog.app.ThemeIconEnum
 import com.cooper.wheellog.utils.ThemeManager
 import com.google.common.io.ByteStreams
 import kotlinx.coroutines.*

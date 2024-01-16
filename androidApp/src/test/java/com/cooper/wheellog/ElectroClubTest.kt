@@ -1,10 +1,16 @@
 package com.cooper.wheellog
 
+import com.cooper.wheellog.app.AppConfig
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.data.TripDataDbEntry
 import com.cooper.wheellog.data.TripDatabase
 import com.cooper.wheellog.wheeldata.WheelData
 import com.google.common.truth.Truth.assertThat
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockkClass
+import io.mockk.mockkStatic
+import io.mockk.spyk
+import io.mockk.unmockkAll
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -52,8 +58,10 @@ class ElectroClubTest {
         val email = "email"
         val password = "password"
         val server = MockWebServer()
-        server.enqueue(MockResponse()
-                .setBody("{\"status\":\"ok\",\"data\":{\"user\":{\"user_token\":\"super\",\"email\":\"email\",\"user_id\":\"123456\",\"nickname\":\"xxx\",\"thumbnail\":\"https:\\/\\/electro.club\\/images\\/noavatar.jpg\",\"account_created\":666,\"last_visit\":777}}}"))
+        server.enqueue(
+            MockResponse()
+                .setBody("{\"status\":\"ok\",\"data\":{\"user\":{\"user_token\":\"super\",\"email\":\"email\",\"user_id\":\"123456\",\"nickname\":\"xxx\",\"thumbnail\":\"https:\\/\\/electro.club\\/images\\/noavatar.jpg\",\"account_created\":666,\"last_visit\":777}}}")
+        )
         server.start()
         val url = server.url("/testendpoint")
         ec.url = url.toString()
@@ -78,9 +86,11 @@ class ElectroClubTest {
         val email = "email"
         val password = "password"
         val server = MockWebServer()
-        server.enqueue(MockResponse()
+        server.enqueue(
+            MockResponse()
                 .setResponseCode(500)
-                .setBody("some text"))
+                .setBody("some text")
+        )
         server.start()
         val url = server.url("/testendpoint")
         ec.url = url.toString()
@@ -103,8 +113,10 @@ class ElectroClubTest {
     fun `uploadTrackAsync 200 - less than 5 seconds`() = runBlocking {
         // Assign.
         val server = MockWebServer()
-        server.enqueue(MockResponse()
-                .setBody("{\"status\":\"failure\",\"data\":{\"error\":\"Total track time less than 5 seconds\"}}"))
+        server.enqueue(
+            MockResponse()
+                .setBody("{\"status\":\"failure\",\"data\":{\"error\":\"Total track time less than 5 seconds\"}}")
+        )
         server.start()
         val url = server.url("/testendpoint")
         ec.url = url.toString()
@@ -124,9 +136,11 @@ class ElectroClubTest {
     fun `uploadTrackAsync 400 - less than 5 seconds`() = runBlocking {
         // Assign.
         val server = MockWebServer()
-        server.enqueue(MockResponse()
+        server.enqueue(
+            MockResponse()
                 .setResponseCode(400)
-                .setBody("{\"status\":\"failure\",\"data\":{\"error\":\"Total track time less than 5 seconds\"}}"))
+                .setBody("{\"status\":\"failure\",\"data\":{\"error\":\"Total track time less than 5 seconds\"}}")
+        )
         server.start()
         val url = server.url("/testendpoint")
         ec.url = url.toString()

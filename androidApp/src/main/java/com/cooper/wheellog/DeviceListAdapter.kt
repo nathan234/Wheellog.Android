@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.cooper.wheellog.app.WheelLog
 
 // Adapter for holding devices found through scanning.
 class DeviceListAdapter(appCompatActivity: AppCompatActivity) : BaseAdapter() {

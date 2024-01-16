@@ -31,11 +31,11 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.*
-import com.cooper.wheellog.AppConfig
+import com.cooper.wheellog.app.AppConfig
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelLog
-import com.cooper.wheellog.utils.ThemeEnum
-import com.cooper.wheellog.utils.ThemeIconEnum
+import com.cooper.wheellog.app.WheelLog
+import com.cooper.wheellog.app.ThemeEnum
+import com.cooper.wheellog.app.ThemeIconEnum
 import com.cooper.wheellog.utils.ThemeManager
 import java.util.Locale
 
@@ -885,7 +885,8 @@ fun baseSettings(
 @Preview
 @Composable
 private fun baseSettingsPreview() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     baseSettings(
         name = stringResource(R.string.auto_log_title),
         desc = stringResource(R.string.auto_log_description),
@@ -905,7 +906,8 @@ private fun baseSettingsPreview() {
 @Preview
 @Composable
 private fun clickablePreview() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     clickablePref(
         name = stringResource(R.string.speed_settings_title),
         themeIcon = ThemeIconEnum.SettingsSpeedometer
@@ -915,7 +917,8 @@ private fun clickablePreview() {
 @Preview
 @Composable
 private fun clickablePreview2() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     clickablePref(
         name = stringResource(R.string.donate_title),
         themeIcon = ThemeIconEnum.SettingsDonate,
@@ -926,7 +929,8 @@ private fun clickablePreview2() {
 @Preview
 @Composable
 private fun clickablePreview3() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     clickablePref(
         name = stringResource(R.string.beep_on_volume_up_title),
         desc = stringResource(R.string.beep_on_volume_up_description),
@@ -938,7 +942,8 @@ private fun clickablePreview3() {
 @Preview
 @Composable
 private fun clickablePreview4() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     clickablePref(
         name = stringResource(R.string.beep_on_volume_up_title),
         showArrowIcon = false
@@ -948,7 +953,8 @@ private fun clickablePreview4() {
 @Preview
 @Composable
 private fun switchPreview() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     switchPref(
         name = stringResource(R.string.use_eng_title),
         desc = stringResource(R.string.use_eng_description),
@@ -960,7 +966,8 @@ private fun switchPreview() {
 @Preview
 @Composable
 private fun switchPreview2() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     switchPref(
         name = stringResource(R.string.use_eng_title),
         themeIcon = ThemeIconEnum.SettingsLanguage,
@@ -971,7 +978,8 @@ private fun switchPreview2() {
 @Preview
 @Composable
 private fun sliderPreview() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     sliderPref(
         name = stringResource(R.string.alarm_1_battery_title),
         themeIcon = ThemeIconEnum.MenuMiBandAlarm,
@@ -982,7 +990,8 @@ private fun sliderPreview() {
 @Preview
 @Composable
 private fun sliderPreview2() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     sliderPref(
         name = stringResource(R.string.alarm_factor2_title),
         desc = stringResource(R.string.alarm_factor2_description),
@@ -996,7 +1005,8 @@ private fun sliderPreview2() {
 @Preview
 @Composable
 private fun sliderPreview3() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     sliderPref(
         name = stringResource(R.string.alarm_factor2_title),
         position = 66.66f,
@@ -1010,7 +1020,8 @@ private fun sliderPreview3() {
 @Preview
 @Composable
 private fun sliderPreview4() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     sliderPref(
         name = stringResource(R.string.warning_speed_period_title),
         desc = stringResource(R.string.warning_speed_period_description),
@@ -1027,7 +1038,8 @@ private fun sliderPreview4() {
 @Preview
 @Composable
 private fun listPreview() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     list(
         name = stringResource(R.string.app_theme_title),
         desc = stringResource(R.string.app_theme_description),
@@ -1039,7 +1051,8 @@ private fun listPreview() {
 @Preview
 @Composable
 private fun multiListPreview() {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     multiList(
         name = stringResource(R.string.view_blocks_title),
         desc = stringResource(R.string.view_blocks_description),

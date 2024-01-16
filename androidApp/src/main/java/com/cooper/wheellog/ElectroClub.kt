@@ -3,6 +3,7 @@ package com.cooper.wheellog
 import android.app.Activity
 import android.net.Uri
 import androidx.appcompat.app.AlertDialog
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.data.TripDao
 import com.cooper.wheellog.data.TripDataDbEntry
 import com.cooper.wheellog.wheeldata.WheelData

@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.gridlayout.widget.GridLayout
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.models.Constants.WHEEL_TYPE
 import com.cooper.wheellog.utils.FileUtil
 import com.cooper.wheellog.utils.MathsUtil

@@ -9,6 +9,7 @@ import android.os.Environment
 import android.os.IBinder
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.utils.FileUtil
 import com.cooper.wheellog.utils.ParserLogToWheelData

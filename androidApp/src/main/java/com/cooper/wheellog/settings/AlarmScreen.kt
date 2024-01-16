@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.cooper.wheellog.WheelLog.Companion.AppConfig
+import com.cooper.wheellog.app.WheelLog.Companion.AppConfig
 import com.cooper.wheellog.R
 import com.cooper.wheellog.wheeldata.WheelData
 import com.cooper.wheellog.models.Constants

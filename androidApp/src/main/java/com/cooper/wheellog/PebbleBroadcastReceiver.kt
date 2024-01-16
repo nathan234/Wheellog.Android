@@ -3,6 +3,7 @@ package com.cooper.wheellog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.models.Constants.ACTION_PEBBLE_APP_READY
 import com.cooper.wheellog.models.Constants.ACTION_PEBBLE_APP_SCREEN
 import com.cooper.wheellog.models.Constants.INTENT_EXTRA_LAUNCHED_FROM_PEBBLE

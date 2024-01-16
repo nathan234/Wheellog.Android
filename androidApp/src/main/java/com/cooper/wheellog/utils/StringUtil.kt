@@ -1,7 +1,7 @@
 package com.cooper.wheellog.utils
 
 import android.content.Context
-import com.cooper.wheellog.WheelLog
+import com.cooper.wheellog.app.WheelLog
 import java.util.*
 
 object StringUtil {

@@ -24,14 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
-import com.cooper.wheellog.AppConfig
 import com.cooper.wheellog.BuildConfig
-import com.cooper.wheellog.LocaleManager
+import com.cooper.wheellog.app.LocaleManager
 import com.cooper.wheellog.R
+import com.cooper.wheellog.app.AppConfig
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.wheeldata.WheelData
-import com.cooper.wheellog.WheelLog
 import com.cooper.wheellog.models.Constants
-import com.cooper.wheellog.utils.ThemeIconEnum
+import com.cooper.wheellog.app.ThemeIconEnum
 import com.cooper.wheellog.utils.ThemeManager
 
 @Composable
@@ -264,6 +264,7 @@ fun startScreen(
 @Composable
 fun startScreenPreview()
 {
-    WheelLog.AppConfig = AppConfig(LocalContext.current)
+    WheelLog.AppConfig =
+        AppConfig(LocalContext.current)
     startScreen()
 }

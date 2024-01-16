@@ -21,9 +21,9 @@ import androidx.core.content.ContextCompat
 import com.cooper.wheellog.ElectroClub
 import com.cooper.wheellog.R
 import com.cooper.wheellog.wheeldata.WheelData
-import com.cooper.wheellog.WheelLog.Companion.AppConfig
+import com.cooper.wheellog.app.WheelLog.Companion.AppConfig
 import com.cooper.wheellog.utils.PermissionsUtil
-import com.cooper.wheellog.utils.ThemeIconEnum
+import com.cooper.wheellog.app.ThemeIconEnum
 
 @Composable
 fun logScreen()
