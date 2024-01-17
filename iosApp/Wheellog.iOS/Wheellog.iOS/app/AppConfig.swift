@@ -51,7 +51,6 @@ class AppConfig {
         get { userDefaults.bool(forKey: "useFahrenheit") }
         set { userDefaults.set(newValue, forKey: "useFahrenheit") }
     }
-    // todo string translations
     
 
     // Custom Methods
@@ -70,9 +69,4 @@ class AppConfig {
         get { userDefaults.bool(forKey: "alarmsEnabled") }
         set { userDefaults.set(newValue, forKey: "alarmsEnabled") }
     }
-
-    // ... and so on for each property
-
-    // Utility methods for specific and general settings
-    // Implement as needed, similar to the Kotlin version
 }
