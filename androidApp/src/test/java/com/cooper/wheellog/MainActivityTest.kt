@@ -3,14 +3,15 @@ package com.cooper.wheellog
 import android.Manifest
 import android.provider.Settings
 import com.cooper.wheellog.wheeldata.WheelData
-import io.mockk.*
+import com.google.common.truth.Truth.assertThat
+import io.mockk.mockkClass
+import io.mockk.verify
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import com.google.common.truth.Truth.assertThat
-import org.junit.Ignore
 import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
@@ -56,7 +57,7 @@ class MainActivityTest {
         shadowActivity.clickMenuItem(R.id.miWheel)
 
         // Assert.
-        verify (exactly = 1) { WheelData.instance!!.bluetoothService?.toggleConnectToWheel() }
+        verify(exactly = 1) { WheelData.instance!!.bluetoothService?.toggleConnectToWheel() }
     }
 
     @Test

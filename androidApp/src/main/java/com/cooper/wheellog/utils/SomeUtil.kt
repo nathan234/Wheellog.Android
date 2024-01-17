@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import com.cooper.wheellog.MainActivity
 import com.cooper.wheellog.R
 import com.cooper.wheellog.wheeldata.WheelData
-import com.cooper.wheellog.WheelLog
+import com.cooper.wheellog.app.WheelLog
 import kotlinx.coroutines.*
 import java.io.IOException
 import java.io.Serializable

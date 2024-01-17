@@ -1,15 +1,17 @@
 package com.cooper.wheellog
 
 import android.content.Context
+import com.cooper.wheellog.app.AppConfig
+import com.cooper.wheellog.app.WheelLog
+import com.cooper.wheellog.decoders.gotway.GotwayAdapter
+import com.cooper.wheellog.decoders.gotway.GotwayBatteryCalculator
+import com.cooper.wheellog.decoders.gotway.GotwayFrameADecoder
+import com.cooper.wheellog.decoders.gotway.GotwayFrameBDecoder
+import com.cooper.wheellog.decoders.gotway.GotwayScaledVoltageCalculator
+import com.cooper.wheellog.decoders.gotway.GotwayUnpacker
+import com.cooper.wheellog.decoders.inmotion.InMotionAdapter
 import com.cooper.wheellog.models.Constants
-import com.cooper.wheellog.utils.inmotion.InMotionAdapter
 import com.cooper.wheellog.utils.Utils.Companion.hexToByteArray
-import com.cooper.wheellog.utils.gotway.GotwayAdapter
-import com.cooper.wheellog.utils.gotway.GotwayBatteryCalculator
-import com.cooper.wheellog.utils.gotway.GotwayFrameADecoder
-import com.cooper.wheellog.utils.gotway.GotwayFrameBDecoder
-import com.cooper.wheellog.utils.gotway.GotwayScaledVoltageCalculator
-import com.cooper.wheellog.utils.gotway.GotwayUnpacker
 import com.cooper.wheellog.wheeldata.WheelData
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
@@ -192,7 +194,9 @@ class RawDataTest {
         // Assert.
         assertThat(data.model).isEqualTo(
             InMotionAdapter.getModelString(
-                InMotionAdapter.Model.V8S))
+                InMotionAdapter.Model.V8S
+            )
+        )
         assertThat(data.batteryLevel).isEqualTo(96)
         assertThat(data.temperature).isEqualTo(30)
         assertThat(data.temperature2).isEqualTo(-109) // Fix me

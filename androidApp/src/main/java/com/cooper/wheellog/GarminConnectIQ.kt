@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.widget.Toast
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.utils.Alarms
 import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.utils.*

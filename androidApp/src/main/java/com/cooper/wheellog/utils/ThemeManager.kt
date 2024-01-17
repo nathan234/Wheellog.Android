@@ -8,7 +8,8 @@ import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.core.content.res.ResourcesCompat
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelLog
+import com.cooper.wheellog.app.ThemeIconEnum
+import com.cooper.wheellog.app.WheelLog
 
 object ThemeManager {
 

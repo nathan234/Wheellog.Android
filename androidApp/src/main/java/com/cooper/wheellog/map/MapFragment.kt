@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelLog
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.databinding.MapFragmentBinding
 import com.cooper.wheellog.utils.MathsUtil
 import com.cooper.wheellog.utils.SomeUtil.getColorEx

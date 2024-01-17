@@ -36,6 +36,9 @@ import com.cooper.wheellog.BluetoothService.LocalBinder
 import com.cooper.wheellog.DialogHelper.checkAndShowPrivatePolicyDialog
 import com.cooper.wheellog.DialogHelper.checkBatteryOptimizationsAndShowAlert
 import com.cooper.wheellog.DialogHelper.checkPWMIsSetAndShowAlert
+import com.cooper.wheellog.app.LocaleManager
+import com.cooper.wheellog.app.ThemeIconEnum
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.companion.WearOs
 import com.cooper.wheellog.data.TripDatabase.Companion.getDataBase
 import com.cooper.wheellog.databinding.ActivityMainBinding
@@ -52,11 +55,11 @@ import com.cooper.wheellog.utils.PermissionsUtil.checkNotificationsPermissions
 import com.cooper.wheellog.utils.PermissionsUtil.isMaxBleReq
 import com.cooper.wheellog.utils.SomeUtil.getSerializable
 import com.cooper.wheellog.utils.SomeUtil.playBeep
-import com.cooper.wheellog.utils.inmotion.InMotionAdapter
-import com.cooper.wheellog.utils.inmotion.InmotionAdapterV2
-import com.cooper.wheellog.utils.kingsong.KingsongAdapter
-import com.cooper.wheellog.utils.ninebot.NinebotAdapter
-import com.cooper.wheellog.utils.ninebot.NinebotZAdapter
+import com.cooper.wheellog.decoders.inmotion.InMotionAdapter
+import com.cooper.wheellog.decoders.inmotion.InmotionAdapterV2
+import com.cooper.wheellog.decoders.kingsong.KingsongAdapter
+import com.cooper.wheellog.decoders.ninebot.NinebotAdapter
+import com.cooper.wheellog.decoders.ninebot.NinebotZAdapter
 import com.cooper.wheellog.views.PiPView
 import com.cooper.wheellog.wheeldata.WheelData
 import com.google.android.material.snackbar.Snackbar

@@ -18,6 +18,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.databinding.EdittextLayoutBinding
 import com.cooper.wheellog.databinding.PrivacyPolicyBinding
 import com.cooper.wheellog.databinding.UpdatePwmSettingsBinding

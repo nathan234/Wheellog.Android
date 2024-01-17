@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.cooper.wheellog.R
-import com.cooper.wheellog.WheelLog.Companion.AppConfig
+import com.cooper.wheellog.app.WheelLog.Companion.AppConfig
 import com.wheellog.shared.WearPage
 import java.util.EnumSet
 

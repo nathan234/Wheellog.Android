@@ -12,6 +12,8 @@ import android.view.View
 import androidx.core.math.MathUtils
 import com.cooper.wheellog.*
 import com.cooper.wheellog.DialogHelper.setBlackIcon
+import com.cooper.wheellog.app.AppConfig
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.utils.Alarms
 import com.cooper.wheellog.utils.Calculator
 import com.cooper.wheellog.utils.MathsUtil.dpToPx
@@ -1050,7 +1052,8 @@ class WheelView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     init {
         if (isInEditMode) {
             currentTheme = R.style.OriginalTheme
-            WheelLog.AppConfig = AppConfig(context)
+            WheelLog.AppConfig =
+                AppConfig(context)
             mSpeed = 380
             targetSpeed = (mSpeed.toFloat() / 500 * 112).roundToInt()
             currentSpeed = targetSpeed

@@ -15,8 +15,14 @@
 		CD6EDE682B54DB6D00081DB1 /* Wheellog_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE672B54DB6D00081DB1 /* Wheellog_iOSTests.swift */; };
 		CD6EDE722B54DB6D00081DB1 /* Wheellog_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE712B54DB6D00081DB1 /* Wheellog_iOSUITests.swift */; };
 		CD6EDE742B54DB6D00081DB1 /* Wheellog_iOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE732B54DB6D00081DB1 /* Wheellog_iOSUITestsLaunchTests.swift */; };
-		CD6EDE822B54DCE400081DB1 /* IWheelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE812B54DCE400081DB1 /* IWheelData.swift */; };
+		CD6EDE822B54DCE400081DB1 /* WheelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE812B54DCE400081DB1 /* WheelData.swift */; };
 		CD6EDE872B54DE3800081DB1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE862B54DE3700081DB1 /* Constants.swift */; };
+		CD6EDE8A2B54E38D00081DB1 /* WheelDataImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6EDE892B54E38D00081DB1 /* WheelDataImpl.swift */; };
+		CDDF90DF2B54EA64009D3C1E /* BaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDF90DE2B54EA64009D3C1E /* BaseAdapter.swift */; };
+		CDDF90E22B54EB29009D3C1E /* WheelLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDF90E12B54EB29009D3C1E /* WheelLog.swift */; };
+		CDDF90E42B54EFB9009D3C1E /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDF90E32B54EFB9009D3C1E /* AppConfig.swift */; };
+		CDDF90E62B576836009D3C1E /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDF90E52B576836009D3C1E /* Defaults.swift */; };
+		CDDF90E82B5770C2009D3C1E /* DefaultStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDF90E72B5770C2009D3C1E /* DefaultStrings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,8 +55,14 @@
 		CD6EDE6D2B54DB6D00081DB1 /* Wheellog.iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Wheellog.iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD6EDE712B54DB6D00081DB1 /* Wheellog_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wheellog_iOSUITests.swift; sourceTree = "<group>"; };
 		CD6EDE732B54DB6D00081DB1 /* Wheellog_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wheellog_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		CD6EDE812B54DCE400081DB1 /* IWheelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IWheelData.swift; sourceTree = "<group>"; };
+		CD6EDE812B54DCE400081DB1 /* WheelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelData.swift; sourceTree = "<group>"; };
 		CD6EDE862B54DE3700081DB1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		CD6EDE892B54E38D00081DB1 /* WheelDataImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WheelDataImpl.swift; path = Wheellog.iOS/wheeldata/WheelDataImpl.swift; sourceTree = SOURCE_ROOT; };
+		CDDF90DE2B54EA64009D3C1E /* BaseAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAdapter.swift; sourceTree = "<group>"; };
+		CDDF90E12B54EB29009D3C1E /* WheelLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelLog.swift; sourceTree = "<group>"; };
+		CDDF90E32B54EFB9009D3C1E /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		CDDF90E52B576836009D3C1E /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		CDDF90E72B5770C2009D3C1E /* DefaultStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultStrings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +113,8 @@
 		CD6EDE522B54DB6B00081DB1 /* Wheellog.iOS */ = {
 			isa = PBXGroup;
 			children = (
+				CDDF90E02B54EB0B009D3C1E /* app */,
+				CDDF90DD2B54E95C009D3C1E /* decoders */,
 				CD6EDE852B54DDE600081DB1 /* models */,
 				CD6EDE802B54DCC500081DB1 /* WheelData */,
 				CD6EDE532B54DB6B00081DB1 /* Wheellog_iOSApp.swift */,
@@ -141,7 +155,8 @@
 		CD6EDE802B54DCC500081DB1 /* WheelData */ = {
 			isa = PBXGroup;
 			children = (
-				CD6EDE812B54DCE400081DB1 /* IWheelData.swift */,
+				CD6EDE812B54DCE400081DB1 /* WheelData.swift */,
+				CD6EDE892B54E38D00081DB1 /* WheelDataImpl.swift */,
 			);
 			path = WheelData;
 			sourceTree = "<group>";
@@ -152,6 +167,25 @@
 				CD6EDE862B54DE3700081DB1 /* Constants.swift */,
 			);
 			path = models;
+			sourceTree = "<group>";
+		};
+		CDDF90DD2B54E95C009D3C1E /* decoders */ = {
+			isa = PBXGroup;
+			children = (
+				CDDF90DE2B54EA64009D3C1E /* BaseAdapter.swift */,
+			);
+			path = decoders;
+			sourceTree = "<group>";
+		};
+		CDDF90E02B54EB0B009D3C1E /* app */ = {
+			isa = PBXGroup;
+			children = (
+				CDDF90E12B54EB29009D3C1E /* WheelLog.swift */,
+				CDDF90E32B54EFB9009D3C1E /* AppConfig.swift */,
+				CDDF90E52B576836009D3C1E /* Defaults.swift */,
+				CDDF90E72B5770C2009D3C1E /* DefaultStrings.swift */,
+			);
+			path = app;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -284,11 +318,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDDF90E42B54EFB9009D3C1E /* AppConfig.swift in Sources */,
+				CDDF90E22B54EB29009D3C1E /* WheelLog.swift in Sources */,
 				CD6EDE562B54DB6B00081DB1 /* ContentView.swift in Sources */,
+				CDDF90DF2B54EA64009D3C1E /* BaseAdapter.swift in Sources */,
 				CD6EDE582B54DB6B00081DB1 /* Item.swift in Sources */,
+				CDDF90E82B5770C2009D3C1E /* DefaultStrings.swift in Sources */,
 				CD6EDE542B54DB6B00081DB1 /* Wheellog_iOSApp.swift in Sources */,
-				CD6EDE822B54DCE400081DB1 /* IWheelData.swift in Sources */,
+				CD6EDE822B54DCE400081DB1 /* WheelData.swift in Sources */,
+				CDDF90E62B576836009D3C1E /* Defaults.swift in Sources */,
 				CD6EDE872B54DE3800081DB1 /* Constants.swift in Sources */,
+				CD6EDE8A2B54E38D00081DB1 /* WheelDataImpl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

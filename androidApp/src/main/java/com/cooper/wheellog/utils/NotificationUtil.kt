@@ -14,6 +14,8 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.cooper.wheellog.*
+import com.cooper.wheellog.app.ThemeIconEnum
+import com.cooper.wheellog.app.WheelLog
 import com.cooper.wheellog.models.Constants
 import com.cooper.wheellog.wheeldata.WheelData
 import com.welie.blessed.ConnectionState
